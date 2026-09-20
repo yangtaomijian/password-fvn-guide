@@ -14,11 +14,11 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "_site"
-BASE = "https://yangtaomijian.github.io/password-b085-guide"
+BASE = "https://yangtaomijian.github.io/password-fvn-guide"
 ZH_ROOT = f"{BASE}/"
 EN_ROOT = f"{BASE}/en/"
-ZH_IMAGE = f"{BASE}/assets/social/password-b085-guide-zh.png"
-EN_IMAGE = f"{BASE}/en/assets/social/password-b085-guide-en.png"
+ZH_IMAGE = f"{BASE}/assets/social/password-fvn-guide-zh.png"
+EN_IMAGE = f"{BASE}/en/assets/social/password-fvn-guide-en.png"
 ZH_SITE_NAME = "Password b0.85 中文攻略与机制资料库"
 EN_SITE_NAME = "Password b0.85 Guide & Mechanics Reference"
 ZH_HOME_TITLE = "Password b0.85 中文攻略与机制资料库"
@@ -269,10 +269,10 @@ def png_size(path: Path) -> tuple[int, int]:
 
 def verify_images() -> None:
     for path in (
-        ROOT / "assets/social/password-b085-guide-zh.png",
-        ROOT / "site-en/assets/social/password-b085-guide-en.png",
-        SITE / "assets/social/password-b085-guide-zh.png",
-        SITE / "en/assets/social/password-b085-guide-en.png",
+        ROOT / "assets/social/password-fvn-guide-zh.png",
+        ROOT / "site-en/assets/social/password-fvn-guide-en.png",
+        SITE / "assets/social/password-fvn-guide-zh.png",
+        SITE / "en/assets/social/password-fvn-guide-en.png",
     ):
         if not path.exists():
             raise AssertionError(f"missing social image: {path}")

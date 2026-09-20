@@ -26,18 +26,18 @@ filters:
   - ../scripts/seo-meta.lua
 
 seo-language: en
-seo-site-url: "https://yangtaomijian.github.io/password-b085-guide/en/"
+seo-site-url: "https://yangtaomijian.github.io/password-fvn-guide/en/"
 seo-site-title: "Password b0.85 Guide & Mechanics Reference"
 seo-site-name: "Password b0.85 Guide & Mechanics Reference"
-seo-image-url: "https://yangtaomijian.github.io/password-b085-guide/en/assets/social/password-b085-guide-en.png"
-seo-zh-site-url: "https://yangtaomijian.github.io/password-b085-guide/"
-seo-en-site-url: "https://yangtaomijian.github.io/password-b085-guide/en/"
+seo-image-url: "https://yangtaomijian.github.io/password-fvn-guide/en/assets/social/password-fvn-guide-en.png"
+seo-zh-site-url: "https://yangtaomijian.github.io/password-fvn-guide/"
+seo-en-site-url: "https://yangtaomijian.github.io/password-fvn-guide/en/"
 
 website:
   favicon: assets/favicon.svg
   title: "Password b0.85 Guide & Mechanics Reference"
   description: "An unofficial, version-specific reference guide for Password b0.85."
-  site-url: "https://yangtaomijian.github.io/password-b085-guide/en/"
+  site-url: "https://yangtaomijian.github.io/password-fvn-guide/en/"
   open-graph: false
   twitter-card: false
   search:
@@ -159,7 +159,7 @@ website:
 
   comments:
     giscus:
-      repo: yangtaomijian/password-b085-guide
+      repo: yangtaomijian/password-fvn-guide
       repo-id: R_kgDOTnI-GQ
       category: 页面反馈
       category-id: DIC_kwDOTnI-Gc4DCPAP

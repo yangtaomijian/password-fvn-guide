@@ -9,12 +9,12 @@ from pathlib import Path
 
 EXPECTED = {
     "sitemap.xml": (
-        "https://yangtaomijian.github.io/password-b085-guide/index.html",
-        "https://yangtaomijian.github.io/password-b085-guide/",
+        "https://yangtaomijian.github.io/password-fvn-guide/index.html",
+        "https://yangtaomijian.github.io/password-fvn-guide/",
     ),
     "en/sitemap.xml": (
-        "https://yangtaomijian.github.io/password-b085-guide/en/index.html",
-        "https://yangtaomijian.github.io/password-b085-guide/en/",
+        "https://yangtaomijian.github.io/password-fvn-guide/en/index.html",
+        "https://yangtaomijian.github.io/password-fvn-guide/en/",
     ),
 }
 

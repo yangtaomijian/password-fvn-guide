@@ -31,12 +31,12 @@ filters:
   - scripts/seo-meta.lua
 
 seo-language: zh-CN
-seo-site-url: "https://yangtaomijian.github.io/password-b085-guide/"
+seo-site-url: "https://yangtaomijian.github.io/password-fvn-guide/"
 seo-site-title: "Password b0.85 中文攻略与机制资料库"
 seo-site-name: "Password b0.85 中文攻略与机制资料库"
-seo-image-url: "https://yangtaomijian.github.io/password-b085-guide/assets/social/password-b085-guide-zh.png"
-seo-zh-site-url: "https://yangtaomijian.github.io/password-b085-guide/"
-seo-en-site-url: "https://yangtaomijian.github.io/password-b085-guide/en/"
+seo-image-url: "https://yangtaomijian.github.io/password-fvn-guide/assets/social/password-fvn-guide-zh.png"
+seo-zh-site-url: "https://yangtaomijian.github.io/password-fvn-guide/"
+seo-en-site-url: "https://yangtaomijian.github.io/password-fvn-guide/en/"
 language:
   toc-title-website: "该页面内容"
   callout-tip-title: "提示"
@@ -67,7 +67,7 @@ website:
   favicon: assets/favicon.svg
   title: "Password b0.85 中文攻略与机制资料库"
   description: "《Password》b0.85 中文路线、密码提示、收集与机制攻略"
-  site-url: "https://yangtaomijian.github.io/password-b085-guide/"
+  site-url: "https://yangtaomijian.github.io/password-fvn-guide/"
   open-graph: false
   twitter-card: false
   search:
@@ -194,7 +194,7 @@ website:
 
   comments:
     giscus:
-      repo: yangtaomijian/password-b085-guide
+      repo: yangtaomijian/password-fvn-guide
       repo-id: R_kgDOTnI-GQ
       category: 页面反馈
       category-id: DIC_kwDOTnI-Gc4DCPAP
