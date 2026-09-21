@@ -335,6 +335,133 @@
         });
     }
 
+    const header = document.getElementById("quarto-header");
+    const measureHeader = () => {
+      if (header) {
+        rootElement.style.setProperty(
+          "--pw-header-height", header.getBoundingClientRect().height + "px"
+        );
+      }
+    };
+    measureHeader();
+    if (header && "ResizeObserver" in window) {
+      new ResizeObserver(measureHeader).observe(header);
+    }
+
+    const toc = rightSidebar?.querySelector("#TOC");
+    const tocLinks = Array.from(toc?.querySelectorAll('a[data-scroll-target^="#"]') || [])
+      .filter((link) => document.getElementById(link.getAttribute("data-scroll-target").slice(1)));
+    const secondaryNav = document.querySelector(
+      "#quarto-header .quarto-secondary-nav > .container-fluid"
+    );
+    let mobileToc = null;
+
+    if (rightSidebar && tocLinks.length && secondaryNav) {
+      const title = "本页目录";
+      const toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "pw-mobile-toc-toggle";
+      toggle.textContent = title;
+      toggle.hidden = true;
+      toggle.setAttribute("aria-controls", rightSidebar.id);
+      toggle.setAttribute("aria-expanded", "false");
+      secondaryNav.append(toggle);
+
+      const close = document.createElement("button");
+      close.type = "button";
+      close.className = "pw-mobile-toc-close";
+      close.textContent = "×";
+      close.setAttribute("aria-label", "关闭本页目录");
+      rightSidebar.querySelector(".pw-panel-toolbar").append(close);
+
+      const backdrop = document.createElement("div");
+      backdrop.className = "pw-mobile-toc-backdrop";
+      backdrop.hidden = true;
+      backdrop.setAttribute("aria-hidden", "true");
+      body.append(backdrop);
+      body.classList.add("pw-mobile-toc-enabled");
+
+      let open = false;
+      const apply = () => {
+        if (RIGHT_PANEL_QUERY.matches) {
+          const hadFocus = rightSidebar.contains(document.activeElement);
+          open = false;
+          toggle.hidden = true;
+          toggle.setAttribute("aria-expanded", "false");
+          backdrop.hidden = true;
+          body.classList.remove("pw-mobile-toc-open");
+          rightSidebar.removeAttribute("role");
+          rightSidebar.removeAttribute("aria-modal");
+          rightSidebar.removeAttribute("aria-label");
+          if (hadFocus) {
+            requestAnimationFrame(() =>
+              (body.classList.contains("pw-right-collapsed")
+                ? rightOpenButton : rightCollapseButton).focus({ preventScroll: true })
+            );
+          }
+          return;
+        }
+
+        toggle.hidden = false;
+        toggle.setAttribute("aria-expanded", String(open));
+        backdrop.hidden = !open;
+        body.classList.toggle("pw-mobile-toc-open", open);
+        rightSidebar.toggleAttribute("inert", !open);
+        rightSidebar.setAttribute("aria-hidden", String(!open));
+        if (open) {
+          rightSidebar.setAttribute("role", "dialog");
+          rightSidebar.setAttribute("aria-modal", "true");
+          rightSidebar.setAttribute("aria-label", title);
+        } else {
+          rightSidebar.removeAttribute("role");
+          rightSidebar.removeAttribute("aria-modal");
+          rightSidebar.removeAttribute("aria-label");
+        }
+      };
+      const closeToc = () => {
+        if (!open) return;
+        open = false;
+        apply();
+        requestAnimationFrame(() => toggle.focus({ preventScroll: true }));
+      };
+      toggle.addEventListener("click", () => {
+        if (open) {
+          closeToc();
+        } else {
+          open = true;
+          apply();
+          requestAnimationFrame(() => close.focus());
+        }
+      });
+      close.addEventListener("click", closeToc);
+      backdrop.addEventListener("click", closeToc);
+      toc.addEventListener("click", (event) => {
+        if (event.target.closest('a[data-scroll-target^="#"]')) closeToc();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (!open || RIGHT_PANEL_QUERY.matches) return;
+        if (event.key === "Escape") {
+          event.preventDefault();
+          closeToc();
+          return;
+        }
+        if (event.key !== "Tab") return;
+        const focusable = [close, ...tocLinks].filter((element) =>
+          element.getClientRects().length && getComputedStyle(element).visibility !== "hidden"
+        );
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (!first) return;
+        if (!rightSidebar.contains(document.activeElement) ||
+            (event.shiftKey && document.activeElement === first) ||
+            (!event.shiftKey && document.activeElement === last)) {
+          event.preventDefault();
+          (event.shiftKey ? last : first).focus();
+        }
+      });
+      mobileToc = { apply };
+    }
+
     function setLeftCollapsed(collapsed, persist = true) {
       if (!leftSidebar) return;
 
@@ -404,6 +531,7 @@
       }
 
       if (RIGHT_PANEL_QUERY.matches) {
+        mobileToc?.apply();
         setRightCollapsed(safeStorageGet(RIGHT_KEY) === "1", false);
       } else {
         body.classList.remove("pw-right-collapsed");
@@ -412,6 +540,7 @@
           if ("inert" in rightSidebar) rightSidebar.inert = false;
           syncPanelControls(rightCollapseButton, rightOpenButton, false);
         }
+        mobileToc?.apply();
       }
     }
 

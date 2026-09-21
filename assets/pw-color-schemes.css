@@ -450,7 +450,7 @@ body pre.sourceCode > code.sourceCode > span[id] {
 /* Equal hover/selected geometry in the desktop navigation. */
 body .navbar .nav-link { border-radius: var(--pw-radius-md) !important; }
 /* Extend only the narrow-layout TOC surface through its outer grid gutter. */
-@media (min-width: 760px) and (max-width: 1099.98px) {
+@media (min-width: 768px) and (max-width: 1099.98px) {
   body #quarto-margin-sidebar {
     grid-column: body-end / screen-end;
     width: auto;
