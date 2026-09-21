@@ -80,14 +80,7 @@ Unlike the four major password checks, this input was not required to continue t
 
 ### When the option appeared
 
-The normal entry required both of the following states:
-
-```renpy
-persistent.metempsychosis_check == True
-BensonAround == True
-```
-
-The option becomes available after the relevant Oswin-alive D11 laboratory sequence has already been completed once. On a later eligible run through the A/B-side D11 material, the player can choose `Visit the Vault.` or `Stay here.`
+After the relevant Oswin-alive D11 laboratory sequence has been completed once, the game records that progress across saves. On a later eligible run through the A/B-side D11 material that also meets a separate entry condition, the player can choose `Visit the Vault.` or `Stay here.`
 
 `Visit the Vault.` opens the password input. `Stay here.` continues without using it.
 
@@ -97,7 +90,7 @@ Because the condition is persistent, it is shared across save slots and characte
 
 The word appears in the earlier laboratory scene.
 
-A successful entry records `METEMPSYCHOSIS = True` for the current playthrough; it is not shared across saves.
+After a successful entry, the current playthrough remembers that the optional input was completed; this state is not shared across saves.
 
 It changes the D11 laboratory sequence and some later dialogue, leaving the character Route, lettered Path, medals, and ending unchanged.
 

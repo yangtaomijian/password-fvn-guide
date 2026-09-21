@@ -82,16 +82,7 @@ b0.7 还包含一个非强制的 D11 金库输入：`METEMPSYCHOSIS`。
 
 ### 何时出现
 
-正常入口要求同时满足：
-
-```renpy
-persistent.metempsychosis_check == True
-BensonAround == True
-```
-
-这项跨存档进度会在玩家完整经历一次对应的 Oswin 存活 D11 实验室流程后记录。
-
-在之后再次进入符合条件的 A/B 侧 D11 流程时，玩家可以看到额外选择：`Visit the Vault. / Stay here.`
+玩家首次完整经历对应的 Oswin 存活 D11 实验室流程后，游戏会跨存档记录这段进度。之后再次进入符合条件的 A/B 侧 D11 流程、且该次流程满足另一项进入条件时，才可能看到额外选择：`Visit the Vault. / Stay here.`
 
 选择 `Visit the Vault.` 会打开密码输入；选择 `Stay here.` 则直接继续剧情。
 
@@ -101,7 +92,7 @@ BensonAround == True
 
 这个单词会在此前的实验室剧情中直接出现。
 
-成功输入后，本周目会记录 `METEMPSYCHOSIS = True`；该状态不会跨存档共享。
+成功输入后，游戏只在当前周目记住已完成这次可选输入；该状态不会跨存档共享。
 
 它会改变 D11 实验室段落及之后若干条件对白，不影响角色线、字母线、奖牌或最终结局。
 

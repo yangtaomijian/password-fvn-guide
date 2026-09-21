@@ -1,19 +1,10 @@
 ---
 title: "好感度机制与加点"
-description: "Password b0.85 六名角色的隐藏好感度变量、阈值、关系判定与全部可获得加点"
+description: "Password b0.85 六名角色的隐藏好感度数值、阈值、关系判定与全部可获得加点"
 toc: true
 ---
 
 《Password》b0.85 会为六名主要角色分别记录一个隐藏好感度值。
-
-<dl class="pw-variable-grid">
-<div><dt>Dean</dt><dd><code>bearlove</code></dd></div>
-<div><dt>Tyson</dt><dd><code>wolflove</code></dd></div>
-<div><dt>Roswell</dt><dd><code>boarlove</code></dd></div>
-<div><dt>Orlando</dt><dd><code>dragonlove</code></dd></div>
-<div><dt>Hoss</dt><dd><code>lionlove</code></dd></div>
-<div><dt>Sal</dt><dd><code>croclove</code></dd></div>
-</dl>
 
 这些数值不会以游戏内量表显示。新游戏中六项均从 0 开始，随后通过特定选择或自动剧情增加，并在后续用于判断文本差异、亲密选项、部分 CG，以及 D19 的关系结果。
 
@@ -28,7 +19,7 @@ toc: true
 - 若干画廊 CG；
 - D19 关系是自动成立、由玩家选择，还是无法成立。
 
-任何字母线、金库密码结果、角色生死检定、奖牌检定或 Path P 条件，都不会直接读取六个好感度变量。
+任何字母线、金库密码结果、角色生死检定、奖牌检定或 Path P 条件，都不会直接读取六项好感度。
 :::
 
 ## 基本机制
@@ -37,7 +28,7 @@ toc: true
 
 **存档与恢复**
 
-- 六个数值都是普通剧情存档变量，不属于持久数据；
+- 六项好感度都随普通剧情存档保存，不属于持久数据；
 - 读取较早存档会恢复该存档中的好感度值；
 
 **加点与选择**
@@ -52,7 +43,7 @@ toc: true
 
 :::
 
-所有阈值判断都使用 `>=`。例如 `15 <= lionlove < 20` 表示好感度为 15—19 点。
+表中各门槛均包含门槛值。例如，Hoss 好感度 15–19 表示从 15 点到 19 点。
 
 ## 阈值总览
 
@@ -77,30 +68,30 @@ D19 会根据当前角色线对应的好感度判定关系。
 
 | 角色 | 自动成立 | 可选择区间 | 玩家选项 | 低于区间 |
 |---|---:|---:|---|---|
-| Dean | `bearlove >= 10` | 无 | 无 | 关系自动失败 |
-| Orlando | `dragonlove >= 20` | `10 <= dragonlove < 20` | `I love you too.`／`Stay quiet.` | 自动拒绝 |
-| Tyson | `wolflove >= 20` | `10 <= wolflove < 20` | `I love you.`／`...` | 自动拒绝 |
-| Roswell | `boarlove >= 20` | `10 <= boarlove < 20` | `Relationship`／`Friendship` | 自动维持友情 |
-| Hoss | `lionlove >= 20` | `15 <= lionlove < 20` | `Try dating.`／`Stay friends.` | 自动维持朋友关系 |
-| Sal | `croclove >= 20` | `15 <= croclove < 20` | `Romantic`／`Platonic` | 自动维持朋友关系 |
+| Dean | Dean 好感度 ≥ 10 | 无 | 无 | 关系自动失败 |
+| Orlando | Orlando 好感度 ≥ 20 | Orlando 好感度 10–19 | `I love you too.`／`Stay quiet.` | 自动拒绝 |
+| Tyson | Tyson 好感度 ≥ 20 | Tyson 好感度 10–19 | `I love you.`／`...` | 自动拒绝 |
+| Roswell | Roswell 好感度 ≥ 20 | Roswell 好感度 10–19 | `Relationship`／`Friendship` | 自动维持友情 |
+| Hoss | Hoss 好感度 ≥ 20 | Hoss 好感度 15–19 | `Try dating.`／`Stay friends.` | 自动维持朋友关系 |
+| Sal | Sal 好感度 ≥ 20 | Sal 好感度 15–19 | `Romantic`／`Platonic` | 自动维持朋友关系 |
 
 :::
 
-只有达到自动建立关系的门槛，或玩家在中间点数区间明确接受关系后，游戏才会设置 `DaveBoyfriend`。Dean 是唯一没有中间选择区间的角色线。
+只有达到自动建立关系的门槛，或玩家在中间点数区间明确接受关系后，Dave 才会与该角色建立恋爱关系。Dean 是唯一没有中间选择区间的角色线。
 
 ## Hoss 阈值规划
 
 Hoss 是最需要规划加点的角色，因为两张画廊图片分别受 D8 和 D19 的不同结果控制。
 
-### D8 `hosskiss`
+### D8 隐藏图书馆亲吻 CG
 
 在不使用 D1 咖啡杯好感度结果、也不使用 D3 隐藏全员加点的前提下，D8 隐藏图书馆检定前最多可以获得 **13** 点。
 
-因此，`lionlove >= 12` 可以只靠普通可见选项达到。
+因此，Hoss 好感度 ≥ 12 可以只靠普通可见选项达到。
 
 如果进入图书馆时低于 12：
 
-1. D8 亲吻和 `hosskiss` 不会出现；
+1. D8 亲吻和隐藏图书馆亲吻 CG 不会出现；
 2. 低于 12 点时会自动增加 2 点；
 3. 后续选择 `Hold his hand` 还可再增加 2 点。
 
@@ -110,7 +101,7 @@ Hoss 是最需要规划加点的角色，因为两张画廊图片分别受 D8 �
 
 :::
 
-### D19 `hosskiss2`
+### D19 Hoss 关系成功 CG
 
 在同样不使用 D1 咖啡杯结果和 D3 隐藏全员加点的条件下，D19 前的最高值是 **19**。这足以开放 `Try dating.`／`Stay friends.` 菜单，但不能触发 20 点自动关系。
 
@@ -148,8 +139,6 @@ D1 的所有答案共用一个输入框，因此一次流程中只能触发其�
 
 ### Orlando
 
-`dragonlove`
-
 ::: {.affection-point-table .table-responsive .table-scroll-large}
 
 | 日期 | 选择／条件 | 要求 | 点数 |
@@ -164,8 +153,8 @@ D1 的所有答案共用一个输入框，因此一次流程中只能触发其�
 | D5 | `Comedy` | 与其他 D5 电影选项互斥 | +1 |
 | D6 | `Orlando` | Sal 线或 Orlando 线 | +1 |
 | D6 | `What was it like?` | Orlando 线 | +1 |
-| D6 | `Yes.` | Orlando 线；D6 金库检定成功；进入选择时 `dragonlove >= 7`；D6 Orlando 后续 Yes／No 菜单 | +1 |
-| D6 | 第一次练习接吻后自动增加 | Orlando 线；D6 金库检定成功；进入事件时 `dragonlove` 为 5—6 | +1 |
+| D6 | `Yes.` | Orlando 线；D6 金库检定成功；进入选择时 Orlando 好感度 ≥ 7；D6 Orlando 后续 Yes／No 菜单 | +1 |
+| D6 | 第一次练习接吻后自动增加 | Orlando 线；D6 金库检定成功；进入事件时 Orlando 好感度为 5—6 | +1 |
 | D7 | `Hug.` | Orlando 线；D7 Orlando 回应 | +1 |
 | D7 | `Advice.` | Orlando 线；D7 Orlando 回应 | +2 |
 | D7 | `Stay.` → `Dean.` | D7 家庭话题菜单，和其他主题互斥 | +1 |
@@ -176,13 +165,11 @@ D1 的所有答案共用一个输入框，因此一次流程中只能触发其�
 | D9 | `Invite him to stay.` | Orlando 线；D9 夜间 Orlando 菜单 | +1 |
 | D9 | `Reassure him.` | Orlando 线；D9 夜间 Orlando 菜单 | +2 |
 | D15 | `Kiss him.` | Orlando 线；Path A 或 B | +2 |
-| D16 | `Agree.` | Orlando 线；Path A 或 B；`dragonlove >= 15` | +1 |
+| D16 | `Agree.` | Orlando 线；Path A 或 B；Orlando 好感度 ≥ 15 | +1 |
 
 :::
 
 ### Dean
-
-`bearlove`
 
 ::: {.affection-point-table .table-responsive .table-scroll-large}
 
@@ -209,8 +196,6 @@ D1 的所有答案共用一个输入框，因此一次流程中只能触发其�
 :::
 
 ### Tyson
-
-`wolflove`
 
 ::: {.affection-point-table .affection-tyson-table .table-responsive .table-scroll-large}
 
@@ -241,14 +226,12 @@ D1 的所有答案共用一个输入框，因此一次流程中只能触发其�
 | D9 | `Tyson.` | Dean、Hoss 或 Tyson 线；D9 早晨同伴菜单 | +1 |
 | D15 | `'Ty'.` | Tyson 线；Path A 或 B；D15 称呼选择 | +2 |
 | D15 | `'Tyson'.` | Tyson 线；Path A 或 B；D15 称呼选择 | +1 |
-| D16 | `As something more.` | Tyson 线；Path A 或 B；`wolflove >= 18` | +2 |
+| D16 | `As something more.` | Tyson 线；Path A 或 B；Tyson 好感度 ≥ 18 | +2 |
 | D18 | `Stay by the door.` | Tyson 线 | +1 |
 
 :::
 
 ### Roswell
-
-`boarlove`
 
 ::: {.affection-point-table .table-responsive .table-scroll-large}
 
@@ -265,20 +248,18 @@ D1 的所有答案共用一个输入框，因此一次流程中只能触发其�
 | D4 | `Pay Debts` | Roswell 线；D4 Roswell 投资选择 | +1 |
 | D6 | `Okay.` | Roswell 线 | +1 |
 | D6 | `Lie` | Roswell 线 | +1 |
-| D6 | `Kiss him.` | Roswell 线；`boarlove >= 5`；D6 Roswell 回应 | +2 |
-| D6 | `Hug him.` | Roswell 线；`boarlove >= 5`；D6 Roswell 回应 | +1 |
+| D6 | `Kiss him.` | Roswell 线；Roswell 好感度 ≥ 5；D6 Roswell 回应 | +2 |
+| D6 | `Hug him.` | Roswell 线；Roswell 好感度 ≥ 5；D6 Roswell 回应 | +1 |
 | D7 | `Stay.` → `Dean.` | D7 家庭话题菜单，和其他主题互斥 | +1 |
 | D7 | `Stay.` → `Roswell.` | D7 家庭话题菜单，和其他主题互斥 | +2 |
 | D7 | `Stay.` → `Orlando.` | D7 家庭话题菜单，和其他主题互斥 | +1 |
 | D9 | `...Wild.` | Roswell、Orlando 或 Sal 线；D9 Uno 最后一张牌菜单 | +1 |
 | D15 | `Agree.` | Roswell 线；Path A 或 B | +1 |
-| D16 | `I like you.` | Roswell 线；Path A 或 B；`boarlove >= 15` | +2 |
+| D16 | `I like you.` | Roswell 线；Path A 或 B；Roswell 好感度 ≥ 15 | +2 |
 
 :::
 
 ### Hoss
-
-`lionlove`
 
 ::: {.affection-point-table .table-responsive .table-scroll-large}
 
@@ -300,7 +281,7 @@ D1 的所有答案共用一个输入框，因此一次流程中只能触发其�
 | D7 | `Stay.` → `Roswell.` | D7 家庭话题菜单，和其他主题互斥 | +1 |
 | D7 | `Stay.` → `Hoss.` | D7 家庭话题菜单，和其他主题互斥 | +2 |
 | D7 | `Stay.` → `Sal.` | D7 家庭话题菜单，和其他主题互斥 | +1 |
-| D8 | 隐藏图书馆中未达到 D8 亲吻阈值时自动增加 | Hoss 线；`lionlove < 12` | +2 |
+| D8 | 隐藏图书馆中未达到 D8 亲吻阈值时自动增加 | Hoss 线；Hoss 好感度低于 12 | +2 |
 | D8 | `Hold his hand` | Hoss 线 | +2 |
 | D9 | `Hoss.` | Dean、Hoss 或 Tyson 线；D9 早晨同伴菜单 | +1 |
 | D9 | `Answer.` | Hoss 线 | +1 |
@@ -310,8 +291,6 @@ D1 的所有答案共用一个输入框，因此一次流程中只能触发其�
 :::
 
 ### Sal
-
-`croclove`
 
 ::: {.affection-point-table .table-responsive .table-scroll-large}
 
@@ -337,7 +316,7 @@ D1 的所有答案共用一个输入框，因此一次流程中只能触发其�
 | D7 | `Stay.` → `Sal.` | D7 家庭话题菜单，和其他主题互斥 | +2 |
 | D7 | `Stay.` → `Orlando.` | D7 家庭话题菜单，和其他主题互斥 | +1 |
 | D9 | `...Skip.` | Roswell、Orlando 或 Sal 线；D9 Uno 最后一张牌菜单 | +1 |
-| D9 | `Approach.` | Sal 线；`croclove >= 15`；D9 Sal 安慰菜单 | +1 |
+| D9 | `Approach.` | Sal 线；Sal 好感度 ≥ 15；D9 Sal 安慰菜单 | +1 |
 | D9 | `Talk.` | Sal 线；D9 Sal 安慰菜单 | +1 |
 | D9 | `...want to cuddle?` | Sal 线；D9 夜间 Sal 菜单 | +1 |
 | D9 | `...want to talk more?` | Sal 线；D9 夜间 Sal 菜单 | +2 |
@@ -350,7 +329,7 @@ D1 的所有答案共用一个输入框，因此一次流程中只能触发其�
 
 ### Path C 会把 Sal 好感度重置为 0
 
-Path C 的 Sal 泳池剧情会执行 `$ croclove = 0`，清除该存档此前累积的全部 Sal 好感度。
+Path C 的 Sal 泳池剧情会把 Sal 好感度重置为 0，清除该存档此前累积的全部 Sal 好感度。
 
 正常流程中，另外五名角色没有对应的重置。
 
@@ -361,7 +340,7 @@ Sal 线 D16 的高好感度菜单中，`Remain still.` 显示会增加 2 点，�
 ::: {.callout-warning}
 ## b0.85 的实际计分
 
-规划 Sal 的 D19 结果时，不要把 `Remain still.` 计作 +2；选择后 `croclove` 不会改变。
+规划 Sal 的 D19 结果时，不要把 `Remain still.` 计作 +2；选择后 Sal 好感度不会改变。
 :::
 
 ## 相关页面

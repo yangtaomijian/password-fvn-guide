@@ -37,24 +37,24 @@ toc: true
 
 ::: {.compendium-cast-table .table-responsive .table-scroll-medium}
 
-| 顺序 | 角色档案 | 记录条件 | 主要解锁途径 |
-|---:|---|---|---|
-| 1 | Dave | `persistent.dave_lore` | D14 A/B，关于 Dave 父亲的回忆 |
-| 2 | Tyson | `persistent.tyson_lore` | Tyson 线，D15 A/B |
-| 3 | Roswell | `persistent.roswell_lore` | Roswell 线，D18 A/B |
-| 4 | Orlando | `persistent.orlando_lore` | D15 会议；是否要求 Orlando 线取决于 Oswin 状态 |
-| 5 | Hoss | `persistent.hoss_lore` | D3 可选对话，另有 D8 可选补充入口 |
-| 6 | Sal | `persistent.sal_lore` | D10 密码成功场景，或 Sal 线 D15 补充入口 |
-| 7 | Dean | `persistent.dean_lore` | Dean 线，D11 A/B |
-| 8 | Benson | `persistent.benson_lore` | Path A 后期流程 |
-| 9 | Thanatos | `persistent.thanatos_lore` | Path A 后期时间循环流程 |
-| 10 | Thanatos - Part 2 | `persistent.true_end` | 完整完成 Path P |
-| 11 | Memphis | `persistent.memphis_lore` | Path C，D13 与 Memphis 会面 |
-| 12 | Dominic | `persistent.dominic_lore` | Path A 后期会面 |
-| 13 | Jack | `persistent.jack_lore` | 与 Dominic 同一段会面 |
-| 14 | Florencia | `persistent.florencia_lore` | Path D、G、A 或 B 的结局场景 |
-| 15 | David | `persistent.david_lore` | 与 Dave 相同的 D14 A/B 回忆 |
-| 16 | Hoyt | `persistent.hoyt_lore` | 与 Dave、David 相同的 D14 A/B 回忆 |
+| 顺序 | 角色档案 | 主要解锁途径 |
+|---:|---|---|
+| 1 | Dave | D14 A/B，关于 Dave 父亲的回忆 |
+| 2 | Tyson | Tyson 线，D15 A/B |
+| 3 | Roswell | Roswell 线，D18 A/B |
+| 4 | Orlando | D15 会议；是否要求 Orlando 线取决于 Oswin 状态 |
+| 5 | Hoss | D3 可选对话，另有 D8 可选补充入口 |
+| 6 | Sal | D10 密码成功场景，或 Sal 线 D15 补充入口 |
+| 7 | Dean | Dean 线，D11 A/B |
+| 8 | Benson | Path A 后期流程 |
+| 9 | Thanatos | Path A 后期时间循环流程 |
+| 10 | Thanatos - Part 2 | 完整完成 Path P |
+| 11 | Memphis | Path C，D13 与 Memphis 会面 |
+| 12 | Dominic | Path A 后期会面 |
+| 13 | Jack | 与 Dominic 同一段会面 |
+| 14 | Florencia | Path D、G、A 或 B 的结局场景 |
+| 15 | David | 与 Dave 相同的 D14 A/B 回忆 |
+| 16 | Hoyt | 与 Dave、David 相同的 D14 A/B 回忆 |
 
 :::
 
@@ -126,8 +126,8 @@ b0.85 共收录 16 份角色档案，其中没有 Oswin。
 
 | 顺序 | 追加场景 | 解锁条件 |
 |---:|---|---|
-| 1 | Dave's Demise | `persistent.Day23APrime` |
-| 2 | Roswell's Attempt | `persistent.Day23APrime` |
+| 1 | Dave's Demise | 首次完整经历 Path A 后段中 Dave 与 Roswell 的两段首次限定剧情后，与 `Roswell's Attempt` 一起解锁 |
+| 2 | Roswell's Attempt | 首次完整经历 Path A 后段中 Dave 与 Roswell 的两段首次限定剧情后，与 `Dave's Demise` 一起解锁 |
 | 3 | Tyson Epilogue（后日谈） | 完成 Path P，并解锁 Tyson 的角色档案 |
 | 4 | Dean Epilogue（后日谈） | 完成 Tyson 后日谈，并解锁 Dean 的角色档案 |
 | 5 | Orlando Epilogue（后日谈） | 完成 Dean 后日谈，并解锁 Orlando 的角色档案 |
@@ -140,7 +140,7 @@ b0.85 共收录 16 份角色档案，其中没有 Oswin。
 
 ### Dave's Demise 与 Roswell's Attempt
 
-前两个场景共享同一个持久条件，会一起开放，可以任意选择回放。后面的七段后日谈则按顺序解锁。
+首次完整经历 Path A 后段中 Dave 与 Roswell 的两段首次限定剧情后，前两个场景会一起解锁，此后可以分别回放。后面的七段后日谈则按顺序解锁。
 
 ### 后日谈的固定依赖链
 
@@ -187,7 +187,7 @@ Tyson
 2. Dean 至 Hoss 的对应角色档案是否已经解锁；
 3. Tyson 后日谈是否已经通过“完成 Path P + 解锁 Tyson 档案”获得；
 4. 最近一次解锁条目或完整播放一段后日谈后，是否重启过游戏；
-5. 持久数据是否来自旧版本安装，或设备迁移是否不完整。
+5. 跨存档进度数据是否来自旧版本安装，或设备迁移是否不完整。
 :::
 
 ## 背景资料
@@ -198,27 +198,27 @@ Tyson
 
 ::: {.compendium-lore-table .table-responsive}
 
-| 顺序 | 星座 | 持久标记 |
-|---:|---|---|
-| 1 | 白羊座 | `persistent.aries` |
-| 2 | 金牛座 | `persistent.taurus` |
-| 3 | 双子座 | `persistent.gemini` |
-| 4 | 巨蟹座 | `persistent.cancer` |
-| 5 | 狮子座 | `persistent.leo` |
-| 6 | 处女座 | `persistent.virgo` |
+| 顺序 | 星座 |
+|---:|---|
+| 1 | 白羊座 |
+| 2 | 金牛座 |
+| 3 | 双子座 |
+| 4 | 巨蟹座 |
+| 5 | 狮子座 |
+| 6 | 处女座 |
 
 :::
 
 ::: {.compendium-lore-table .table-responsive}
 
-| 顺序 | 星座 | 持久标记 |
-|---:|---|---|
-| 7 | 天秤座 | `persistent.libra` |
-| 8 | 天蝎座 | `persistent.scorpio` |
-| 9 | 射手座 | `persistent.sagittarius` |
-| 10 | 摩羯座 | `persistent.capricorn` |
-| 11 | 水瓶座 | `persistent.aquarius` |
-| 12 | 双鱼座 | `persistent.pisces` |
+| 顺序 | 星座 |
+|---:|---|
+| 7 | 天秤座 |
+| 8 | 天蝎座 |
+| 9 | 射手座 |
+| 10 | 摩羯座 |
+| 11 | 水瓶座 |
+| 12 | 双鱼座 |
 
 :::
 

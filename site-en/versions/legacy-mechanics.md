@@ -1,6 +1,6 @@
 ---
 title: "Legacy Mechanics Archive"
-description: "Persistent Path A scenes, the retired D8 Oswin input system, and other mechanics changed between Password b0.7 and b0.85"
+description: "The cross-save Path A first-run sequence, the retired D8 Oswin input system, and other mechanics changed between Password b0.7 and b0.85"
 toc: true
 ---
 
@@ -21,7 +21,7 @@ A surviving password word or related line does not make an interaction usable in
 
 ## Path A first-run sequence
 
-Both b0.7 and b0.85 use `persistent.Day23APrime` to distinguish the first visit to late Path A from later visits.
+Both b0.7 and b0.85 record the first complete late-Path-A sequence across saves: its two first-run segments play on the first normal visit, while later eligible visits skip them.
 
 The first-run record is shared across character Routes and save slots rather than belonging to one ordinary save.
 
@@ -50,13 +50,13 @@ common opening material
 → continue with the later Path A story
 ```
 
-Starting a new game does not by itself reset this persistent value. Resetting or deleting the game's persistent data restores the default first-run state.
+Starting a new game does not by itself reset the cross-save completion record. Clearing all of the game's cross-save progress data restores the default first-run state.
 
 ### Loading an old save
 
 The result depends on where the save was made:
 
-- a save loaded **before** the game checks the first-completion state reads the current profile-wide value and may skip the first-visit segments;
+- a save loaded **before** the game checks the first-completion state reads the current cross-save completion record and may skip the first-visit segments;
 - a save made **inside** the first-visit sequence can continue from its saved location.
 
 ## Additional Scenes in b0.85
@@ -66,7 +66,7 @@ b0.85 adds the two segments as the first entries under **Additional Scenes** in 
 1. `Dave's Demise`
 2. `Roswell's Attempt`
 
-Both use the same unlock condition `persistent.Day23APrime`. They therefore normally unlock together.
+After both first-run segments have been completed, the entries unlock together from the same cross-save completion record.
 
 For their current list positions and troubleshooting, see [Compendium Unlock Index](../collectibles/compendium.md).
 
@@ -104,14 +104,14 @@ There is no fixed question limit. Empty input is handled separately, and three u
 The conversation tracks three states for the current playthrough:
 
 ::: {.oz-variable-table .table-responsive}
-| Variable | Role |
+| Current-run state | Role |
 |---|---|
-| `OzPast1` | Records one piece of family-history information |
-| `OzPast2` | Records story or rabbit-related information |
-| `OzWrong` | Counts unmatched inputs |
+| Family-history topic | Records whether the corresponding family-history information has been triggered |
+| Story/rabbit topic | Records whether the related topic has reached its relevant state |
+| Consecutive unmatched inputs | Counts consecutive misses; the third shows help and resets the count |
 :::
 
-The answers can change later dialogue through `OzPast1` and `OzPast2`. They leave the character Route, lettered Path, medals, major ending, and main Vault success flags unchanged.
+The family-history and story/rabbit topic states can change later dialogue. The answers leave the character Route, lettered Path, medals, major ending, and main Vault success unchanged.
 
 ## How b0.7 recognized input
 
@@ -146,9 +146,9 @@ A broad response can match before a more specific one, so the wording of an entr
 
 ## State-dependent rabbit response
 
-The rabbit interaction is state-dependent, but the second input does not have to be the exact phrase `what rabbit`.
+The rabbit interaction changes according to whether a related topic was previously triggered, but the second input does not have to be the exact phrase `what rabbit`.
 
-An initial rabbit-, hare-, or story-related response can set `OzPast2`. A later rabbit-related input then receives the follow-up version because the state has changed.
+After a rabbit-, hare-, or story-related response has triggered the relevant topic, a later rabbit-related input can receive the follow-up version.
 
 ## Conversation prompts to try
 
@@ -214,18 +214,18 @@ Cast Files, Lore, and Additional Scenes do not contain the complete old question
 The b0.7 Oswin-alive D11 laboratory sequence contained a separate three-way decision:
 
 ::: {.legacy-d11-choice-table .table-responsive}
-| b0.7 choice | Immediate effect |
+| b0.7 choice | Earlier behavior |
 |---|---|
-| `Inject me.` | No `DavePride` increase |
-| `Inject him.` | `DavePride += 1` |
-| `Don't inject.` | `DavePride += 2` |
+| `Inject me.` | Creates no additional difference in the choice record |
+| `Inject him.` | Records one distinct choice result |
+| `Don't inject.` | Records another distinct choice result |
 :::
 
 This choice is distinct from the optional D11 Vault documented in [Legacy Password Archive](legacy-passwords.md).
 
 In b0.85, the menu is removed. The scene instead follows a fixed sequence in which Oswin injects Dave from behind and later reveals that the substance was saline.
 
-The two possible `DavePride` gains are also removed. The character Route, lettered Path, and ending are unaffected.
+The earlier game distinguished all three choices, so some local dialogue could differ. The choices did not affect the character Route, lettered Path, medals, or ending. b0.85 no longer distinguishes these choice results.
 
 ## Related pages
 

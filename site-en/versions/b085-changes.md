@@ -24,7 +24,7 @@ The comparison below is limited to **b0.7 and b0.85** and should not be applied 
 | D8 interaction | Replaces Oswin's free-text question system with scripted dialogue |
 | Dean-related scenes | Converts several choice-driven scenes into fixed sequences |
 | Dean relationship | Changes the D19 threshold and removes the middle-range confirmation choice |
-| Path P | Adds a mandatory final input and explicit true-ending persistence |
+| Path P | Adds a mandatory final input and an explicit cross-save true-ending completion record |
 | Gallery | Reduces the number of slots from 104 to 100 |
 | CGs | Redraws two Tyson CGs and removes four older Dean adult CGs |
 :::
@@ -41,7 +41,7 @@ Normal b0.7 play has no feature equivalent to the current Compendium.
 
 ### Lore and medal tracking
 
-The Lore section contains twelve zodiac entries whose locked states correspond to the twelve persistent medal flags. This gives the player a visible way to identify which medal-related Lore entries remain missing before attempting the Path P collection requirement.
+The Lore section contains twelve zodiac entries whose locked states correspond to the cross-save collection records for the twelve medals. This gives the player a visible way to identify which medal-related Lore entries remain missing before attempting the Path P collection requirement.
 
 For the exact unlock conditions, see [Compendium Unlock Index](../collectibles/compendium.md) and [Twelve-Medal Collection Guide](../collectibles/medals.md).
 
@@ -62,7 +62,7 @@ b0.85 adds seven Epilogue entries to Additional Scenes.
 
 The first becomes available after the true ending has been recorded. Completing one Epilogue unlocks the next. Open each one from Additional Scenes in the Compendium.
 
-For the current order and unlock flags, see [Compendium Unlock Index](../collectibles/compendium.md).
+For the current order and unlock requirements, see [Compendium Unlock Index](../collectibles/compendium.md).
 
 ## Removed or replaced legacy systems
 
@@ -98,9 +98,9 @@ See [Legacy Password Archive](legacy-passwords.md).
 
 ### D11 injection decision
 
-b0.7 offered a three-way laboratory decision that could add different amounts of `DavePride`. b0.85 replaces it with the fixed sequence in which Oswin injects Dave and later reveals that the substance was saline.
+b0.7 offered a three-way laboratory decision. The game distinguished the three choices; some local dialogue could differ, but the choices did not change the character Route, lettered Path, medals, or ending. b0.85 replaces the decision with the fixed sequence in which Oswin injects Dave and later reveals that the substance was saline; the game no longer records those distinct choice results.
 
-See [Legacy Mechanics Archive](legacy-mechanics.md) for the original choices and their effects on later dialogue.
+See [Legacy Mechanics Archive](legacy-mechanics.md) for the original choices.
 
 ## Dean and early-story interaction rewrite
 
@@ -133,8 +133,8 @@ Dean's relationship check changes as follows:
 ::: {.d19-result-table .table-responsive .table-scroll-compact}
 | Build | D19 result |
 |---|---|
-| b0.7 | `bearlove >= 20`: relationship automatic; `10–19`: player accepts or rejects; `< 10`: rejection |
-| b0.85 | `bearlove >= 10`: relationship automatic; `< 10`: rejection |
+| b0.7 | Dean affection ≥ 20: relationship automatic; Dean affection 10–19: player accepts or rejects; Dean affection < 10: rejection |
+| b0.85 | Dean affection ≥ 10: relationship automatic; Dean affection < 10: rejection |
 :::
 
 b0.85 lowers the automatic relationship threshold and removes the confirmation choice previously offered at 10–19 points.
@@ -145,9 +145,9 @@ The core Path P entry structure already existed in b0.7:
 
 ```text
 PATH A: END
-→ check all twelve persistent medal flags
-→ currentPath = "P"
-→ final sequence
+→ check all twelve cross-save medal records
+→ all twelve collected
+→ enter the final Path P sequence
 ```
 
 b0.85 retains that structure and adds new content later in Path P.
@@ -168,16 +168,9 @@ In b0.85, Dave enters the new password and operates the keypad himself to open t
 
 ### True-ending record
 
-Near the final ending, b0.85 records:
+Near the final ending, b0.85 records Path P / true-ending completion across saves. That completion record is used by the Compendium and the Epilogue unlock chain.
 
-```renpy
-persistent.FirstEnding = True
-persistent.true_end = True
-```
-
-The `true_end` state is used by the Compendium and the Epilogue unlock chain.
-
-The game does not display a formal `PATH P: END` heading or define `P` as a full word.
+The game does not display a formal `PATH P: END` heading or define `P` as a full word. References to a “prime timeline” make `P = Prime` plausible, but the game does not present it as an official name.
 
 ## Gallery slots: 104 to 100
 
@@ -188,16 +181,16 @@ The reduction comes from the following four slot changes:
 ::: {.gallery-registration-change-table .table-responsive .table-scroll-compact}
 | Gallery change | Slot difference |
 |---|---:|
-| `deanlove` removed from the Dean Gallery list | −1 |
-| `daveflashlight1` removed from the Dave list but retained under Misc | −1 duplicate |
-| `daveflashlight2` removed from the Dave list but retained under Misc | −1 duplicate |
-| `daveflashlight3` removed from the Dave list but retained under Misc | −1 duplicate |
+| One older Dean Gallery image removed from the Dean category | −1 |
+| D24 Dave searching in the dark image 1 removed from Dave but retained under Misc | −1 duplicate |
+| D24 Dave searching in the dark image 2 removed from Dave but retained under Misc | −1 duplicate |
+| D24 Dave searching in the dark image 3 removed from Dave but retained under Misc | −1 duplicate |
 | **Total** | **−4** |
 :::
 
 The three flashlight images remain under Misc; their duplicate buttons in the Dave list are removed.
 
-`deanlove` is not part of the b0.85 Gallery and does not appear during normal play.
+That older Dean image is not part of the b0.85 Gallery and does not appear during normal play.
 
 For the current 100-slot structure, see [CG Gallery Completion Index](../collectibles/gallery.md).
 
@@ -205,7 +198,7 @@ For the current 100-slot structure, see [CG Gallery Completion Index](../collect
 
 ### Tyson CG redraws
 
-Two Tyson CGs, `tysondrive` and `tysonmovie`, were fully redrawn between b0.7 and b0.85.
+The Tyson driving and Tyson movie-time CGs were fully redrawn between b0.7 and b0.85.
 
 The newer images change the complete composition, character placement, camera framing, background treatment, line work, and coloring.
 
@@ -237,8 +230,8 @@ The D1 Easter input `THE END` quits the game in both builds.
 
 Before quitting, b0.85 clears the following completion records:
 
-- `persistent.true_end`;
-- the persistent Path A–G ending markers.
+- the true-ending completion record;
+- the cross-save Path A–G ending completion records.
 
 In b0.7, the game quits without clearing those completion records first.
 

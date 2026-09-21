@@ -1,19 +1,10 @@
 ---
 title: "Affection System and Point Guide"
-description: "Hidden affection variables, thresholds, relationship checks, and all available point gains in Password b0.85"
+description: "Hidden affection values, thresholds, relationship checks, and all available point gains in Password b0.85"
 toc: true
 ---
 
 Password b0.85 tracks a separate hidden affection value for each of the six main characters.
-
-<dl class="pw-variable-grid">
-<div><dt>Dean</dt><dd><code>bearlove</code></dd></div>
-<div><dt>Tyson</dt><dd><code>wolflove</code></dd></div>
-<div><dt>Roswell</dt><dd><code>boarlove</code></dd></div>
-<div><dt>Orlando</dt><dd><code>dragonlove</code></dd></div>
-<div><dt>Hoss</dt><dd><code>lionlove</code></dd></div>
-<div><dt>Sal</dt><dd><code>croclove</code></dd></div>
-</dl>
 
 These values are not displayed as an in-game meter. They begin at 0 in a new game, increase through specific choices or automatic story events, and are checked later for text variations, intimate options, several CGs, and the D19 relationship outcome.
 
@@ -28,7 +19,7 @@ Affection can affect:
 - several Gallery CGs;
 - whether a D19 relationship is automatic, optional, or unavailable.
 
-No lettered Path, Vault-password result, survival check, medal check, or Path P condition directly reads any of the six affection variables.
+No lettered Path, Vault-password result, survival check, medal check, or Path P condition directly reads any of the six affection values.
 :::
 
 ## Core behavior
@@ -37,7 +28,7 @@ No lettered Path, Vault-password result, survival check, medal check, or Path P 
 
 **Saves and loading**
 
-- All six values are ordinary story-save variables, not persistent data.
+- All six values are ordinary story-save values, not persistent data.
 - Loading an older save restores the affection values stored in that save.
 
 **Points and choices**
@@ -52,7 +43,7 @@ No lettered Path, Vault-password result, survival check, medal check, or Path P 
 
 :::
 
-All threshold checks use `>=`. For example, `15 <= lionlove < 20` means an affection value from 15 through 19.
+The listed thresholds include the threshold itself. For example, Hoss affection 15–19 means a value from 15 through 19.
 
 ## Threshold overview
 
@@ -77,22 +68,22 @@ The D19 relationship check uses the affection value for the current character Ro
 
 | Character | Automatic at | Choice range | Choice | Below range |
 |---|---:|---:|---|---|
-| Dean | `bearlove >= 10` | None | None | Relationship automatically fails |
-| Orlando | `dragonlove >= 20` | `10 <= dragonlove < 20` | `I love you too.` / `Stay quiet.` | Automatic rejection |
-| Tyson | `wolflove >= 20` | `10 <= wolflove < 20` | `I love you.` / `...` | Automatic rejection |
-| Roswell | `boarlove >= 20` | `10 <= boarlove < 20` | `Relationship` / `Friendship` | Automatic friendship result |
-| Hoss | `lionlove >= 20` | `15 <= lionlove < 20` | `Try dating.` / `Stay friends.` | Automatic friends result |
-| Sal | `croclove >= 20` | `15 <= croclove < 20` | `Romantic` / `Platonic` | Automatic friends result |
+| Dean | Dean affection ≥ 10 | None | None | Relationship automatically fails |
+| Orlando | Orlando affection ≥ 20 | Orlando affection 10–19 | `I love you too.` / `Stay quiet.` | Automatic rejection |
+| Tyson | Tyson affection ≥ 20 | Tyson affection 10–19 | `I love you.` / `...` | Automatic rejection |
+| Roswell | Roswell affection ≥ 20 | Roswell affection 10–19 | `Relationship` / `Friendship` | Automatic friendship result |
+| Hoss | Hoss affection ≥ 20 | Hoss affection 15–19 | `Try dating.` / `Stay friends.` | Automatic friends result |
+| Sal | Sal affection ≥ 20 | Sal affection 15–19 | `Romantic` / `Platonic` | Automatic friends result |
 
 :::
 
-`DaveBoyfriend` is assigned only when the automatic relationship threshold is reached or the player accepts a relationship in the middle point range. Dean is the only route without a middle choice range.
+Dave enters a romantic relationship with the character only when the automatic relationship threshold is reached or the player accepts a relationship in the middle point range. Dean is the only route without a middle choice range.
 
 ## Hoss threshold planning
 
 Hoss is the character for whom point planning matters most because two Gallery images sit behind different D8 and D19 outcomes.
 
-### D8 `hosskiss`
+### D8 hidden-library kiss CG
 
 Without any D1 cup-affection result or the D3 hidden shared bonus, the highest possible value before the D8 hidden-library check is **13**.
 
@@ -100,7 +91,7 @@ The threshold of 12 is therefore achievable through ordinary visible choices alo
 
 If Hoss enters the library below 12:
 
-1. the D8 kiss and `hosskiss` do not occur;
+1. the D8 kiss and hidden-library kiss CG do not occur;
 2. being below 12 awards 2 points;
 3. the later `Hold his hand` choice can award another 2 points.
 
@@ -110,7 +101,7 @@ Those later gains help with D19, but they occur after the D8 check and cannot re
 
 :::
 
-### D19 `hosskiss2`
+### D19 Hoss relationship CG
 
 Under the same restriction—no D1 cup-affection result and no D3 hidden shared bonus—the maximum by D19 is **19**. That still opens the `Try dating.` / `Stay friends.` menu, but it cannot trigger the automatic 20-point relationship.
 
@@ -148,8 +139,6 @@ Exact menu strings are preserved for comparison with the game. Rows from the sam
 
 ### Orlando
 
-`dragonlove`
-
 ::: {.affection-point-table .affection-orlando-table .table-responsive .table-scroll-large}
 
 | Day | Choice / condition | Requirement | Points |
@@ -182,8 +171,6 @@ Exact menu strings are preserved for comparison with the game. Rows from the sam
 
 ### Dean
 
-`bearlove`
-
 ::: {.affection-point-table .affection-dean-table .table-responsive .table-scroll-large}
 
 | Day | Choice / condition | Requirement | Points |
@@ -209,8 +196,6 @@ Exact menu strings are preserved for comparison with the game. Rows from the sam
 :::
 
 ### Tyson
-
-`wolflove`
 
 ::: {.affection-point-table .affection-tyson-table .table-responsive .table-scroll-large}
 
@@ -248,8 +233,6 @@ Exact menu strings are preserved for comparison with the game. Rows from the sam
 
 ### Roswell
 
-`boarlove`
-
 ::: {.affection-point-table .affection-roswell-table .table-responsive .table-scroll-large}
 
 | Day | Choice / condition | Requirement | Points |
@@ -277,8 +260,6 @@ Exact menu strings are preserved for comparison with the game. Rows from the sam
 :::
 
 ### Hoss
-
-`lionlove`
 
 ::: {.affection-point-table .table-responsive .table-scroll-large}
 
@@ -310,8 +291,6 @@ Exact menu strings are preserved for comparison with the game. Rows from the sam
 :::
 
 ### Sal
-
-`croclove`
 
 ::: {.affection-point-table .affection-sal-table .table-responsive .table-scroll-large}
 
@@ -350,7 +329,7 @@ Exact menu strings are preserved for comparison with the game. Rows from the sam
 
 ### Path C resets Sal's value
 
-During the Path C Sal pool sequence, the game executes `$ croclove = 0`, clearing all Sal affection accumulated earlier in that save.
+During the Path C Sal pool sequence, Sal affection is reset to 0, clearing all Sal affection accumulated earlier in that save.
 
 The other five affection values have no comparable reset during normal play.
 
@@ -361,7 +340,7 @@ On the Sal Route, D16 shows `Remain still.` as a two-point choice, but it awards
 ::: {.callout-warning}
 ## Actual b0.85 scoring
 
-Do not count `Remain still.` as a +2 choice when planning Sal's D19 result; `croclove` does not change.
+Do not count `Remain still.` as a +2 choice when planning Sal's D19 result; Sal affection does not change.
 :::
 
 ## Related guides

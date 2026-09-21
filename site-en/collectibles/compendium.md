@@ -37,24 +37,24 @@ If an entry still displays `?????`, try restarting the game first, then check it
 
 ::: {.compendium-cast-table .table-responsive .table-scroll-medium}
 
-| Order | Cast File | Tracked requirement | Main unlock route |
-|---:|---|---|---|
-| 1 | Dave | `persistent.dave_lore` | D14 A/B flashback about Dave's father |
-| 2 | Tyson | `persistent.tyson_lore` | Tyson Route, D15 A/B |
-| 3 | Roswell | `persistent.roswell_lore` | Roswell Route, D18 A/B |
-| 4 | Orlando | `persistent.orlando_lore` | D15 meeting; Route requirement depends on Oswin's state |
-| 5 | Hoss | `persistent.hoss_lore` | Optional D3 conversation, with an optional D8 fallback |
-| 6 | Sal | `persistent.sal_lore` | Successful D10 password scene, or Sal Route fallback on D15 |
-| 7 | Dean | `persistent.dean_lore` | Dean Route, D11 A/B |
-| 8 | Benson | `persistent.benson_lore` | Late Path A sequence |
-| 9 | Thanatos | `persistent.thanatos_lore` | Late Path A time-loop sequence |
-| 10 | Thanatos - Part 2 | `persistent.true_end` | Complete the full Path P sequence |
-| 11 | Memphis | `persistent.memphis_lore` | Path C meeting on D13 |
-| 12 | Dominic | `persistent.dominic_lore` | Late Path A meeting |
-| 13 | Jack | `persistent.jack_lore` | Same meeting as Dominic |
-| 14 | Florencia | `persistent.florencia_lore` | Path D, G, A, or B ending scene |
-| 15 | David | `persistent.david_lore` | Same D14 A/B flashback as Dave |
-| 16 | Hoyt | `persistent.hoyt_lore` | Same D14 A/B flashback as Dave and David |
+| Order | Cast File | Main unlock route |
+|---:|---|---|
+| 1 | Dave | D14 A/B flashback about Dave's father |
+| 2 | Tyson | Tyson Route, D15 A/B |
+| 3 | Roswell | Roswell Route, D18 A/B |
+| 4 | Orlando | D15 meeting; Route requirement depends on Oswin's state |
+| 5 | Hoss | Optional D3 conversation, with an optional D8 fallback |
+| 6 | Sal | Successful D10 password scene, or Sal Route fallback on D15 |
+| 7 | Dean | Dean Route, D11 A/B |
+| 8 | Benson | Late Path A sequence |
+| 9 | Thanatos | Late Path A time-loop sequence |
+| 10 | Thanatos - Part 2 | Complete the full Path P sequence |
+| 11 | Memphis | Path C meeting on D13 |
+| 12 | Dominic | Late Path A meeting |
+| 13 | Jack | Same meeting as Dominic |
+| 14 | Florencia | Path D, G, A, or B ending scene |
+| 15 | David | Same D14 A/B flashback as Dave |
+| 16 | Hoyt | Same D14 A/B flashback as Dave and David |
 
 :::
 
@@ -126,8 +126,8 @@ b0.85 contains 16 Cast Files. Oswin is not among them.
 
 | Order | Additional Scene | Unlock requirement |
 |---:|---|---|
-| 1 | Dave's Demise | `persistent.Day23APrime` |
-| 2 | Roswell's Attempt | `persistent.Day23APrime` |
+| 1 | Dave's Demise | Unlocks alongside `Roswell's Attempt` after completing the two first-run late-Path-A segments for Dave and Roswell |
+| 2 | Roswell's Attempt | Unlocks alongside `Dave's Demise` after completing the two first-run late-Path-A segments for Dave and Roswell |
 | 3 | Tyson Epilogue | Complete Path P and unlock Tyson's Cast File |
 | 4 | Dean Epilogue | Complete Tyson Epilogue and unlock Dean's Cast File |
 | 5 | Orlando Epilogue | Complete Dean Epilogue and unlock Orlando's Cast File |
@@ -140,7 +140,7 @@ b0.85 contains 16 Cast Files. Oswin is not among them.
 
 ### Dave's Demise and Roswell's Attempt
 
-The first two scenes share an unlock condition and become available together. You can replay them in either order. The seven Epilogues that follow unlock in sequence.
+The first two scenes unlock together after completing the two first-run late-Path-A segments for Dave and Roswell. They can then be replayed independently. The seven Epilogues that follow unlock in sequence.
 
 ### Epilogue dependency chain
 
@@ -187,7 +187,7 @@ Check these points in order:
 2. For Dean through Hoss, is the corresponding Cast File unlocked?
 3. Has Tyson Epilogue been made available by completing Path P and unlocking Tyson's file?
 4. Has the game been restarted since the latest entry was unlocked or Epilogue was completed?
-5. Is the persistent data from an older installation or incomplete device transfer?
+5. Is the cross-save progress data from an older installation or incomplete device transfer?
 :::
 
 ## Lore
@@ -198,27 +198,27 @@ The Lore section contains the twelve zodiac entries in traditional order:
 
 ::: {.compendium-lore-table .table-responsive}
 
-| Order | Lore | Persistent flag |
-|---:|---|---|
-| 1 | Aries | `persistent.aries` |
-| 2 | Taurus | `persistent.taurus` |
-| 3 | Gemini | `persistent.gemini` |
-| 4 | Cancer | `persistent.cancer` |
-| 5 | Leo | `persistent.leo` |
-| 6 | Virgo | `persistent.virgo` |
+| Order | Lore |
+|---:|---|
+| 1 | Aries |
+| 2 | Taurus |
+| 3 | Gemini |
+| 4 | Cancer |
+| 5 | Leo |
+| 6 | Virgo |
 
 :::
 
 ::: {.compendium-lore-table .table-responsive}
 
-| Order | Lore | Persistent flag |
-|---:|---|---|
-| 7 | Libra | `persistent.libra` |
-| 8 | Scorpio | `persistent.scorpio` |
-| 9 | Sagittarius | `persistent.sagittarius` |
-| 10 | Capricorn | `persistent.capricorn` |
-| 11 | Aquarius | `persistent.aquarius` |
-| 12 | Pisces | `persistent.pisces` |
+| Order | Lore |
+|---:|---|
+| 7 | Libra |
+| 8 | Scorpio |
+| 9 | Sagittarius |
+| 10 | Capricorn |
+| 11 | Aquarius |
+| 12 | Pisces |
 
 :::
 

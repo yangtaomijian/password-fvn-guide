@@ -4,7 +4,7 @@ description: "How Password b0.85 stores medal progress, updates the Compendium, 
 toc: true
 ---
 
-The game stores zodiac medal progress in twelve Ren'Py `persistent` flags shared across Routes, Paths, and playthroughs. After `PATH A: END`, it counts those flags to check whether you have all twelve medals.
+Each of the twelve zodiac medals has its own cross-save collection record, retained across Routes, Paths, and playthroughs. After `PATH A: END`, the game checks whether all twelve medals have been formally recorded.
 
 ::: {.callout-important}
 ## Three separate stages
@@ -14,8 +14,8 @@ Medal collection has three distinct layers:
 ::: {.pw-process-list}
 
 1. **Story discovery:** a medal appears or is found in the narrative.
-2. **Persistent unlock:** the game sets the corresponding `persistent.<medal>` flag to `True`.
-3. **Final check:** the Path A ending recounts all twelve persistent flags.
+2. **Formal recording:** the medal is added to cross-save collection progress.
+3. **Final check:** the Path A ending checks the collection records for all twelve medals.
 
 :::
 
@@ -24,26 +24,9 @@ Only the second stage permanently adds that medal to the collection state used b
 
 ## How medal progress is stored
 
-The game defines one persistent Boolean flag for each zodiac medal:
+Each zodiac medal has an independent cross-save collection record. Once a scene formally records a medal, later playthroughs treat it as collected.
 
-```renpy
-default persistent.aries = False
-default persistent.taurus = False
-default persistent.gemini = False
-default persistent.cancer = False
-default persistent.leo = False
-default persistent.virgo = False
-default persistent.libra = False
-default persistent.scorpio = False
-default persistent.sagittarius = False
-default persistent.capricorn = False
-default persistent.aquarius = False
-default persistent.pisces = False
-```
-
-When you reach the corresponding scene, the game sets the flag to `True`, for example: `$ persistent.aries = True`.
-
-b0.85 has no in-game option that resets the twelve medal flags, and no story branch sets them back to `False`.
+b0.85 has no normal in-game option that clears all twelve medal collection records, and ordinary story branches do not revoke medals already recorded.
 
 Loading an ordinary save restores the story state while keeping medals already collected. You can gather medals across different Routes and playthroughs, then use them all in the final Path A check.
 
@@ -58,7 +41,7 @@ The clearest examples are:
 - **Aquarius:** found in the D4 hedge maze, but not formally recorded until the D16 A/B inventory scene;
 - **Taurus:** found under the giant pumpkin on D7, but likewise not formally recorded until the D16 A/B inventory scene.
 
-A player can therefore remember seeing one of these medals while the persistent flag is still `False`.
+A player can therefore remember seeing one of these medals even though it has not yet been added to cross-save collection progress.
 
 By contrast, Pisces, Cancer, and Capricorn are recorded during their D9 character-route scenes even though some of their zodiac identities are confirmed later.
 
@@ -78,41 +61,30 @@ You do not need to complete all six relationship endings for the same medal.
 
 ## How the final twelve-medal check works
 
-After `PATH A: END`, the game resets a temporary counter: `$ MedalsFound = 0`.
-
-It then checks each persistent medal flag and adds one for every value that is `True`:
-
-```renpy
-if persistent.aries == True:
-    $ MedalsFound += 1
-```
-
-After all twelve flags have been checked:
+After `PATH A: END`, the game checks whether each of the twelve medals has been formally recorded. Once that check is complete:
 
 - fewer than twelve ends the current post-Path-A sequence without entering Path P;
 - all twelve allows the story to continue into the Path P sequence.
-
-`MedalsFound` holds the total for this check. The twelve `persistent` flags listed above store the medal progress.
 
 ::: {.callout-note}
 ## The check only runs after Path A
 
 The game does not continuously watch for the twelfth medal.
 
-If Path A is completed before all twelve flags are set, collecting the missing medals later will not automatically reopen the final sequence. Path A must be completed again so the twelve-medal count can run again.
+If Path A is completed before all twelve medals have been formally recorded, collecting the missing medals later will not automatically reopen the final sequence. Path A must be completed again so the twelve-medal check can run again.
 :::
 
 ## Compendium and medal progress
 
-The Lore list uses the same twelve persistent medal flags as the final Path P check, but a newly earned medal may not appear there until the game is restarted. See [Compendium Unlock Index](../collectibles/compendium.md) for the full access and refresh behavior.
+The Lore list uses the same cross-save medal collection progress as the final Path P check, but a newly earned medal may not appear there until the game is restarted. See [Compendium Unlock Index](../collectibles/compendium.md) for the full access and refresh behavior.
 
 ## What the game does not reset
 
-b0.85 has no in-game option that clears all twelve medal flags.
+b0.85 has no normal in-game option that clears all twelve medal collection records.
 
-The hidden D1 `THE END` password resets several ending markers, including the true-ending flag and Path A–G ending flags, but it does **not** clear the zodiac medal collection.
+The hidden D1 `THE END` password resets several ending completion records, including the true-ending record and Path A–G ending records, but it does **not** clear the zodiac medal collection.
 
-Deleting ordinary story saves also leaves medal progress intact. Progress can be lost only if the game's persistent data is cleared, omitted during a device transfer, or otherwise replaced.
+Deleting ordinary story saves also leaves medal progress intact. Progress can be lost if all game user data holding cross-save progress is cleared, omitted during a device transfer, or otherwise replaced.
 
 ## Troubleshooting medal progress
 
@@ -121,7 +93,7 @@ When the final check reports an incomplete set:
 1. Confirm that every medal was formally recorded, rather than merely appearing in the story.
 2. Restart the game and use the Lore list to identify any medal that is still missing.
 3. Complete Path A again after all twelve medals have been recorded; the check does not run when the last medal is earned elsewhere.
-4. If progress moved between devices, confirm that the persistent data was transferred with the ordinary saves.
+4. If progress moved between devices, confirm that the cross-save collection data was transferred with the ordinary saves.
 
 For the fastest collection order and all twelve locations, see [Twelve-Medal Collection Guide](../collectibles/medals.md).
 

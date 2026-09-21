@@ -67,12 +67,12 @@ In both builds, the core transition is:
 
 ```text
 Path A ending
-→ check twelve persistent medal flags
+→ check the cross-save collection records for the twelve medals
 → all twelve obtained
 → story continues into the final Path P sequence
 ```
 
-b0.85 changes the later Path P sequence by adding a standalone input and explicit true-ending persistence. Those additions are documented in [Major Changes in b0.85](b085-changes.md).
+b0.85 changes the later Path P sequence by adding a standalone input and an explicit cross-save true-ending completion record. Those additions are documented in [Major Changes in b0.85](b085-changes.md).
 
 The game does not display a formal `PATH P: END` title or give the letter `P` an official full name. References to a “prime timeline” make `P = Prime` plausible, but that wording is not shown as an official name.
 
@@ -86,7 +86,7 @@ Several removed systems occurred inside route material without changing the lett
 | D8 Oswin free-text conversation | Changes later dialogue only; Route, Path, medals, and ending are unchanged | [Legacy Mechanics Archive](legacy-mechanics.md) |
 | D11 optional Vault | Changes some laboratory and later text; Route and Path are unchanged | [Legacy Password Archive](legacy-passwords.md) |
 | Path A first-run scenes | Two special segments play only on the first profile-wide run; b0.85 later makes them replayable in Additional Scenes | [Legacy Mechanics Archive](legacy-mechanics.md) |
-| D11 injection decision | Changes who receives the injection and `DavePride`, but not the Path | [Legacy Mechanics Archive](legacy-mechanics.md) |
+| D11 injection decision | Lets the player decide whether and who receives the injection, recording different choice results that could affect local dialogue; Route, Path, medals, and ending are unchanged | [Legacy Mechanics Archive](legacy-mechanics.md) |
 :::
 
 The broader Dean interaction changes and the D19 relationship threshold do not change the lettered Path structure. See [Major Changes in b0.85](b085-changes.md) for details.

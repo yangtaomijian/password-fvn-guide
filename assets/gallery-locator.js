@@ -91,7 +91,6 @@
   const nonGalleryRecords = [];
   const searchRecords = [];
   const recordsByPosition = new Map();
-  const recordsByName = new Map();
 
   const normalizeText = (value) =>
     value.replace(/\s+/g, " ").trim();
@@ -113,17 +112,25 @@
   const positionKey = (tab, row, column) =>
     `${tab.toLowerCase()}:${row}:${column}`;
 
+  const pathSearchTerms = (date) => {
+    const markedPaths = date.match(/^D\d+\s+([A-GP](?:\/[A-GP])?)(?:\s+Redux)?$/i);
+    const datedBranch = date.match(/^D\d+([A-GP])$/i);
+    const paths = markedPaths?.[1].split("/") ||
+      (datedBranch ? [datedBranch[1]] : []);
+    return paths.map((path) => `Path ${path}`).join(" ");
+  };
+
   const readGallery = (selector) => {
     const grid = document.querySelector(selector);
 
     if (!grid) {
-      throw new Error(`找不到画廊表格容器：${selector}`);
+      throw new Error(`找不到画廊表格容器: ${selector}`);
     }
 
     const tab = grid.dataset.galleryTab;
 
     if (!Object.hasOwn(EXPECTED_COUNTS, tab)) {
-      throw new Error(`画廊页签值无效：${tab || "未设置"}`);
+      throw new Error(`画廊页签值无效: ${tab || "未设置"}`);
     }
 
     const table = grid.querySelector("table");
@@ -144,58 +151,50 @@
       }
 
       if (cells.length !== 5) {
-        throw new Error(`${tab} 第 ${row} 行不是四列 CG 数据`);
+        throw new Error(`${tab} 行不是四列场景数据 ${row}`);
       }
 
       cells.slice(1).forEach((cellElement, index) => {
         const column = index + 1;
-        const nameElement = cellElement.querySelector("code");
+        const labelElement = cellElement.querySelector(".gallery-scene-label");
         const metadataElement = cellElement.querySelector("small");
 
-        if (!nameElement || !metadataElement) {
-          throw new Error(
-            `${tab} 第 ${row} 行第 ${column} 列数据不完整`
-          );
+        if (!labelElement || !metadataElement) {
+          throw new Error(`${tab} 位置数据不完整 ${row}:${column}`);
         }
 
-        const cgName = normalizeText(nameElement.textContent);
-        const metadata = normalizeText(metadataElement.textContent);
-        const scriptElement = metadataElement.querySelector("code");
-        const scriptLabel = normalizeText(
-          scriptElement?.textContent || ""
-        );
+        const sceneLabel = normalizeText(labelElement.textContent || "");
+        const metadata = normalizeText(metadataElement.textContent || "");
         const date = normalizeText(metadata.split("·")[0] || "");
+        const key = positionKey(tab, row, column);
         const id = `gallery-${tab.toLowerCase()}-r${row}-c${column}`;
+
+        if (!sceneLabel || !date) {
+          throw new Error(`${tab} 位置数据不完整 ${row}:${column}`);
+        }
+
+        if (recordsByPosition.has(key)) {
+          throw new Error(`${tab} 存在重复位置 ${row}:${column}`);
+        }
+
         const record = {
+          key,
           tab,
           row,
           column,
-          cgName,
+          sceneLabel,
           metadata,
           date,
-          scriptLabel,
           cellElement
         };
-
-        if (recordsByName.has(cgName)) {
-          throw new Error(`坐标表中存在重复 CG 名称：${cgName}`);
-        }
-
-        if (recordsByPosition.has(positionKey(tab, row, column))) {
-          throw new Error(
-            `坐标表中存在重复位置：${tab} 第 ${row} 行第 ${column} 列`
-          );
-        }
 
         cellElement.dataset.galleryTab = tab;
         cellElement.dataset.galleryRow = String(row);
         cellElement.dataset.galleryColumn = String(column);
-        cellElement.dataset.galleryName = cgName;
         cellElement.id = id;
 
         records.push(record);
-        recordsByPosition.set(positionKey(tab, row, column), record);
-        recordsByName.set(cgName, record);
+        recordsByPosition.set(key, record);
       });
     });
   };
@@ -272,41 +271,52 @@
           throw new Error(`${category} 触发索引存在非四列表格记录`);
         }
 
-        const cgName = normalizeText(
-          cells[0].querySelector("code")?.textContent || ""
-        );
-        const galleryFlag = normalizeGalleryFlag(
-          cells[1].textContent || ""
-        );
+        const galleryFlag = normalizeGalleryFlag(cells[1].textContent || "");
 
         if (galleryFlag === false) {
           return;
         }
 
-        if (galleryFlag === null) {
+        if (galleryFlag !== true) {
           throw new Error(`${category} 触发索引存在无效的画廊标记`);
         }
 
-        if (!cgName) {
-          throw new Error(`${category} 触发索引存在缺少 CG 名称的记录`);
+        const link = cells[0].querySelector('a[href^="#gallery-"]');
+        const sceneLabel = normalizeText(link?.textContent || "");
+        const match = link?.getAttribute("href")?.match(
+          /^#gallery-(memories|trauma)-r(\d+)-c(\d+)$/
+        );
+
+        if (!sceneLabel || !match) {
+          throw new Error(`${category} 触发索引存在缺少场景位置的记录`);
+        }
+
+        const tab = match[1] === "memories" ? "Memories" : "Trauma";
+        const row = Number.parseInt(match[2], 10);
+        const column = Number.parseInt(match[3], 10);
+        const key = positionKey(tab, row, column);
+        const displayedPosition = normalizeText(
+          cells[0].querySelector("small")?.textContent || ""
+        );
+        const expectedPosition = `${tab} · 第 ${row} 行第 ${column} 列`;
+
+        if (displayedPosition !== expectedPosition) {
+          throw new Error(`${category} 触发索引显示位置与链接不一致 ${key}`);
         }
 
         const triggerText = normalizeText(
           cells[2].innerText || cells[2].textContent || ""
         );
-        const triggerCodes = Array.from(cells[2].querySelectorAll("code"))
-          .map((code) => normalizeText(code.textContent || ""))
-          .filter(Boolean);
         const context = normalizeText(
           cells[3].innerText || cells[3].textContent || ""
         );
 
         details.push({
-          cgName,
+          key,
+          sceneLabel,
           category,
           galleryFlag,
           triggerText,
-          triggerCodes,
           context,
           detailRowElement
         });
@@ -325,39 +335,34 @@
     }
 
     return Array.from(table.querySelectorAll("tbody tr")).map(
-      (detailRowElement) => {
+      (detailRowElement, index) => {
         const cells = Array.from(detailRowElement.cells);
 
         if (cells.length !== 4) {
           throw new Error("不在画廊索引存在非四列表格记录");
         }
 
-        const cgName = normalizeText(
-          cells[0].querySelector("code")?.textContent || ""
+        const sceneLabel = normalizeText(
+          cells[0].querySelector(".gallery-scene-label")?.textContent || ""
         );
-        const galleryFlag = normalizeGalleryFlag(
-          cells[1].textContent || ""
-        );
+        const galleryFlag = normalizeGalleryFlag(cells[1].textContent || "");
         const triggerText = normalizeText(
           cells[2].innerText || cells[2].textContent || ""
         );
-        const triggerCodes = Array.from(cells[2].querySelectorAll("code"))
-          .map((code) => normalizeText(code.textContent || ""))
-          .filter(Boolean);
         const context = normalizeText(
           cells[3].innerText || cells[3].textContent || ""
         );
 
-        if (!cgName || galleryFlag !== false) {
-          throw new Error("不在画廊索引存在无效的 ID 或画廊标记");
+        if (!sceneLabel || galleryFlag !== false) {
+          throw new Error("不在画廊索引存在无效的场景或画廊标记");
         }
 
         return {
-          cgName,
+          guideId: `non-gallery:${index + 1}`,
+          sceneLabel,
           category: "不在画廊",
           galleryFlag,
           triggerText,
-          triggerCodes,
           context,
           detailRowElement
         };
@@ -405,75 +410,66 @@
   try {
     const details = readTriggerDetails();
     const nonGalleryDetails = readNonGalleryDetails();
-    const detailsByName = new Map();
-    const nonGalleryDetailsByName = new Map();
+    const detailsByPosition = new Map();
+    const nonGalleryByGuideId = new Map();
 
     details.forEach((detail) => {
-      if (detailsByName.has(detail.cgName)) {
-        throw new Error(`完整触发索引存在重复 CG 名称：${detail.cgName}`);
+      if (detailsByPosition.has(detail.key)) {
+        throw new Error(`完整触发索引存在重复位置: ${detail.key}`);
       }
-
-      detailsByName.set(detail.cgName, detail);
+      detailsByPosition.set(detail.key, detail);
     });
 
     nonGalleryDetails.forEach((detail) => {
-      if (
-        recordsByName.has(detail.cgName) ||
-        nonGalleryDetailsByName.has(detail.cgName)
-      ) {
-        throw new Error(`不在画廊索引存在重复 CG 名称：${detail.cgName}`);
+      if (nonGalleryByGuideId.has(detail.guideId)) {
+        throw new Error(`不在画廊索引存在重复本地记录: ${detail.guideId}`);
       }
-
-      nonGalleryDetailsByName.set(detail.cgName, detail);
+      nonGalleryByGuideId.set(detail.guideId, detail);
     });
 
-    const missingNames = records
-      .filter((record) => !detailsByName.has(record.cgName))
-      .map((record) => record.cgName);
-    const extraNames = details
-      .filter((detail) => !recordsByName.has(detail.cgName))
-      .map((detail) => detail.cgName);
+    const missingPositions = records
+      .filter((record) => !detailsByPosition.has(record.key))
+      .map((record) => record.key);
+    const extraPositions = details
+      .filter((detail) => !recordsByPosition.has(detail.key))
+      .map((detail) => detail.key);
 
     if (
       details.length !== 100 ||
-      detailsByName.size !== 100 ||
-      missingNames.length > 0 ||
-      extraNames.length > 0
+      detailsByPosition.size !== 100 ||
+      missingPositions.length > 0 ||
+      extraPositions.length > 0
     ) {
       throw new Error(
-        `详细索引应与坐标表一一对应 100 条；实际详细记录 ` +
-        `${details.length}、唯一名称 ${detailsByName.size}、` +
-        `缺失 [${missingNames.join(", ") || "无"}]、` +
-        `多出 [${extraNames.join(", ") || "无"}]`
+        `详细索引与坐标表未一一对应: ${details.length} / ${detailsByPosition.size}; ` +
+        `缺失 [${missingPositions.join(", ") || "无"}]; ` +
+        `多出 [${extraPositions.join(", ") || "无"}]`
       );
     }
 
     if (
       nonGalleryDetails.length !== 4 ||
-      nonGalleryDetailsByName.size !== 4
+      nonGalleryByGuideId.size !== 4
     ) {
-      throw new Error(
-        `预期 4 条不在画廊记录；实际记录 ` +
-        `${nonGalleryDetails.length} 条、唯一名称 ` +
-        `${nonGalleryDetailsByName.size} 个`
-      );
+      throw new Error(`预期 4 条不在画廊记录，实际: ${nonGalleryDetails.length}`);
     }
 
     records.forEach((record) => {
-      Object.assign(record, detailsByName.get(record.cgName));
+      const detail = detailsByPosition.get(record.key);
+      if (record.sceneLabel !== detail.sceneLabel) {
+        throw new Error(`坐标表和触发索引的场景名称不一致: ${record.key}`);
+      }
+      Object.assign(record, detail);
       record.inGallery = true;
       record.searchText = [
-        record.cgName,
+        record.sceneLabel,
         record.metadata,
         record.date,
-        record.scriptLabel,
+        pathSearchTerms(record.date),
         record.triggerText,
-        ...record.triggerCodes,
         record.context,
         record.category,
         record.tab,
-        String(record.row),
-        String(record.column),
         `${record.tab} ${record.row} ${record.column}`,
         `${record.tab} 第${record.row}行第${record.column}列`,
         `第${record.row}行第${record.column}列`
@@ -489,17 +485,14 @@
         column: null,
         cellElement: null,
         metadata: "",
-        date: "",
-        scriptLabel: detail.triggerCodes[1] || ""
+        date: ""
       };
 
       record.searchText = [
-        record.cgName,
+        record.sceneLabel,
         record.triggerText,
-        ...record.triggerCodes,
         record.context,
         record.category,
-        record.galleryFlag,
         "不在画廊"
       ].join(" ").toLowerCase();
       nonGalleryRecords.push(record);
@@ -519,7 +512,7 @@
     <section class="gallery-locator" aria-labelledby="gallery-locator-title">
       <header class="gallery-locator-header">
         <h2 id="gallery-locator-title">CG 画廊定位器</h2>
-        <p>可按游戏内页签和行列定位，也可搜索 CG 名称、日期、剧情线索或角色分类。</p>
+        <p>可按游戏内页签和行列定位，也可搜索场景、日期、Path、剧情线索或角色分类。</p>
         <p class="gallery-locator-count">已载入 100 张画廊 CG</p>
       </header>
 
@@ -553,7 +546,7 @@
 
       <fieldset class="gallery-locator-section gallery-locator-search">
         <legend>画廊搜索</legend>
-        <label for="gallery-locator-query">搜索 CG 名称、日期、剧情线索、角色分类或行列</label>
+        <label for="gallery-locator-query">搜索场景、日期、Path、剧情线索、角色分类或行列</label>
         <div class="gallery-locator-search-row">
           <input
             id="gallery-locator-query"
@@ -652,7 +645,7 @@
     card.className = "gallery-detail-card";
 
     const heading = document.createElement("h3");
-    heading.textContent = record.cgName;
+    heading.textContent = record.sceneLabel;
 
     const fields = document.createElement("dl");
     fields.className = "gallery-detail-grid";
@@ -666,15 +659,6 @@
       createDetailField("分类", record.category),
       createDetailField("最早出现", record.triggerText)
     ];
-
-    if (!record.inGallery && record.triggerCodes.length > 0) {
-      detailFields.push(
-        createDetailField(
-          "脚本位置",
-          record.triggerCodes.join(" / ")
-        )
-      );
-    }
 
     detailFields.push(
       createDetailField(
@@ -751,7 +735,7 @@
 
     const statusMessage =
       `${record.tab} · 第 ${record.row} 行第 ${record.column} 列 · ` +
-      record.cgName;
+      record.sceneLabel;
 
     if (mode === "search") {
       searchStatusElement.textContent = statusMessage;
@@ -780,7 +764,7 @@
 
     if (!record) {
       clearLocationOutput();
-      locationStatusElement.textContent = "没有找到对应位置的 CG";
+      locationStatusElement.textContent = "没有找到对应位置的画廊场景";
       return;
     }
 
@@ -801,7 +785,7 @@
     clearTargetHighlight();
     currentMode = "search";
     searchStatusElement.textContent =
-      `不在画廊 · ${record.cgName}`;
+      `不在画廊 · ${record.sceneLabel}`;
     renderDetail(record, searchDetailElement);
     replaceUrl({ includeLocation: false, includeQuery: true });
   };
@@ -811,36 +795,21 @@
     const includesQuery = (value) =>
       normalizeText(value || "").toLowerCase().includes(query);
 
-    if (includesQuery(record.cgName)) {
-      return "匹配字段：CG 名称";
-    }
-
     if (positionRecord === record) {
       return `匹配字段：画廊行列 · ${record.tab} 第${record.row}行第${record.column}列`;
     }
 
-    const scriptLabels = Array.from(new Set([
-      record.scriptLabel,
-      ...record.triggerCodes.slice(1)
-    ].filter(Boolean)));
-    const matchedLabel = scriptLabels.find(includesQuery);
-
-    if (matchedLabel) {
-      return `匹配字段：脚本标签 · ${matchedLabel}`;
-    }
-
-    const scriptFile = record.triggerCodes[0] || "";
-
-    if (includesQuery(scriptFile)) {
-      return `匹配字段：脚本文件 · ${scriptFile}`;
+    if (includesQuery(record.sceneLabel)) {
+      return "匹配字段：场景";
     }
 
     if (
       includesQuery(record.triggerText) ||
       includesQuery(record.metadata) ||
-      includesQuery(record.date)
+      includesQuery(record.date) ||
+      includesQuery(pathSearchTerms(record.date))
     ) {
-      return `匹配字段：出现日期 · ${record.triggerText}`;
+      return `匹配字段：出现日期 / Path · ${record.triggerText}`;
     }
 
     if (includesQuery(record.category)) {
@@ -867,7 +836,7 @@
       button.className = "gallery-locator-result";
 
       const name = document.createElement("strong");
-      name.textContent = record.cgName;
+      name.textContent = record.sceneLabel;
 
       const position = document.createElement("span");
       position.className = "gallery-result-position";
@@ -912,7 +881,7 @@
 
   const parsePositionQuery = (value) => {
     const match = value.trim().match(
-      /^(?:(memories|trauma)\s*)?(?:第?\s*(\d+)\s*行\s*第?\s*(\d+)\s*列|(\d+)\s*(?:[-/]\s*|\s+)(\d+))$/i
+      /^(?:(memories|trauma)\s*(?:·\s*)?)?(?:第?\s*(\d+)\s*行\s*第?\s*(\d+)\s*列|(\d+)\s*(?:[-/]\s*|\s+)(\d+))$/i
     );
 
     if (!match) {

@@ -70,7 +70,7 @@ Deleting all game data or moving to another device may still remove them. See [M
 
 ### How do I locate a missing Gallery CG?
 
-Use the [CG Gallery Completion Index](../collectibles/gallery.md) to search the 72 Memories and 28 Trauma entries by CG ID, trigger, category, or grid position.
+Use the [CG Gallery Completion Index](../collectibles/gallery.md) to search the 72 Memories and 28 Trauma entries by Memories/Trauma tab, row and column, scene label, date/Path, story clue, or character category.
 
 Not every story image appears in the Gallery, and the displayed completion number may require a restart to refresh.
 
@@ -112,6 +112,6 @@ You’re welcome to get in touch if you’re stuck. To help me understand what h
 1. the game version and current day;
 2. the character Route and Path shown in the relevant save;
 3. whether the relevant D10 or D17 check succeeded;
-4. the exact medal, CG ID, Cast File, Lore entry, or Additional Scene that is missing.
+4. the exact medal, Cast File, Lore entry, or Additional Scene that is missing; for a Gallery CG, include its Memories/Trauma tab, row and column, and scene label if known.
 
 Restart once before reporting a Gallery or Compendium display problem. For an Additional Scene, also confirm that the preceding Replay reached its ending.
