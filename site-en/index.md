@@ -14,6 +14,8 @@ body-classes: pw-home
 
 If you're looking for a walkthrough or route guide, start with the Route and Path pages for progression and ending structure. If you're only stuck on a password, medal, Gallery entry, or unlock condition, you can jump directly to the relevant guide or FAQ. A separate version archive compares b0.7 with b0.85 and documents removed branches, retired mechanics, and other changes.
 
+This guide covers the publicly available b0.85 build only and does not document Patreon-only or unreleased content.
+
 :::: {.pw-home-notices}
 
 ::: {.callout-warning}
