@@ -126,16 +126,12 @@ Review the Path A first-run sequence and replays, the retired D8 Oswin question 
 
 ## Official Links
 
+*Password* is created by Grizz.
+
 - **Game and downloads:** [Password on itch.io](https://passwordvn.itch.io/password)
 - **Creator support:** [Grizz on Patreon](https://www.patreon.com/PASSWORDVN)
 - **Community:** [Password Discord](https://discord.gg/CSuEPWt) — 18+ / NSFW
 
-## About This Guide
+This guide is unofficial and not affiliated with Grizz or itch.io. It does not distribute the game or reproduce unauthorized game assets, the full script, extracted CGs, or third-party material.
 
-I’m [yangtaomijian](https://github.com/yangtaomijian). I put this guide together between 2023 and 2026 with information shared by the player community. The guide is unofficial and unaffiliated with Grizz or itch.io. It does not provide the game, full script, extracted CGs, or unauthorized third-party material.
-
-If you spot a mistake, you’re welcome to contact me with a correction.
-
-## Sources
-
-This site grew out of my [original guide on Bilibili](https://www.bilibili.com/opus/753129391801761813), with updated b0.85 information and comparisons with b0.7. It focuses on routes, collection requirements, mechanics, and version differences; the longer plot summaries remain in the original article.
+If you find an error in the guide, a broken link, or a site issue, please report it through [GitHub Issues](https://github.com/yangtaomijian/password-fvn-guide/issues).

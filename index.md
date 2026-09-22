@@ -132,15 +132,15 @@ Password b0.7 与 b0.85 之间的主要功能、剧情互动、密码、画廊�
 
 ## 官方入口
 
+《Password》由 Grizz 创作。
+
 - **游戏与下载：** [Password on itch.io](https://passwordvn.itch.io/password)
 - **支持作者：** [Grizz on Patreon](https://www.patreon.com/PASSWORDVN)
 - **玩家社区：** [Password Discord](https://discord.gg/CSuEPWt) — 18+ / NSFW
 
-## 关于本站
+本站不隶属于 Grizz，也不提供游戏本体；不直接转载未经授权的游戏原素材、完整脚本、提取后的 CG 或第三方素材。
 
-这份非官方攻略由我（[yangtaomijian](https://github.com/yangtaomijian)）在 2023—2026 年间结合社区玩家提供的信息整理而成，不隶属于游戏作者 Grizz 或发行平台，也不提供游戏本体、完整脚本、提取后的 CG 或未经授权的第三方素材。
-
-如果发现本站内容有错误，欢迎留言或者联系本人指正~
+如发现攻略内容、链接或页面功能有误，欢迎通过 [GitHub Issues](https://github.com/yangtaomijian/password-fvn-guide/issues) 反馈。
 
 ## 本站资料来源
 
