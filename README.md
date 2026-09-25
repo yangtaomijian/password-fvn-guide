@@ -1,6 +1,6 @@
 # Password — 中文攻略 / English Guide
 
-[阅读中文攻略](https://yangtaomijian.github.io/password-fvn-guide/) · [Read the English guide](https://yangtaomijian.github.io/password-fvn-guide/en/)
+[阅读中文攻略](https://password.carambi.com/) · [Read the English guide](https://password.carambi.com/en/)
 
 《Password》是 **Grizz** 创作的一部 **FVN（Furry Visual Novel，兽人视觉小说）**。玩家会遇到不同角色路线、剧情分支和密码谜题。本项目是面向 **游戏 b0.85 版本**的非官方中英双语攻略与机制资料库，帮助你在卡关时找到线索、理解路线与结局条件，或补齐收集内容。
 
@@ -8,15 +8,15 @@
 
 ## 从哪里开始 / Where to start
 
-- **不清楚路线怎么走？** 从[剧情线路总览](https://yangtaomijian.github.io/password-fvn-guide/guide/route-overview.html)开始，再了解角色线与字母线的关系。
-- **卡在密码检定？** 查看[密码分级提示](https://yangtaomijian.github.io/password-fvn-guide/guide/password-hints.html)，从一级提示逐步展开。
-- **想补齐收集？** 从[十二枚奖牌](https://yangtaomijian.github.io/password-fvn-guide/collectibles/medals.html)、[CG 画廊](https://yangtaomijian.github.io/password-fvn-guide/collectibles/gallery.html)或[后记解锁索引](https://yangtaomijian.github.io/password-fvn-guide/collectibles/compendium.html)查找缺失项目。
-- **遇到其他问题？** 查看[常见问题](https://yangtaomijian.github.io/password-fvn-guide/guide/faq.html)，也可以使用站内搜索，输入角色名、日期或具体线索，例如“咖啡杯”“水瓶座”“D2密码”。
+- **不清楚路线怎么走？** 从[剧情线路总览](https://password.carambi.com/guide/route-overview.html)开始，再了解角色线与字母线的关系。
+- **卡在密码检定？** 查看[密码分级提示](https://password.carambi.com/guide/password-hints.html)，从一级提示逐步展开。
+- **想补齐收集？** 从[十二枚奖牌](https://password.carambi.com/collectibles/medals.html)、[CG 画廊](https://password.carambi.com/collectibles/gallery.html)或[后记解锁索引](https://password.carambi.com/collectibles/compendium.html)查找缺失项目。
+- **遇到其他问题？** 查看[常见问题](https://password.carambi.com/guide/faq.html)，也可以使用站内搜索，输入角色名、日期或具体线索，例如“咖啡杯”“水瓶座”“D2密码”。
 
-- **Unsure which route to follow?** Start with the [Route Overview](https://yangtaomijian.github.io/password-fvn-guide/en/guide/route-overview.html) to understand character Routes and lettered Paths.
-- **Stuck at a password check?** Open the [Tiered Password Hints](https://yangtaomijian.github.io/password-fvn-guide/en/guide/password-hints.html) and reveal hints gradually.
-- **Missing collectibles?** Check the [Medal Guide](https://yangtaomijian.github.io/password-fvn-guide/en/collectibles/medals.html), [CG Gallery](https://yangtaomijian.github.io/password-fvn-guide/en/collectibles/gallery.html), or [Compendium Unlock Index](https://yangtaomijian.github.io/password-fvn-guide/en/collectibles/compendium.html).
-- **Have another question?** Browse the [FAQ](https://yangtaomijian.github.io/password-fvn-guide/en/guide/faq.html), or search for a character, day, or specific clue such as “coffee cup”, “Aquarius”, or “D2 password”.
+- **Unsure which route to follow?** Start with the [Route Overview](https://password.carambi.com/en/guide/route-overview.html) to understand character Routes and lettered Paths.
+- **Stuck at a password check?** Open the [Tiered Password Hints](https://password.carambi.com/en/guide/password-hints.html) and reveal hints gradually.
+- **Missing collectibles?** Check the [Medal Guide](https://password.carambi.com/en/collectibles/medals.html), [CG Gallery](https://password.carambi.com/en/collectibles/gallery.html), or [Compendium Unlock Index](https://password.carambi.com/en/collectibles/compendium.html).
+- **Have another question?** Browse the [FAQ](https://password.carambi.com/en/guide/faq.html), or search for a character, day, or specific clue such as “coffee cup”, “Aquarius”, or “D2 password”.
 
 ## 收录内容 / What the guide covers
 

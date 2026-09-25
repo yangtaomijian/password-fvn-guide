@@ -14,7 +14,7 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "_site"
-BASE = "https://yangtaomijian.github.io/password-fvn-guide"
+BASE = "https://password.carambi.com"
 ZH_ROOT = f"{BASE}/"
 EN_ROOT = f"{BASE}/en/"
 ZH_IMAGE = f"{BASE}/assets/social/password-fvn-guide-zh.png"
