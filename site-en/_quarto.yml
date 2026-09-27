@@ -3,6 +3,7 @@ project:
   output-dir: _site
   resources:
     - assets/fonts/Newsreader-OFL.txt
+    - assets/pw-reference-v2b.js
   render:
     - index.md
     - guide/route-overview.md
@@ -191,10 +192,12 @@ format:
       - assets/pw-guide-theme.css
       - assets/pw-color-schemes.css
       - assets/pw-publication-v2a.css
+      - assets/pw-reference-v2b.css
       - assets/pw-search.css
     include-after-body:
       - assets/pw-layout-controls.html
       - assets/pw-publication-v2a.html
+      - assets/pw-reference-v2b.html
       - assets/pw-search.html
       - assets/cloudflare-web-analytics.html
     toc: true

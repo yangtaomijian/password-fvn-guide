@@ -1,0 +1,293 @@
+/* Reference Core: nine table families, one source table per representation. */
+main.content .pw-adaptive-table {
+  container-type: inline-size;
+}
+
+/* The legacy fit-content wrapper has zero intrinsic width under size containment. */
+main.content .pw-adaptive-table.table-responsive {
+  width: 100% !important;
+}
+
+main.content .pw-adaptive-table .pw-record-label {
+  display: none;
+}
+
+main.content .pw-adaptive-table.pw-record-mode {
+  overflow-x: hidden !important;
+  border-radius: 0;
+}
+
+main.content .pw-adaptive-table.pw-record-mode table {
+  display: block;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  table-layout: auto !important;
+  border: 0;
+}
+
+main.content .pw-adaptive-table.pw-record-mode :is(colgroup, thead) {
+  display: none;
+}
+
+main.content .pw-adaptive-table.pw-record-mode tbody,
+main.content .pw-adaptive-table.pw-record-mode tbody > tr,
+main.content .pw-adaptive-table.pw-record-mode tbody > tr > td {
+  display: block;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+main.content .pw-adaptive-table.pw-record-mode tbody > tr {
+  margin: 0;
+  padding: 0.75rem 0 0.9rem;
+  border-top: 1px solid var(--pw-border-strong);
+  background: transparent !important;
+}
+
+main.content .pw-adaptive-table.pw-record-mode tbody > tr > td {
+  padding: 0.28rem 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+main.content .pw-adaptive-table.pw-record-mode tbody > tr > td:first-child {
+  padding-bottom: 0.45rem !important;
+  color: var(--pw-heading);
+  font-weight: 700;
+  overflow-wrap: normal;
+}
+
+main.content .pw-adaptive-table.pw-record-mode .pw-record-label {
+  display: block;
+  margin-bottom: 0.12rem;
+  color: var(--pw-text-faint);
+  font-family: var(--pw-font-sans);
+  font-size: 0.73rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
+}
+
+/* Point ledgers keep the source cells while placing scan fields on one line. */
+main.content .pw-adaptive-table .pw-ledger-day-label {
+  display: none;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="ledger"] tbody > tr {
+  display: grid;
+  grid-template-columns: 2.05rem minmax(0, 1fr) 1.9rem;
+  column-gap: 0.38rem;
+  align-items: start;
+  padding: 0.46rem 0 0.52rem;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="ledger"] tbody > tr > td {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  padding: 0 !important;
+  line-height: 1.4;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="ledger"] tbody > tr > td:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: 0.84rem;
+  white-space: nowrap !important;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="ledger"] tbody > tr > td:nth-child(2) {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="ledger"] tbody > tr > td:nth-child(3) {
+  grid-column: 2 / 4;
+  grid-row: 2;
+  margin-top: 0.16rem;
+  font-size: 0.88rem;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="ledger"] tbody > tr > td:nth-child(4) {
+  grid-column: 3;
+  grid-row: 1;
+  text-align: right;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap !important;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="ledger"] tbody > tr > td:nth-child(3) > .pw-record-label {
+  display: inline;
+  margin: 0 0.3em 0 0;
+  letter-spacing: 0;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="ledger"] tbody > tr > td:nth-child(3) > .pw-record-label::after {
+  content: " ·";
+}
+
+/* Keep field names and canonical no-requirement facts available to assistive technology. */
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="ledger"] tbody > tr > td:first-child > .pw-ledger-day-label,
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="ledger"] tbody > tr > td:nth-child(2) > .pw-record-label,
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="ledger"] tbody > tr > td:nth-child(4) > .pw-record-label,
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="ledger"] tbody > tr > td.pw-ledger-empty-requirement {
+  position: absolute !important;
+  display: block;
+  width: 1px !important;
+  height: 1px !important;
+  min-width: 0 !important;
+  max-width: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* D19 keeps every record field visible with an inline label and value. */
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="compact-record"] tbody > tr {
+  padding: 0.54rem 0 0.62rem;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="compact-record"] tbody > tr > td {
+  padding: 0.1rem 0 !important;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="compact-record"] tbody > tr > td:first-child {
+  padding-bottom: 0.34rem !important;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="compact-record"] .pw-record-label {
+  display: inline;
+  margin: 0 0.4em 0 0;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="compact-record"] .pw-record-label::after {
+  content: "";
+  display: inline-block;
+  width: 0.18em;
+  height: 0.18em;
+  margin-left: 0.38em;
+  border-radius: 50%;
+  background: currentColor;
+  vertical-align: middle;
+}
+
+/* Ordinal, item, and detail stay in their source cells in both index families. */
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="index-ledger"] tbody > tr {
+  display: grid;
+  grid-template-columns: 2.05rem minmax(0, 1fr);
+  column-gap: 0.38rem;
+  align-items: start;
+  padding: 0.54rem 0 0.62rem;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="index-ledger"] tbody > tr > td {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  padding: 0 !important;
+  line-height: 1.4;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="index-ledger"] tbody > tr > td:first-child {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: 0.84rem;
+  white-space: nowrap !important;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="index-ledger"] tbody > tr > td:nth-child(2) {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="index-ledger"] tbody > tr > td:nth-child(3) {
+  grid-column: 2;
+  grid-row: 2;
+  margin-top: 0.16rem;
+  font-size: 0.88rem;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="index-ledger"] tbody > tr > td:nth-child(2) > .pw-record-label {
+  position: absolute !important;
+  display: block;
+  width: 1px !important;
+  height: 1px !important;
+  min-width: 0 !important;
+  max-width: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="index-ledger"] tbody > tr > td:nth-child(3) > .pw-record-label {
+  display: inline;
+  margin: 0 0.4em 0 0;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+main.content .pw-adaptive-table.pw-record-mode[data-pw-variant="index-ledger"] tbody > tr > td:nth-child(3) > .pw-record-label::after {
+  content: "";
+  display: inline-block;
+  width: 0.18em;
+  height: 0.18em;
+  margin-left: 0.38em;
+  border-radius: 50%;
+  background: currentColor;
+  vertical-align: middle;
+}
+
+/* Keep the native Oswin disclosure within reach throughout its long index. */
+main.content details.pw-oswin-disclosure[open] {
+  overflow: visible;
+}
+
+main.content details.pw-oswin-disclosure[open] > summary {
+  position: sticky;
+  top: var(--pw-oswin-sticky-top, var(--pw-header-height, 0px));
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  background: var(--pw-surface);
+  border-radius: calc(var(--pw-radius-md) - 1px) calc(var(--pw-radius-md) - 1px) 0 0;
+  background-clip: padding-box;
+  border-bottom-color: var(--pw-border-strong);
+}
+
+main.content details.pw-oswin-disclosure[open] > summary::before {
+  flex: 0 0 auto;
+}
+
+main.content details.pw-oswin-disclosure[open] > summary > strong {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+main.content details.pw-oswin-disclosure[open] > summary > .pw-oswin-disclosure-action {
+  flex: 0 0 auto;
+  color: var(--pw-primary);
+  font-size: 0.85rem;
+  font-weight: 650;
+}
