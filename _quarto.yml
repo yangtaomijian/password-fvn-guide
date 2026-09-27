@@ -3,6 +3,7 @@ project:
   output-dir: _site
   resources:
     - googlef0776754787f4a8e.html
+    - assets/fonts/Newsreader-OFL.txt
   render:
     - index.md
     - guide/route-overview.md
@@ -189,8 +190,11 @@ website:
             text: 旧版本机制档案
 
   page-footer:
-    left: "Password b0.85 中文攻略与机制资料库"
-    right: "非官方玩家攻略，适用于 Password b0.85；后续版本可能不同。"
+    left: |
+      <div class="pw-publication-footer">
+        <p>非官方玩家攻略，适用于 Password b0.85；后续版本可能不同。</p>
+        <p class="pw-publication-attribution">由 <a class="pw-carambi-link" href="https://carambi.com/zh/">Carambi</a> 维护</p>
+      </div>
 
   comments:
     giscus:
@@ -221,9 +225,11 @@ format:
     css:
       - assets/pw-guide-theme.css
       - assets/pw-color-schemes.css
+      - assets/pw-publication-v2a.css
       - assets/pw-search.css
     include-after-body:
       - assets/pw-layout-controls.html
+      - assets/pw-publication-v2a.html
       - assets/pw-search.html
       - assets/cloudflare-web-analytics.html
     toc: true

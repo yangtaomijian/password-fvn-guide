@@ -1,0 +1,62 @@
+<!-- P1.1 visible publication title enhancement. -->
+<script>
+(() => {
+  'use strict';
+
+  const enhance = () => {
+    const english = document.documentElement.lang.toLowerCase().startsWith('en');
+    const brand = document.querySelector('.navbar-brand');
+    const navbarTitle = brand?.querySelector('.navbar-title');
+
+    if (navbarTitle && !navbarTitle.querySelector('.pw-masthead-name')) {
+      brand.setAttribute('aria-label', navbarTitle.textContent.trim());
+      const name = document.createElement('span');
+      name.className = 'pw-masthead-name';
+      name.textContent = 'Password';
+      const edition = document.createElement('span');
+      edition.className = 'pw-masthead-edition';
+      edition.setAttribute('aria-hidden', 'true');
+      edition.textContent = english
+        ? 'GUIDE & REFERENCE · b0.85'
+        : '攻略与参考 · b0.85';
+      navbarTitle.replaceChildren(name, edition);
+    }
+
+    if (!document.body.classList.contains('pw-home')) return;
+    const shortcuts = document.querySelector('.pw-home-shortcuts');
+    const shortcutRow = shortcuts?.querySelector(':scope > p');
+    if (shortcutRow) {
+      let label = shortcuts.querySelector('.pw-home-fast-label');
+      if (!label) {
+        label = document.createElement('span');
+        label.className = 'pw-home-fast-label';
+        label.textContent = english ? 'FIND AN ANSWER' : '快速查找';
+        shortcutRow.prepend(label);
+      }
+      label.id = 'pw-home-fast-label';
+      shortcuts.setAttribute('role', 'navigation');
+      shortcuts.setAttribute('aria-labelledby', label.id);
+    }
+
+    const titleBlock = document.querySelector('main.content #title-block-header');
+    const heading = titleBlock?.querySelector('.quarto-title > h1.title');
+    if (!heading || titleBlock.querySelector('.pw-publication-eyebrow')) return;
+
+    const eyebrow = document.createElement('p');
+    eyebrow.className = 'pw-publication-eyebrow';
+    eyebrow.textContent = english
+      ? 'UNOFFICIAL GUIDE & REFERENCE · b0.85'
+      : '非官方攻略与参考 · b0.85';
+    heading.before(eyebrow);
+    heading.textContent = english
+      ? 'Password Guide & Mechanics Reference'
+      : 'Password 中文攻略与机制资料库';
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', enhance, { once: true });
+  } else {
+    enhance();
+  }
+})();
+</script>

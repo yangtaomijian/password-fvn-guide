@@ -1,0 +1,441 @@
+/* P1.1 publication typography and title hierarchy. */
+@font-face {
+  font-family: 'PW Newsreader';
+  src: url('fonts/newsreader-latin-standard-normal.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+/* Keep Quarto's brand link and utility layout; only its visible title changes. */
+.navbar .navbar-brand-container:has(.pw-masthead-name),
+.navbar .navbar-brand:has(.pw-masthead-name) {
+  flex-shrink: 0;
+}
+.navbar .navbar-brand:has(.pw-masthead-name) {
+  overflow: visible;
+}
+.navbar .navbar-title:has(.pw-masthead-name) {
+  display: flex;
+  flex-direction: column;
+  gap: .04rem;
+  line-height: 1;
+}
+.pw-masthead-name {
+  color: var(--pw-heading);
+  font-family: 'PW Newsreader', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 1.33rem;
+  font-weight: 500;
+  letter-spacing: -.015em;
+  line-height: 1;
+}
+.pw-masthead-edition {
+  color: var(--pw-text-faint);
+  font-family: var(--pw-font-sans);
+  font-size: .61rem;
+  font-weight: 650;
+  letter-spacing: .07em;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+/* Editorial headings leave prose, tables, and controls on the PW sans stack. */
+main.content #title-block-header h1.title {
+  color: var(--pw-heading) !important;
+  font-family: 'PW Newsreader', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: clamp(2.1rem, 2.8vw, 2.7rem);
+  font-weight: 470;
+  letter-spacing: -.018em;
+  line-height: 1.15;
+  overflow-wrap: normal;
+}
+html[lang^='zh'] main.content #title-block-header h1.title {
+  font-family: 'PW Newsreader', 'Songti SC', 'STSong', 'Noto Serif CJK SC', serif;
+  font-size: clamp(1.95rem, 2.55vw, 2.45rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+
+main.content #title-block-header {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--pw-border);
+}
+
+body.pw-home .pw-publication-eyebrow {
+  color: var(--pw-accent);
+  font-family: var(--pw-font-sans);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .075em;
+  line-height: 1.4;
+  margin: 0 0 .65rem;
+}
+html[lang^='zh'] body.pw-home .pw-publication-eyebrow {
+  letter-spacing: .04em;
+}
+
+body .quarto-page-breadcrumbs {
+  --bs-breadcrumb-item-active-color: var(--pw-text-faint);
+  --bs-breadcrumb-divider-color: var(--pw-text-faint);
+  color: var(--pw-text-faint);
+  font-family: var(--pw-font-sans);
+  font-size: .76rem;
+  letter-spacing: .025em;
+}
+body .quarto-page-breadcrumbs :is(a, .breadcrumb-item.active),
+body .quarto-page-breadcrumbs .breadcrumb-item:last-child a {
+  color: var(--pw-text-faint) !important;
+}
+
+main.content section > h2 {
+  color: var(--pw-heading) !important;
+  font-family: var(--pw-font-sans);
+  font-size: 1.36rem;
+  font-weight: 700;
+  border-bottom: 1px solid var(--pw-border-strong);
+  padding-left: .85rem;
+}
+main.content section > h2::before {
+  left: 0;
+  top: .1em;
+  bottom: .65em;
+  width: 2px;
+  border-radius: 0;
+  background: var(--pw-accent);
+}
+body main.content section:not(.pw-entry-grid section) > h3 {
+  color: var(--pw-heading) !important;
+  font-family: var(--pw-font-sans);
+  font-size: 1.14rem;
+  font-weight: 700;
+  line-height: 1.4;
+  padding-bottom: 0;
+  border-bottom: 0;
+  background: transparent;
+}
+
+@media (max-width: 767.98px) {
+  .pw-masthead-edition { display: none; }
+  main.content #title-block-header h1.title { font-size: 2rem; }
+  html[lang^='zh'] main.content #title-block-header h1.title { font-size: 1.84rem; }
+}
+
+/* P1.2 publication furniture. Navigation behavior and control geometry stay native. */
+body #quarto-header .navbar {
+  background: var(--pw-bg) !important;
+  border-bottom-color: var(--pw-border-strong) !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+body #quarto-header .navbar .navbar-nav > .nav-item > .nav-link {
+  color: var(--pw-text-soft) !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+body #quarto-header .navbar .navbar-nav > .nav-item > .nav-link:is(:hover, :focus-visible) {
+  color: var(--pw-primary-hover) !important;
+  background: transparent !important;
+}
+body #quarto-header .navbar .navbar-nav > .nav-item > .nav-link.active {
+  color: var(--pw-heading) !important;
+  background: transparent !important;
+  box-shadow: inset 0 -2px var(--pw-accent) !important;
+}
+
+@media (max-width: 1099.98px) {
+  body #quarto-header .quarto-secondary-nav {
+    background: var(--pw-bg) !important;
+    border-bottom: 1px solid var(--pw-border);
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
+body #quarto-sidebar,
+body #quarto-margin-sidebar,
+body.pw-custom-layout-ready #quarto-sidebar,
+body.pw-custom-layout-ready #quarto-margin-sidebar,
+body :is(#quarto-sidebar, #quarto-margin-sidebar) .pw-panel-toolbar {
+  background: var(--pw-bg) !important;
+}
+body :is(#quarto-sidebar, #quarto-margin-sidebar) .pw-panel-toolbar {
+  border-bottom: 1px solid var(--pw-border);
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+body :is(#quarto-sidebar, #quarto-margin-sidebar) .pw-panel-toolbar-title {
+  color: var(--pw-text-faint) !important;
+  font-size: .71rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+}
+html[lang^='zh'] body :is(#quarto-sidebar, #quarto-margin-sidebar) .pw-panel-toolbar-title {
+  letter-spacing: .045em;
+}
+
+body #quarto-sidebar .sidebar-link {
+  border-left: 3px solid transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  transform: none !important;
+}
+body #quarto-sidebar .sidebar-link::before {
+  content: none !important;
+  display: none !important;
+}
+body #quarto-sidebar .sidebar-item:not(.sidebar-item-section) .sidebar-link:is(:hover, :focus-visible) {
+  color: var(--pw-primary-hover) !important;
+  background: color-mix(in srgb, var(--pw-accent) 5%, transparent) !important;
+}
+body #quarto-sidebar .sidebar-link.active {
+  color: var(--pw-heading) !important;
+  font-weight: 700 !important;
+  border-left-color: var(--pw-accent) !important;
+  background: color-mix(in srgb, var(--pw-accent) 6%, transparent) !important;
+}
+body #quarto-sidebar .sidebar-item-section > .sidebar-item-container .menu-text,
+body #quarto-sidebar .sidebar-section > .sidebar-section-item {
+  color: var(--pw-text-faint) !important;
+  font-size: .77rem !important;
+  font-weight: 700 !important;
+  letter-spacing: .08em !important;
+}
+body #quarto-sidebar .sidebar-item-section > .sidebar-item-container > .sidebar-link {
+  color: var(--pw-text-faint) !important;
+  font-size: .77rem !important;
+  font-weight: 700 !important;
+  letter-spacing: .08em !important;
+}
+html[lang^='zh'] body #quarto-sidebar .sidebar-item-section > .sidebar-item-container :is(.sidebar-link, .menu-text),
+html[lang^='zh'] body #quarto-sidebar .sidebar-section > .sidebar-section-item {
+  letter-spacing: .035em !important;
+}
+
+body #quarto-margin-sidebar #TOC .nav-link {
+  color: var(--pw-text-soft) !important;
+  border-left: 2px solid transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+body #quarto-margin-sidebar #TOC .nav-link::before {
+  content: none !important;
+  display: none !important;
+}
+body #quarto-margin-sidebar #TOC .nav-link:hover {
+  color: var(--pw-primary-hover) !important;
+  background: transparent !important;
+}
+body #quarto-margin-sidebar #TOC .nav-link.active {
+  color: var(--pw-heading) !important;
+  font-weight: 700;
+  border-left-color: var(--pw-accent) !important;
+  background: transparent !important;
+}
+body #quarto-margin-sidebar #TOC ul ul .nav-link { color: var(--pw-text-faint) !important; }
+body #quarto-margin-sidebar #TOC ul ul .nav-link:hover { color: var(--pw-primary-hover) !important; }
+body #quarto-margin-sidebar #TOC ul ul .nav-link.active { color: var(--pw-heading) !important; }
+
+@media (min-width: 1100px) {
+  body.pw-custom-layout-ready #quarto-sidebar {
+    border-right: 1px solid var(--pw-border) !important;
+  }
+  body.pw-custom-layout-ready #quarto-margin-sidebar {
+    border-left: 1px solid var(--pw-border) !important;
+  }
+}
+@media (min-width: 768px) and (max-width: 1099.98px) {
+  body #quarto-margin-sidebar {
+    border: 0 !important;
+    border-left: 1px solid var(--pw-border-strong) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+}
+
+/* P1.3 homepage fast navigation and editorial indexes. */
+body.pw-home .pw-home-shortcuts {
+  padding-bottom: .65rem;
+  border-bottom: 1px solid var(--pw-border-strong);
+}
+body.pw-home .pw-home-shortcuts > p {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: 1.2rem;
+  row-gap: .2rem;
+  margin: 0;
+}
+body.pw-home .pw-home-fast-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--pw-text-faint);
+  font-family: var(--pw-font-sans);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+}
+html[lang^='zh'] body.pw-home .pw-home-fast-label { letter-spacing: .04em; }
+body.pw-home .pw-home-shortcuts a {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 1 auto;
+  justify-content: flex-start;
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--pw-primary) !important;
+  font-family: var(--pw-font-sans);
+  font-size: .88rem;
+  font-weight: 650;
+  text-decoration: underline !important;
+  text-underline-offset: .25em;
+}
+body.pw-home .pw-home-shortcuts a:is(:hover, :focus-visible) {
+  color: var(--pw-primary-hover) !important;
+  background: transparent !important;
+}
+
+body.pw-home main.content .pw-entry-grid { gap: 0 !important; }
+body.pw-home main.content .pw-entry-grid > .g-col-12 {
+  position: relative;
+  padding: 1.05rem 2.35rem 1.15rem 0;
+  border: 0 !important;
+  border-top: 1px solid var(--pw-border-strong) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  transition: background-color var(--pw-transition);
+}
+body.pw-home main.content .pw-entry-grid > .g-col-12:is(:hover, :focus-within) {
+  background: color-mix(in srgb, var(--pw-accent) 4.5%, transparent) !important;
+}
+body.pw-home main.content .pw-entry-grid > .g-col-12::after {
+  content: '→';
+  position: absolute;
+  top: 1.1rem;
+  right: .4rem;
+  color: var(--pw-accent);
+  font-size: 1.1rem;
+  line-height: 1;
+  pointer-events: none;
+}
+body.pw-home main.content .pw-entry-grid > .g-col-12:is(:hover, :focus-within)::after {
+  color: var(--pw-primary-hover);
+}
+body.pw-home main.content .pw-entry-grid h3 {
+  margin: 0 0 .35rem;
+  padding: 0;
+  border: 0 !important;
+  background: transparent;
+  color: var(--pw-heading) !important;
+  font-family: var(--pw-font-sans);
+  font-size: 1.13rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+body.pw-home main.content .pw-entry-grid h3 a:not(.anchorjs-link) {
+  color: var(--pw-heading) !important;
+  font-weight: 700;
+}
+body.pw-home main.content .pw-entry-grid h3 a:not(.anchorjs-link):is(:hover, :focus-visible) {
+  color: var(--pw-primary-hover) !important;
+}
+body.pw-home main.content .pw-entry-grid h3 a:not(.anchorjs-link)::after {
+  border-radius: 0 !important;
+}
+body.pw-home main.content .pw-entry-grid p {
+  color: var(--pw-text-soft);
+  font-family: var(--pw-font-sans);
+  line-height: 1.55;
+}
+@media (min-width: 768px) {
+  body.pw-home main.content .pw-entry-grid > .g-col-12:nth-child(even) {
+    padding-left: 1.1rem;
+  }
+}
+
+/* P1.4 colophon; panel-dependent outer footer geometry stays in PW layout CSS. */
+body footer.footer {
+  background: var(--pw-bg) !important;
+  border-top: 1px solid var(--pw-border-strong);
+  border-radius: 0;
+  box-shadow: none;
+}
+body footer.footer .nav-footer {
+  background: transparent !important;
+  border-top: 0;
+  box-shadow: none;
+  gap: .3rem;
+  padding: 1.15rem 1rem 1.35rem;
+}
+body footer.footer .pw-publication-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .3rem;
+  color: var(--pw-text-soft);
+  font-family: var(--pw-font-sans);
+  font-size: .84rem;
+  line-height: 1.5;
+  text-align: center;
+}
+body footer.footer .pw-publication-footer p {
+  margin: 0;
+  color: inherit;
+}
+body footer.footer .pw-publication-attribution { font-size: .8rem; }
+body footer.footer .pw-carambi-link {
+  color: var(--pw-heading);
+  font-family: 'PW Newsreader', Georgia, serif;
+  font-size: 1.04rem;
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+body footer.footer .pw-carambi-link::after { content: none !important; }
+body footer.footer .pw-carambi-link:is(:hover, :focus-visible) {
+  color: var(--pw-primary-hover);
+  text-decoration: underline;
+  text-underline-offset: .16em;
+}
+body footer.footer #quarto-back-to-top {
+  min-height: 2.75rem;
+  padding: .4rem .75rem;
+  color: var(--pw-text-soft);
+  font-family: var(--pw-font-sans);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+body footer.footer #quarto-back-to-top:is(:hover, :focus-visible) {
+  color: var(--pw-primary-hover);
+  text-decoration: underline;
+}
+@media (max-width: 767.98px) {
+  body footer.footer .nav-footer {
+    padding-bottom: calc(1.35rem + 5.5rem + env(safe-area-inset-bottom, 0px));
+  }
+}

@@ -1,6 +1,8 @@
 project:
   type: website
   output-dir: _site
+  resources:
+    - assets/fonts/Newsreader-OFL.txt
   render:
     - index.md
     - guide/route-overview.md
@@ -155,7 +157,11 @@ website:
             text: Legacy Mechanics Archive
 
   page-footer:
-    left: "Unofficial fan-made guide for Password b0.85; later releases may differ."
+    left: |
+      <div class="pw-publication-footer">
+        <p>Unofficial fan-made guide for Password b0.85; later releases may differ.</p>
+        <p class="pw-publication-attribution">Maintained by <a class="pw-carambi-link" href="https://carambi.com/">Carambi</a></p>
+      </div>
 
   comments:
     giscus:
@@ -184,9 +190,11 @@ format:
     css:
       - assets/pw-guide-theme.css
       - assets/pw-color-schemes.css
+      - assets/pw-publication-v2a.css
       - assets/pw-search.css
     include-after-body:
       - assets/pw-layout-controls.html
+      - assets/pw-publication-v2a.html
       - assets/pw-search.html
       - assets/cloudflare-web-analytics.html
     toc: true
