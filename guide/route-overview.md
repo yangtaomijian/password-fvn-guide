@@ -15,7 +15,9 @@ toc: true
 
 下图整合了主时间轴、角色线选择、关键密码检定、主要坏结局分支、角色线豁免和 Path A—G、Path P 的总体关系。
 
-![Password b0.85 角色线与字母线总图](../assets/route-map-b085-zh.webp){width=100% fig-alt="Password b0.85 的角色线、密码检定、字母线、角色线豁免与主要坏结局分支总图"}
+[![Password b0.85 角色线与字母线总图](../assets/route-map-b085-zh.webp){width=100% fig-alt="Password b0.85 的角色线、密码检定、字母线、角色线豁免与主要坏结局分支总图"}](../assets/route-map-b085-zh.webp){target="_blank" rel="noopener noreferrer" tabindex="0"}
+
+[打开高清原图 ↗](../assets/route-map-b085-zh.webp){target="_blank" rel="noopener noreferrer" tabindex="0"} · 移动端可在原图中双指缩放查看分支细节。
 
 各条字母线的精确进入条件见[字母线系统](path-system.md)。
 

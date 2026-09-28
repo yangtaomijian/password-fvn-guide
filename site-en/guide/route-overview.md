@@ -15,7 +15,9 @@ Your character Route determines whose story and relationship you follow. The let
 
 The diagram below combines the main timeline, character-route selection, key password checks, bad-ending branches, and the lettered Path structure.
 
-![Password b0.85 route and Path map](../assets/route-map-b085-en.webp){width=100% fig-alt="Password b0.85 timeline showing character routes, password checks, lettered Paths, route exceptions, and major bad-ending branches"}
+[![Password b0.85 route and Path map](../assets/route-map-b085-en.webp){width=100% fig-alt="Password b0.85 timeline showing character routes, password checks, lettered Paths, route exceptions, and major bad-ending branches"}](../assets/route-map-b085-en.webp){target="_blank" rel="noopener noreferrer" tabindex="0"}
+
+[Open full-resolution map ↗](../assets/route-map-b085-en.webp){target="_blank" rel="noopener noreferrer" tabindex="0"} · On mobile, open the original image and pinch to zoom into branch details.
 
 For the exact requirements of each lettered Path, see [Lettered Path System](path-system.md).
 
