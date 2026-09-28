@@ -256,9 +256,27 @@
     if (tabset) void placeFragment(tabset, location.hash, cycle);
   };
 
+  const syncRestoredTabs = () => {
+    document.querySelectorAll('.panel-tabset').forEach(tabset => {
+      const tablist = tabset.querySelector('[role="tablist"]');
+      if (!tablist) return;
+      const tabs = [...tablist.querySelectorAll('[role="tab"]')];
+      const active = tabs.filter(tab => tab.classList.contains('active') &&
+        document.getElementById(tab.getAttribute('aria-controls'))?.classList.contains('active'));
+      if (active.length !== 1) return;
+      tabs.forEach(tab => {
+        const selected = tab === active[0];
+        if (tab.getAttribute('aria-selected') !== String(selected)) tab.setAttribute('aria-selected', String(selected));
+        if (selected) tab.removeAttribute('tabindex');
+        else if (tab.getAttribute('tabindex') !== '-1') tab.setAttribute('tabindex', '-1');
+      });
+    });
+  };
+
   const initialise = () => {
     // Register after Quarto's DOMContentLoaded handler so search wins over saved tabs.
     window.addEventListener("pageshow", activateLinkedTab);
+    window.addEventListener("pageshow", () => requestAnimationFrame(syncRestoredTabs));
     window.addEventListener("hashchange", activateLinkedTab);
     window.addEventListener("pagehide", () => { fragmentCycle += 1; });
     let wasOpen = false;

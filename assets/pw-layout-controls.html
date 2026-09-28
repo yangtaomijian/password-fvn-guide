@@ -184,6 +184,21 @@
     });
     const footerCenter = footer?.querySelector(".nav-footer-center");
     const returnControl = document.getElementById("quarto-back-to-top");
+    if (returnControl) {
+      returnControl.setAttribute("aria-label", returnControl.textContent.trim());
+      returnControl.setAttribute("tabindex", "0");
+      returnControl.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        if (event.repeat) return;
+        returnControl.click();
+        const topTarget = document.querySelector("main.content h1") || document.querySelector("main.content");
+        if (topTarget) {
+          if (!topTarget.hasAttribute("tabindex")) topTarget.setAttribute("tabindex", "-1");
+          topTarget.focus({ preventScroll: true });
+        }
+      });
+    }
     if (footerCenter && !footerCenter.textContent.trim() && !footerCenter.children.length) {
       footerCenter.textContent = "";
       if (returnControl && "IntersectionObserver" in window) {
