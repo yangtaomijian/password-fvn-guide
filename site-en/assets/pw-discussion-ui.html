@@ -308,9 +308,10 @@
     try {
       const turnstile = await ensureTurnstile();
       if (generation !== widgetGeneration || !state.activeTarget) return;
+      const compactTurnstile = verifySlot.getBoundingClientRect().width < 300;
       widgetId = turnstile.render(verifySlot, {
         sitekey: runtime.transport.turnstileSitekey, action: 'discussion_post',
-        theme: 'auto', size: matchMedia('(max-width: 370px)').matches ? 'compact' : 'flexible',
+        theme: 'auto', size: compactTurnstile ? 'compact' : 'flexible',
         'response-field': false,
         callback(value) {
           if (generation !== widgetGeneration || state.posting) return;
