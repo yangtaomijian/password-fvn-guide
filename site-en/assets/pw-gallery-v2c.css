@@ -3,6 +3,20 @@ main.content :is(#gallery-memories, #gallery-trauma).gallery-coordinate-table ta
   overflow: clip;
 }
 
+main.content :is(#gallery-memories, #gallery-trauma).gallery-coordinate-table table > tbody > tr:last-child > td:last-child {
+  border-end-end-radius: calc(var(--pw-radius-md) - 1px);
+}
+
+main.content :is(#gallery-memories, #gallery-trauma).gallery-coordinate-table table > tbody > tr:last-child > td:last-child.gallery-cell-target::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-inline-end: 2px solid var(--pw-accent-hover);
+  border-block-end: 2px solid var(--pw-accent-hover);
+  border-end-end-radius: calc(var(--pw-radius-md) - 1px);
+}
+
 main.content :is(#gallery-memories, #gallery-trauma).gallery-coordinate-table table > :is(thead, tbody) > tr > :first-child {
   position: sticky;
   inset-inline-start: 0;
