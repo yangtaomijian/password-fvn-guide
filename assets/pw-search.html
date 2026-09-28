@@ -198,17 +198,57 @@
   };
   window.fuseSearch = async (query, index) => search(query, index, english);
 
+  const navigation = document.querySelector('#quarto-header');
+  const nextFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
+  const visibleHeaderBottom = () => Math.max(0, navigation?.getBoundingClientRect().bottom ?? 0);
+  const afterHeaderSettles = async () => {
+    await nextFrame();
+    await nextFrame();
+    for (let transition = 0; transition < 2; transition += 1) {
+      const animations = navigation?.getAnimations()
+        .filter(animation => animation.playState === 'running')
+        .map(animation => animation.finished) || [];
+      if (!animations.length) return;
+      await Promise.allSettled(animations);
+      await nextFrame();
+    }
+  };
+  let fragmentCycle = 0;
+  const placeFragment = async (target, hash, cycle) => {
+    const isCurrent = () => cycle === fragmentCycle && location.hash === hash && target.isConnected;
+    const place = () => {
+      const targetY = target.getBoundingClientRect().top + window.scrollY;
+      const maxY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      const desiredY = targetY - visibleHeaderBottom() - 10;
+      window.scrollTo({top:Math.min(maxY, Math.max(0, desiredY)), behavior:'instant'});
+    };
+    await nextFrame();
+    await nextFrame();
+    if (!isCurrent() || !target.getClientRects().length) return;
+    place();
+    await afterHeaderSettles();
+    if (isCurrent()) place();
+  };
+
   // Tab fragments are safe deep links; keep password details folded.
   const activateLinkedTab = () => {
+    const cycle = ++fragmentCycle;
     if (!location.hash) return;
     let pane;
     try { pane = document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch { return; }
     if (pane?.matches('details[id^="medal-"]') && /\/collectibles\/medals\.html$/.test(location.pathname)) {
       pane.open = true;
-      pane.scrollIntoView({block:'start', behavior:'instant'});
+      void placeFragment(pane, location.hash, cycle);
       return;
     }
-    if (!pane?.matches('.tab-pane')) return;
+    if (!pane?.matches('.tab-pane')) {
+      if (pane?.matches('section[id], h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]') &&
+          !pane.closest('.tab-pane, #gallery-trigger-index') &&
+          !/^gallery-(?:memories|trauma)-/.test(pane.id)) {
+        void placeFragment(pane, location.hash, cycle);
+      }
+      return;
+    }
     const control = [...document.querySelectorAll('[role="tab"]')].find(el => (el.getAttribute('data-bs-target') || el.getAttribute('href')) === '#' + pane.id);
     if (!control) return;
     control.click();
@@ -219,6 +259,7 @@
     // Register after Quarto's DOMContentLoaded handler so search wins over saved tabs.
     window.addEventListener("pageshow", activateLinkedTab);
     window.addEventListener("hashchange", activateLinkedTab);
+    window.addEventListener("pagehide", () => { fragmentCycle += 1; });
     let wasOpen = false;
     const update = () => {
       const open = document.body.classList.contains("aa-Detached");
