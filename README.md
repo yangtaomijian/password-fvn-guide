@@ -50,3 +50,17 @@ Current guidance applies to **b0.85** and may differ from later game builds. **T
 本站是玩家整理的非官方攻略，不隶属于 Grizz 或发行平台，不提供游戏本体、完整脚本、提取后的 CG 或未经授权的游戏资源。游戏、角色及原始素材的相关权利归原作者所有。
 
 This is an unofficial fan-made guide, not affiliated with Grizz or any distribution platform. It does not provide the game, complete scripts, extracted CGs, or unauthorized game assets. Rights to the game, characters, and original materials belong to their respective owner.
+
+## 讨论与反馈 / Discussion & feedback
+
+正文攻略页底部提供**公开讨论区**，无需账号即可发表评论和回复；Discussion 内容会对其他访客公开显示。
+
+如需私下反馈攻略错误、表述不清、链接、页面或网站问题，请使用页面底部的**「私下反馈」**。私下反馈只发送给维护者，不会进入公开讨论区。
+
+Public guide pages include a **Discussion** section where visitors can post comments and replies without an account. Discussion posts are visible to other visitors.
+
+For errors, unclear guidance, broken links, page or site problems you would rather send privately, use **Private feedback** in the page footer. Private feedback is sent only to the maintainer and does not appear in Discussion.
+
+如站内反馈无法正常使用，或问题涉及仓库本身，也可以使用 [GitHub Issues](https://github.com/yangtaomijian/password-fvn-guide/issues)。
+
+If the on-site feedback tools are unavailable, or the issue concerns the repository itself, you can also use [GitHub Issues](https://github.com/yangtaomijian/password-fvn-guide/issues).

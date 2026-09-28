@@ -142,7 +142,7 @@ Password b0.7 与 b0.85 之间的主要功能、剧情互动、密码、画廊�
 
 本站不隶属于 Grizz，也不提供游戏本体；不直接转载未经授权的游戏原素材、完整脚本、提取后的 CG 或第三方素材。
 
-如发现攻略内容、链接或页面功能有误，欢迎通过 [GitHub Issues](https://github.com/yangtaomijian/password-fvn-guide/issues) 反馈。
+正文攻略页底部设有**公开讨论区**，无需账号即可发表评论和回复。如需私下反馈攻略错误、表述不清、链接或页面问题，可使用页面底部的**「私下反馈」**；如站内反馈无法正常使用，或问题涉及仓库本身，也可以通过 [GitHub Issues](https://github.com/yangtaomijian/password-fvn-guide/issues) 联系。
 
 ## 本站资料来源
 
