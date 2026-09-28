@@ -252,7 +252,8 @@
     const control = [...document.querySelectorAll('[role="tab"]')].find(el => (el.getAttribute('data-bs-target') || el.getAttribute('href')) === '#' + pane.id);
     if (!control) return;
     control.click();
-    pane.closest('.panel-tabset')?.scrollIntoView({block:'start', behavior:'instant'});
+    const tabset = pane.closest('.panel-tabset');
+    if (tabset) void placeFragment(tabset, location.hash, cycle);
   };
 
   const initialise = () => {
