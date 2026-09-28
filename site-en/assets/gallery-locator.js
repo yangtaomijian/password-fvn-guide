@@ -42,6 +42,18 @@
       index.style.setProperty("--gallery-index-top", `${bottom}px`);
       return bottom;
     };
+    const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
+    const afterHeaderSettles = async () => {
+      await nextFrame();
+      for (let transition = 0; transition < 2; transition += 1) {
+        const animations = navigation?.getAnimations()
+          .filter((animation) => animation.playState === "running")
+          .map((animation) => animation.finished) || [];
+        if (!animations.length) return;
+        await Promise.allSettled(animations);
+        await nextFrame();
+      }
+    };
     let pendingFrame = 0;
     const scheduleOffset = () => {
       if (pendingFrame) return;
@@ -69,20 +81,96 @@
       updateOffset();
     };
     let returnToHeader = false;
-    body.addEventListener("show.bs.collapse", () => setExpanded(true));
+    let returnToken = 0;
+    let collapseSpacer = null;
+    const removeSpacer = (spacer = collapseSpacer) => {
+      if (!spacer) return;
+      spacer.remove();
+      if (collapseSpacer === spacer) collapseSpacer = null;
+    };
+    body.addEventListener("show.bs.collapse", () => {
+      returnToken += 1;
+      returnToHeader = false;
+      removeSpacer();
+      setExpanded(true);
+    });
     body.addEventListener("hide.bs.collapse", () => {
-      returnToHeader = index.getBoundingClientRect().top < updateOffset();
+      returnToken += 1;
+      removeSpacer();
+      const visibleBottom = updateOffset();
+      const indexBounds = index.getBoundingClientRect();
+      const headerBounds = header.getBoundingClientRect();
+      returnToHeader = indexBounds.top < visibleBottom &&
+        indexBounds.bottom > visibleBottom &&
+        headerBounds.bottom > visibleBottom &&
+        headerBounds.top < window.innerHeight;
+      if (!returnToHeader) return;
+
+      const spacer = document.createElement("div");
+      spacer.className = "gallery-index-collapse-spacer";
+      spacer.setAttribute("aria-hidden", "true");
+      spacer.setAttribute("inert", "");
+      spacer.style.cssText = `display:block;height:${body.getBoundingClientRect().height}px;margin:0;padding:0;border:0;pointer-events:none`;
+      index.after(spacer);
+      collapseSpacer = spacer;
+      const indexY = indexBounds.top + window.scrollY;
+      const token = returnToken;
+      queueMicrotask(() => {
+        if (token === returnToken && collapseSpacer === spacer &&
+            body.classList.contains("collapsing")) {
+          window.scrollTo({ top: indexY - updateOffset() - 8, behavior: "instant" });
+        }
+      });
+      requestAnimationFrame(() => {
+        if (token === returnToken && body.classList.contains("show") &&
+            !body.classList.contains("collapsing")) {
+          returnToHeader = false;
+          removeSpacer(spacer);
+        }
+      });
     });
     body.addEventListener("hidden.bs.collapse", () => {
       setExpanded(false);
-      if (returnToHeader) {
-        window.scrollBy({
-          top: index.getBoundingClientRect().top - (navigation?.offsetHeight || 0) - 8,
-          behavior: "instant"
-        });
-        header.focus({ preventScroll: true });
-      }
+      const shouldReturn = returnToHeader;
       returnToHeader = false;
+      const spacer = collapseSpacer;
+      if (!shouldReturn) {
+        removeSpacer(spacer);
+        return;
+      }
+
+      const token = returnToken;
+      const isCurrent = () => token === returnToken &&
+        !body.classList.contains("show") &&
+        !body.classList.contains("collapsing");
+      const placeHeader = () => {
+        const documentY = header.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: documentY - updateOffset() - 8, behavior: "instant" });
+      };
+      (async () => {
+        await nextFrame();
+        await nextFrame();
+        if (!isCurrent()) return;
+        placeHeader();
+        await afterHeaderSettles();
+        if (!isCurrent()) return;
+        placeHeader();
+        header.focus({ preventScroll: true });
+        if (Math.abs(header.getBoundingClientRect().top - updateOffset() - 8) > 8) {
+          placeHeader();
+        }
+        if (!isCurrent()) return;
+        removeSpacer(spacer);
+        await nextFrame();
+        if (!isCurrent()) return;
+        if (Math.abs(header.getBoundingClientRect().top - updateOffset() - 8) > 1) {
+          placeHeader();
+        }
+      })();
+    });
+    window.addEventListener("pagehide", () => {
+      returnToken += 1;
+      removeSpacer();
     });
     setExpanded(body.classList.contains("show"));
   };

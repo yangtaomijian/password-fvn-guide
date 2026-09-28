@@ -193,6 +193,7 @@ format:
       - assets/pw-color-schemes.css
       - assets/pw-publication-v2a.css
       - assets/pw-reference-v2b.css
+      - assets/pw-gallery-v2c.css
       - assets/pw-search.css
     include-after-body:
       - assets/pw-layout-controls.html
