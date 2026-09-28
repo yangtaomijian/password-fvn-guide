@@ -25,6 +25,35 @@
     "guide/faq.html",
     "index.html"
   ];
+  const SHARED_FRAGMENTS = {
+    "collectibles/compendium.html": ["florencia", "hoss", "orlando", "sal"],
+    "collectibles/gallery.html": [
+      "cg-unlock-index", "dave", "dean", "hoss", "memories", "orlando",
+      "roswell", "sal", "trauma", "tyson"
+    ],
+    "extras/easter-eggs.html": [
+      "chase", "civ", "rem", "the-end", "the-lovers", "timber", "wilson", "zylus"
+    ],
+    "guide/path-system.html": ["path-p"]
+  };
+
+  const safeLanguageHash = (pagePath) => {
+    const hash = window.location.hash;
+    if (!hash) return "";
+    let id;
+    try {
+      id = decodeURIComponent(hash.slice(1));
+    } catch {
+      return "";
+    }
+    if (pagePath === "collectibles/medals.html" &&
+        /^medal-(aries|taurus|gemini|cancer|leo|virgo|libra|scorpio|sagittarius|capricorn|aquarius|pisces)$/.test(id)) return hash;
+    if (["mechanics/affection.html", "mechanics/affection-differences.html"].includes(pagePath) &&
+        /^tabset-1-[1-6]$/.test(id)) return hash;
+    if (pagePath === "collectibles/gallery.html" &&
+        /^gallery-(memories-r(?:[1-9]|1[0-8])|trauma-r[1-7])-c[1-4]$/.test(id)) return hash;
+    return SHARED_FRAGMENTS[pagePath]?.includes(id) ? hash : "";
+  };
 
   const safeStorageGet = (key) => {
     try {
@@ -56,7 +85,7 @@
       ? englishRoot.slice(0, -3)
       : englishRoot;
     const chinesePath = pagePath && pagePath !== "index.html" ? pagePath : "";
-    return `${siteRoot}${chinesePath}${window.location.search}${window.location.hash}`;
+    return `${siteRoot}${chinesePath}${window.location.search}${safeLanguageHash(pagePath)}`;
   };
 
   const createButton = ({
@@ -236,12 +265,24 @@
     if (!navbarTools.querySelector(".pw-language-switch")) {
         const languageLink = document.createElement("a");
         const label = "打开本页中文版";
+        const refreshLanguageLink = () => {
+          languageLink.href = resolveChineseTarget();
+        };
 
         languageLink.className = "pw-language-switch no-external";
-        languageLink.href = resolveChineseTarget();
         languageLink.textContent = "中文";
         languageLink.setAttribute("aria-label", label);
         languageLink.setAttribute("title", label);
+        refreshLanguageLink();
+        ["focus", "pointerdown", "contextmenu", "click"].forEach((event) => {
+          languageLink.addEventListener(event, refreshLanguageLink);
+        });
+        languageLink.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") refreshLanguageLink();
+        });
+        ["pageshow", "hashchange", "popstate"].forEach((event) => {
+          window.addEventListener(event, refreshLanguageLink);
+        });
         navbarTools.append(languageLink);
     }
 

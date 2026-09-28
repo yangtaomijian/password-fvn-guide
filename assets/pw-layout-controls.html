@@ -25,6 +25,35 @@
     "guide/faq.html",
     "index.html"
   ];
+  const SHARED_FRAGMENTS = {
+    "collectibles/compendium.html": ["florencia", "hoss", "orlando", "sal"],
+    "collectibles/gallery.html": [
+      "cg-unlock-index", "dave", "dean", "hoss", "memories", "orlando",
+      "roswell", "sal", "trauma", "tyson"
+    ],
+    "extras/easter-eggs.html": [
+      "chase", "civ", "rem", "the-end", "the-lovers", "timber", "wilson", "zylus"
+    ],
+    "guide/path-system.html": ["path-p"]
+  };
+
+  const safeLanguageHash = (pagePath) => {
+    const hash = window.location.hash;
+    if (!hash) return "";
+    let id;
+    try {
+      id = decodeURIComponent(hash.slice(1));
+    } catch {
+      return "";
+    }
+    if (pagePath === "collectibles/medals.html" &&
+        /^medal-(aries|taurus|gemini|cancer|leo|virgo|libra|scorpio|sagittarius|capricorn|aquarius|pisces)$/.test(id)) return hash;
+    if (["mechanics/affection.html", "mechanics/affection-differences.html"].includes(pagePath) &&
+        /^tabset-1-[1-6]$/.test(id)) return hash;
+    if (pagePath === "collectibles/gallery.html" &&
+        /^gallery-(memories-r(?:[1-9]|1[0-8])|trauma-r[1-7])-c[1-4]$/.test(id)) return hash;
+    return SHARED_FRAGMENTS[pagePath]?.includes(id) ? hash : "";
+  };
 
   const safeStorageGet = (key) => {
     try {
@@ -53,7 +82,7 @@
         ? pathname
         : pathname.slice(0, pathname.lastIndexOf("/") + 1);
     const englishPath = pagePath && pagePath !== "index.html" ? pagePath : "";
-    return `${siteRoot}en/${englishPath}${window.location.search}${window.location.hash}`;
+    return `${siteRoot}en/${englishPath}${window.location.search}${safeLanguageHash(pagePath)}`;
   };
 
   const createButton = ({
@@ -94,6 +123,40 @@
     return toolbar;
   };
 
+  const syncNavbarActive = () => {
+    const pathSegments = window.location.pathname
+      .split("/")
+      .filter(Boolean);
+    const section = ["guide", "collectibles", "mechanics", "versions", "extras"]
+      .find((candidate) => pathSegments.includes(candidate)) || "home";
+    const sectionLabels = {
+      home: "首页",
+      guide: "攻略",
+      collectibles: "收集",
+      mechanics: "机制",
+      versions: "版本档案",
+      extras: "其他"
+    };
+    const links = Array.from(document.querySelectorAll(
+      "#quarto-header .navbar-nav > .nav-item > .nav-link"
+    ));
+
+    links.forEach((link) => {
+      link.classList.remove("active");
+      link.removeAttribute("aria-current");
+    });
+
+    const activeLink = links.find((link) =>
+      link.querySelector(".menu-text")?.textContent
+        .trim() === sectionLabels[section]
+    );
+
+    if (activeLink) {
+      activeLink.classList.add("active");
+      activeLink.setAttribute("aria-current", "page");
+    }
+  };
+
   const initialise = () => {
     const body = document.body;
     const rootElement = document.documentElement;
@@ -132,6 +195,8 @@
         }).observe(footer);
       }
     }
+
+    syncNavbarActive();
 
 
     const leftSidebar = document.querySelector("#quarto-sidebar");
@@ -197,12 +262,24 @@
     if (!navbarTools.querySelector(".pw-language-switch")) {
         const languageLink = document.createElement("a");
         const label = "Open this page in English";
+        const refreshLanguageLink = () => {
+          languageLink.href = resolveEnglishTarget();
+        };
 
         languageLink.className = "pw-language-switch no-external";
-        languageLink.href = resolveEnglishTarget();
         languageLink.textContent = "EN";
         languageLink.setAttribute("aria-label", label);
         languageLink.setAttribute("title", label);
+        refreshLanguageLink();
+        ["focus", "pointerdown", "contextmenu", "click"].forEach((event) => {
+          languageLink.addEventListener(event, refreshLanguageLink);
+        });
+        languageLink.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") refreshLanguageLink();
+        });
+        ["pageshow", "hashchange", "popstate"].forEach((event) => {
+          window.addEventListener(event, refreshLanguageLink);
+        });
         navbarTools.append(languageLink);
     }
 
