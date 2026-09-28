@@ -1,0 +1,79 @@
+<!-- Shared page context and transport boundary for Discussion and Feedback. -->
+<script>
+(() => {
+  'use strict';
+  if (window.__pwDiscussionRuntime) return;
+
+  const guideVersion = 'b0.85';
+  const pageKeys = Object.freeze({
+    '/guide/route-overview.html': 'guide.route-overview',
+    '/guide/path-system.html': 'guide.path-system',
+    '/guide/password-hints.html': 'guide.password-hints',
+    '/guide/faq.html': 'guide.faq',
+    '/collectibles/medals.html': 'collectibles.medals',
+    '/collectibles/compendium.html': 'collectibles.compendium',
+    '/collectibles/gallery.html': 'collectibles.gallery',
+    '/mechanics/password-checks.html': 'mechanics.password-checks',
+    '/mechanics/medal-persistence.html': 'mechanics.medal-persistence',
+    '/mechanics/affection.html': 'mechanics.affection',
+    '/mechanics/affection-differences.html': 'mechanics.affection-differences',
+    '/versions/b085-changes.html': 'versions.b085-changes',
+    '/versions/legacy-routes.html': 'versions.legacy-routes',
+    '/versions/legacy-passwords.html': 'versions.legacy-passwords',
+    '/versions/legacy-mechanics.html': 'versions.legacy-mechanics',
+    '/extras/easter-eggs.html': 'extras.easter-eggs',
+    '/en/guide/route-overview.html': 'guide.route-overview',
+    '/en/guide/path-system.html': 'guide.path-system',
+    '/en/guide/password-hints.html': 'guide.password-hints',
+    '/en/guide/faq.html': 'guide.faq',
+    '/en/collectibles/medals.html': 'collectibles.medals',
+    '/en/collectibles/compendium.html': 'collectibles.compendium',
+    '/en/collectibles/gallery.html': 'collectibles.gallery',
+    '/en/mechanics/password-checks.html': 'mechanics.password-checks',
+    '/en/mechanics/medal-persistence.html': 'mechanics.medal-persistence',
+    '/en/mechanics/affection.html': 'mechanics.affection',
+    '/en/mechanics/affection-differences.html': 'mechanics.affection-differences',
+    '/en/versions/b085-changes.html': 'versions.b085-changes',
+    '/en/versions/legacy-routes.html': 'versions.legacy-routes',
+    '/en/versions/legacy-passwords.html': 'versions.legacy-passwords',
+    '/en/versions/legacy-mechanics.html': 'versions.legacy-mechanics',
+    '/en/extras/easter-eggs.html': 'extras.easter-eggs',
+  });
+
+  function getContext() {
+    const locale = document.documentElement.lang;
+    if (locale !== 'en' && locale !== 'zh-CN') return null;
+    const pagePath = location.pathname;
+    if ((locale === 'en') !== pagePath.startsWith('/en/')) return null;
+    return Object.freeze({
+      site: 'password',
+      locale,
+      pageKey: Object.hasOwn(pageKeys, pagePath) ? pageKeys[pagePath] : null,
+      guideVersion,
+      pagePath,
+      pageHash: location.hash,
+      viewportClass: matchMedia('(min-width: 768px)').matches ? 'desktop' : 'mobile',
+    });
+  }
+
+  const localHost = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
+  const stagingHost = location.hostname === 'pw-staging.carambi.com';
+  const productionHost = location.hostname === 'password.carambi.com';
+  const transport = localHost ? window.__pwDiscussionFixtureTransport ?? null :
+    (stagingHost || productionHost) ? window.__pwDiscussionRemoteTransport ?? null : null;
+  window.__pwDiscussionRuntime = Object.freeze({
+    getContext, transport, mode: transport ?
+      (localHost ? 'fixture' : stagingHost ? 'staging' : 'production') : 'inactive',
+  });
+  const context = getContext();
+  if (!context?.pageKey) return;
+  const main = document.querySelector('#quarto-content > main#quarto-document-content');
+  if (!main || document.getElementById('pw-public-discussion')) return;
+  const mount = document.createElement('div');
+  mount.id = 'pw-public-discussion';
+  mount.hidden = true;
+  mount.setAttribute('data-pw-discussion-mount', '');
+  mount.dataset.pageKey = context.pageKey;
+  main.after(mount);
+})();
+</script>

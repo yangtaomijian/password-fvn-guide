@@ -162,26 +162,15 @@ website:
       <div class="pw-publication-footer">
         <p>Unofficial fan-made guide for Password b0.85; later releases may differ.</p>
         <p class="pw-publication-attribution">Maintained by <a class="pw-carambi-link" href="https://carambi.com/">Carambi</a></p>
+        <button class="pw-feedback-slot" type="button" disabled>Private feedback</button>
       </div>
 
-  comments:
-    giscus:
-      repo: yangtaomijian/password-fvn-guide
-      repo-id: R_kgDOTnI-GQ
-      category: 页面反馈
-      category-id: DIC_kwDOTnI-Gc4DCPAP
-      mapping: pathname
-      reactions-enabled: true
-      input-position: top
-      theme:
-        light: light
-        dark: dark_dimmed
-      language: en
-      loading: lazy
 
 format:
   html:
     canonical-url: true
+    include-in-header:
+      - assets/pw-discussion-config.html
     template-partials:
       - ../templates/metadata.html
     theme:
@@ -195,12 +184,19 @@ format:
       - assets/pw-reference-v2b.css
       - assets/pw-gallery-v2c.css
       - assets/pw-search.css
+      - assets/pw-discussion.css
+      - assets/pw-feedback.css
     include-after-body:
       - assets/pw-layout-controls.html
       - assets/pw-publication-v2a.html
       - assets/pw-reference-v2b.html
       - assets/pw-search.html
       - assets/cloudflare-web-analytics.html
+      - assets/pw-discussion-fixtures.html
+      - assets/pw-discussion-remote.html
+      - assets/pw-discussion-runtime.html
+      - assets/pw-discussion-ui.html
+      - assets/pw-feedback-ui.html
     toc: true
     toc-depth: 3
     smooth-scroll: true

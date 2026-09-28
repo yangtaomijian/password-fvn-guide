@@ -1,0 +1,107 @@
+/* Staging Feedback and Report share one native modal dialog. */
+html.pw-feedback-open,
+body.pw-feedback-open { overflow: hidden; }
+.pw-feedback-slot:not(:disabled) { opacity: 1; cursor: pointer; color: var(--pw-primary); }
+.pw-feedback-slot:not(:disabled):hover { color: var(--pw-primary-hover); text-decoration: underline; }
+.pw-feedback-slot:focus-visible,
+.pw-feedback-dialog :is(button, select, input, textarea):focus-visible {
+  outline: 2px solid var(--pw-primary);
+  outline-offset: 2px;
+}
+.pw-feedback-dialog {
+  box-sizing: border-box;
+  width: min(calc(100% - 1.5rem), 560px);
+  max-width: none;
+  max-height: calc(100dvh - 1.5rem);
+  margin: auto;
+  padding: 1.25rem;
+  overflow: auto;
+  border: 1px solid var(--pw-border-strong);
+  border-radius: var(--pw-radius-md);
+  background: var(--pw-bg);
+  color: var(--pw-text);
+  box-shadow: 0 14px 48px rgba(0, 0, 0, .25);
+}
+.pw-feedback-dialog::backdrop { background: rgba(0, 0, 0, .68); }
+.pw-feedback-dialog [hidden] { display: none !important; }
+.pw-feedback-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.pw-feedback-header h2 { margin: 0; color: var(--pw-heading); font-size: 1.5rem; }
+.pw-feedback-close {
+  flex: none;
+  min-height: 2.75rem;
+  padding: .45rem .7rem;
+  border: 1px solid var(--pw-border-strong);
+  border-radius: var(--pw-radius-sm);
+  background: var(--pw-surface);
+  color: var(--pw-primary);
+  font: inherit;
+  cursor: pointer;
+}
+.pw-feedback-intro { margin: .75rem 0 1rem; color: var(--pw-text-soft); line-height: 1.6; }
+.pw-feedback-status:not(:empty) { margin: 0 0 .75rem; line-height: 1.5; }
+.pw-feedback-status:empty { display: none; }
+.pw-feedback-form { display: grid; gap: .85rem; min-width: 0; }
+.pw-feedback-field { display: grid; gap: .3rem; min-width: 0; }
+.pw-feedback-field label { color: var(--pw-heading); font-weight: 650; }
+.pw-feedback-input {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: .6rem .7rem;
+  border: 1px solid var(--pw-border-strong);
+  border-radius: var(--pw-radius-sm);
+  background: var(--pw-surface);
+  color: var(--pw-text);
+  font: inherit;
+}
+.pw-feedback-input[aria-invalid='true'] { border-color: var(--pw-primary); }
+.pw-feedback-dialog textarea { resize: vertical; }
+.pw-feedback-help { margin: 0; color: var(--pw-text-soft); font-size: .84rem; }
+.pw-feedback-field-error { margin: 0; color: var(--pw-primary); font-size: .84rem; }
+.pw-feedback-field-error:empty { display: none; }
+.pw-feedback-turnstile { min-width: 0; min-height: 65px; overflow: hidden; }
+.pw-feedback-actions { display: flex; flex-wrap: wrap; gap: .55rem; }
+.pw-feedback-action {
+  min-height: 2.75rem;
+  padding: .55rem .85rem;
+  border: 1px solid var(--pw-border-strong);
+  border-radius: var(--pw-radius-md);
+  background: var(--pw-surface);
+  color: var(--pw-primary);
+  font: inherit;
+  cursor: pointer;
+}
+.pw-feedback-action:hover,
+.pw-feedback-close:hover { background: var(--pw-surface-hover); }
+.pw-feedback-action:disabled,
+.pw-feedback-close:disabled { opacity: .6; cursor: wait; }
+.pw-feedback-honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  clip-path: inset(50%);
+  pointer-events: none;
+}
+#pw-public-discussion .pw-discussion-report-action {
+  margin: .25rem 0 .5rem .6rem;
+  padding-inline: .4rem;
+  border-color: transparent;
+  background: transparent;
+  color: var(--pw-text-soft);
+  font-size: .82rem;
+}
+#pw-public-discussion .pw-discussion-report-action:hover {
+  background: transparent;
+  color: var(--pw-primary);
+  text-decoration: underline;
+}
+@media (max-width: 767.98px) {
+  .pw-feedback-dialog {
+    width: calc(100% - 1rem);
+    max-height: calc(100dvh - 1rem);
+    padding: 1rem;
+  }
+}
