@@ -615,7 +615,8 @@
 
     function applyResponsiveState() {
       if (DESKTOP_QUERY.matches) {
-        setLeftCollapsed(safeStorageGet(LEFT_KEY) === "1", false);
+        // Desktop site navigation lives in the navbar; keep the hidden rail inert.
+        setLeftCollapsed(true, false);
       } else {
         body.classList.remove("pw-left-collapsed");
         if (leftSidebar) {
@@ -627,7 +628,8 @@
 
       if (RIGHT_PANEL_QUERY.matches) {
         mobileToc?.apply();
-        setRightCollapsed(safeStorageGet(RIGHT_KEY) === "1", false);
+        // The desktop left TOC stays visible, independent of the old right-rail preference.
+        setRightCollapsed(!DESKTOP_QUERY.matches && safeStorageGet(RIGHT_KEY) === "1", false);
       } else {
         body.classList.remove("pw-right-collapsed");
         if (rightSidebar) {

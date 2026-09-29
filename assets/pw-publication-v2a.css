@@ -255,7 +255,8 @@ body #quarto-margin-sidebar #TOC ul ul .nav-link.active { color: var(--pw-headin
     border-right: 1px solid var(--pw-border) !important;
   }
   body.pw-custom-layout-ready #quarto-margin-sidebar {
-    border-left: 1px solid var(--pw-border) !important;
+    border-left: 0 !important;
+    border-right: 1px solid var(--pw-border) !important;
   }
 }
 @media (min-width: 768px) and (max-width: 1099.98px) {
