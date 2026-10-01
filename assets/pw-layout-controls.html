@@ -215,7 +215,7 @@
 
 
     const leftSidebar = document.querySelector("#quarto-sidebar");
-    const rightSidebar = document.querySelector("#quarto-margin-sidebar");
+    const rightSidebar = document.querySelector("#pw-page-toc-panel");
 
     // Quarto already follows prefers-color-scheme while its override is absent.
     // Clear only that override to restore both initial and live system following.
@@ -373,7 +373,7 @@
       className: "pw-panel-toggle pw-panel-toggle-right",
       label: "收起本页目录",
       icon: "→",
-      controls: "quarto-margin-sidebar",
+      controls: "pw-page-toc-panel",
       onClick: () => {
         setRightCollapsed(true);
         requestAnimationFrame(() => rightOpenButton.focus());
@@ -395,7 +395,7 @@
       className: "pw-edge-toggle pw-edge-toggle-right",
       label: "展开本页目录",
       icon: "←",
-      controls: "quarto-margin-sidebar",
+      controls: "pw-page-toc-panel",
       onClick: () => {
         setRightCollapsed(false);
         requestAnimationFrame(() => rightCollapseButton.focus());

@@ -368,7 +368,7 @@ body :is(.navbar, .sidebar-link, .pw-panel-toolbar,
   backdrop-filter: none !important;
 }
 body .navbar { background: var(--pw-shell-surface-raised) !important; box-shadow: none; }
-body :is(#quarto-sidebar, #quarto-margin-sidebar, .pw-panel-toolbar,
+body :is(#quarto-sidebar, #pw-page-toc-panel, .pw-panel-toolbar,
   #quarto-header .quarto-secondary-nav) { background: var(--pw-shell-surface) !important; }
 body :is(.navbar .dropdown-menu, .pw-edge-toggle) { background: var(--pw-surface) !important; }
 body :is(.sidebar-link, .pw-panel-toggle, .pw-edge-toggle) {
@@ -445,13 +445,13 @@ body pre.sourceCode > code.sourceCode > span[id] {
 body .navbar .nav-link { border-radius: var(--pw-radius-md) !important; }
 /* Extend only the narrow-layout TOC surface through its outer grid gutter. */
 @media (min-width: 768px) and (max-width: 1099.98px) {
-  body #quarto-margin-sidebar {
+  body #pw-page-toc-panel {
     grid-column: body-end / screen-end;
     width: auto;
     padding-right: 3vw;
   }
 }
-body #quarto-margin-sidebar {
+body #pw-page-toc-panel {
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }

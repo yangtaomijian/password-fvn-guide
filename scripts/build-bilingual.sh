@@ -28,4 +28,5 @@ cp "$ROOT/assets/social/password-fvn-guide-zh.png" "$ROOT/_site/assets/social/pa
 cp "$ROOT/site-en/assets/social/password-fvn-guide-en.png" "$ROOT/_site/en/assets/social/password-fvn-guide-en.png"
 
 python3 "$ROOT/scripts/normalize-sitemaps.py" "$ROOT/_site/sitemap.xml" "$ROOT/_site/en/sitemap.xml"
+python3 "$ROOT/scripts/normalize-layout.py" "$ROOT/_site"
 python3 "$ROOT/scripts/normalize-seo-html.py" "$ROOT/_site"
