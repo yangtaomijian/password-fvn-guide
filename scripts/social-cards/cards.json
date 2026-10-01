@@ -1,0 +1,49 @@
+{
+  "canvas": [
+    1200,
+    630
+  ],
+  "artwork": "password-guide-artwork.png",
+  "caption_color": [
+    151,
+    151,
+    177
+  ],
+  "cards": {
+    "zh": {
+      "output": "assets/social/password-fvn-guide-zh.png",
+      "preserved_text": [
+        "Password",
+        "中文攻略",
+        "角色线 · 字母线 · 密码 · 奖牌 · 机制"
+      ],
+      "caption": "非官方玩家攻略",
+      "preserved_prefix": "非官方",
+      "append_position": [
+        139,
+        350
+      ],
+      "font": "caption-zh.otf",
+      "font_family": "Noto Sans CJK SC",
+      "font_size": 17
+    },
+    "en": {
+      "output": "site-en/assets/social/password-fvn-guide-en.png",
+      "labels": "password-guide-en-labels.png",
+      "preserved_text": [
+        "Password",
+        "Guide",
+        "Routes · Paths · Passwords · Medals · Mechanics"
+      ],
+      "caption": "Unofficial fan-made guide",
+      "preserved_prefix": "Unofficial",
+      "append_position": [
+        162,
+        350
+      ],
+      "font": "caption-en.ttf",
+      "font_family": "Liberation Sans (Arial-compatible)",
+      "font_size": 18
+    }
+  }
+}
