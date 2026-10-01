@@ -215,6 +215,51 @@
 
 
     const leftSidebar = document.querySelector("#quarto-sidebar");
+
+    // Remember explicit navigation-group choices across pages and languages.
+    // Keep Quarto's active-section default until a group has a saved preference.
+    if (leftSidebar) {
+      const key = "pw-navigation-groups-v1";
+      const groups = [...leftSidebar.querySelectorAll(".sidebar-section[id]")];
+      const identities = new Map(groups.map(group => {
+        const link = group.querySelector("a[href]");
+        return [group, link ? new URL(link.href).pathname.replace(/\/en\//, "/") : null];
+      }));
+      const preferences = Object.create(null);
+      const restoreGroups = () => {
+        try {
+          const saved = JSON.parse(localStorage.getItem(key));
+          for (const identity of identities.values()) {
+            if (identity && saved && typeof saved[identity] === "boolean") preferences[identity] = saved[identity];
+          }
+        } catch { /* Navigation remains usable when storage is unavailable. */ }
+        for (const group of groups) {
+          const expanded = preferences[identities.get(group)];
+          if (typeof expanded !== "boolean") continue;
+          group.classList.toggle("show", expanded);
+          for (const toggle of leftSidebar.querySelectorAll(`[data-bs-target="#${group.id}"]`)) {
+            toggle.classList.toggle("collapsed", !expanded);
+            toggle.setAttribute("aria-expanded", String(expanded));
+          }
+        }
+      };
+      restoreGroups();
+      leftSidebar.addEventListener("show.bs.collapse", event => {
+        if (event.target === leftSidebar) restoreGroups();
+      });
+      // Bootstrap's delegated click handler updates aria-expanded before this
+      // sidebar listener. Save that actual state, including ignored rapid clicks.
+      // Drawer close and breakpoint/programmatic changes never write preferences.
+      leftSidebar.addEventListener("click", event => {
+        if (DESKTOP_QUERY.matches) return;
+        const toggle = event.target.closest('[data-bs-toggle="collapse"]');
+        const group = groups.find(group => toggle?.getAttribute("data-bs-target") === `#${group.id}`);
+        const identity = identities.get(group);
+        if (!identity) return;
+        preferences[identity] = toggle.getAttribute("aria-expanded") === "true";
+        try { localStorage.setItem(key, JSON.stringify(preferences)); } catch {}
+      });
+    }
     const rightSidebar = document.querySelector("#pw-page-toc-panel");
 
     // Quarto already follows prefers-color-scheme while its override is absent.
