@@ -1,4 +1,4 @@
-/* P1.1 publication typography and title hierarchy. */
+/* Publication typography and title hierarchy. */
 @font-face {
   font-family: 'PW Newsreader';
   src: url('fonts/newsreader-latin-standard-normal.woff2') format('woff2');
@@ -126,7 +126,7 @@ body main.content section:not(.pw-entry-grid section) > h3 {
   html[lang^='zh'] main.content #title-block-header h1.title { font-size: 1.84rem; }
 }
 
-/* P1.2 publication furniture. Navigation behavior and control geometry stay native. */
+/* Publication furniture. Navigation behavior and control geometry stay native. */
 body #quarto-header .navbar {
   background: var(--pw-bg) !important;
   border-bottom-color: var(--pw-border-strong) !important;
@@ -268,7 +268,7 @@ body #pw-page-toc-panel #TOC ul ul .nav-link.active { color: var(--pw-heading) !
   }
 }
 
-/* P1.3 homepage fast navigation and editorial indexes. */
+/* Homepage fast navigation and editorial indexes. */
 body.pw-home .pw-home-shortcuts {
   padding-bottom: .65rem;
   border-bottom: 1px solid var(--pw-border-strong);
@@ -375,7 +375,7 @@ body.pw-home main.content .pw-entry-grid p {
   }
 }
 
-/* P1.4 colophon; panel-dependent outer footer geometry stays in PW layout CSS. */
+/* Colophon; panel-dependent outer footer geometry stays in PW layout CSS. */
 body footer.footer {
   background: var(--pw-bg) !important;
   border-top: 1px solid var(--pw-border-strong);
