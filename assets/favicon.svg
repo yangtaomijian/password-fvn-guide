@@ -1,6 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
-  <title>PW — Candidate B</title>
-  <rect width="64" height="64" fill="#242321"/>
-  <path fill="#D2B17B" fill-rule="evenodd" d="M6 17H17C23 17 27 21 27 26.5C27 32 23 35.5 17 35.5H12.5V47H6Z M12.5 23.5V29.5H17C19.5 29.5 20.5 28 20.5 26.5C20.5 25 19.5 23.5 17 23.5Z"/>
-  <path fill="#D2B17B" d="M33 21H39.5L43 35L46 26.5L50 35L53 21H59.5L52.5 47H48.5L46 39L43 47H39Z"/>
+  <title>Resonant Vault</title>
+  <rect width="64" height="64" fill="#23242C"/>
+  <g fill="#999FAA">
+    <path d="M15 9H49L50 11L53 14V17H47L43.5 13.5H40.5L38 15.5H26L23.5 13.5H20.5L17 17H11V14L14 11Z"/>
+    <path d="M11 45H17L21 48.5H24L26 46.5H38L40 48.5H43L47 45H53V49L50 51.5L49 53H15L14 51.5L11 49Z"/>
+    <path d="M12 18H16.5L19 22L17.8 30V34L19 41.5L17 44H12V36L15 34V29L12 27Z"/>
+    <path d="M52 18H47.5L45 22L46.2 30V34L45 41.5L47 44H52V36L49 34V29L52 27Z"/>
+  </g>
+  <g fill="#B4A16D">
+    <path d="M12 28.5L13.8 29.5V33.8L12 35Z"/>
+    <path d="M52 28.5L50.2 29.5V33.8L52 35Z"/>
+  </g>
+  <g fill="#AB91C8">
+    <circle cx="32" cy="31.5" r="5.7"/>
+    <path d="M31.3 23.6C28.5 23.8 24.7 27 25 30.8C22 27 26.5 20.8 31.3 23.6Z"/>
+    <path d="M39.1 31.6C41.1 35.3 37.4 40.8 33.2 38.7C37.1 38.4 39.3 35.3 39.1 31.6Z"/>
+  </g>
 </svg>
