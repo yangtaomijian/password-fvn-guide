@@ -194,35 +194,22 @@ Check these points in order:
 
 The Lore section contains the twelve zodiac entries in traditional order:
 
-:::: {.pw-lore-columns}
+::: {.pw-lore-index}
 
-::: {.compendium-lore-table .table-responsive}
-
-| Order | Lore |
-|---:|---|
-| 1 | Aries |
-| 2 | Taurus |
-| 3 | Gemini |
-| 4 | Cancer |
-| 5 | Leo |
-| 6 | Virgo |
-
-:::
-
-::: {.compendium-lore-table .table-responsive}
-
-| Order | Lore |
-|---:|---|
-| 7 | Libra |
-| 8 | Scorpio |
-| 9 | Sagittarius |
-| 10 | Capricorn |
-| 11 | Aquarius |
-| 12 | Pisces |
+1. Aries
+2. Taurus
+3. Gemini
+4. Cancer
+5. Leo
+6. Virgo
+7. Libra
+8. Scorpio
+9. Sagittarius
+10. Capricorn
+11. Aquarius
+12. Pisces
 
 :::
-
-::::
 
 Each Lore entry unlocks with its corresponding medal. The final twelve-medal check after Path A uses the same records.
 

@@ -353,11 +353,32 @@ main.content :is(.affection-difference-table, .affection-outcome-table, .affecti
 main.content h3:not(.pw-entry-grid h3) { font-size: 1.22rem; font-weight: 750; line-height: 1.45; color: var(--pw-heading) !important; padding-bottom: .45rem; border-bottom: 1px solid var(--pw-border); }
 body main.content h3:not(.pw-entry-grid h3) code { color: inherit !important; background: transparent !important; border: 0; padding: 0; font-size: 1em; box-shadow: none; }
 
-/* Two ordered halves use wide reading space without stretching individual columns. */
-.pw-lore-columns { container-type: inline-size; margin-block: 1.35rem 1.8rem; }
-main.content .pw-lore-columns > .compendium-lore-table { margin-block: 0 1rem !important; }
-@container (min-width: 48rem) {
-  main.content .pw-lore-columns > .compendium-lore-table { display: inline-block; vertical-align: top; margin-right: 1rem !important; }
+/* Short zodiac entries form one ordered, responsive index. */
+.pw-lore-index { container-type: inline-size; margin-block: 1.35rem 1.8rem; }
+main.content .pw-lore-index > ol {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .35rem 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style-position: inside;
+}
+main.content .pw-lore-index > ol > li {
+  min-width: 0;
+  padding: .55rem .35rem;
+  border-bottom: 1px solid var(--pw-border);
+  overflow-wrap: anywhere;
+}
+main.content .pw-lore-index > ol > li::marker {
+  color: var(--pw-primary);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+@container (min-width: 32rem) {
+  main.content .pw-lore-index > ol { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@container (min-width: 46rem) {
+  main.content .pw-lore-index > ol { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 /* Editorial surfaces and interaction states. Geometry stays in pw-guide-theme.css. */
