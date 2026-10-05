@@ -137,3 +137,10 @@ Review the Path A first-run sequence and replays, the retired D8 Oswin question 
 This guide is unofficial and not affiliated with Grizz or itch.io. It does not distribute the game or reproduce unauthorized game assets, the full script, extracted CGs, or third-party material.
 
 Public guide pages include a **Discussion** section where visitors can post comments and replies without an account. For errors, unclear guidance, broken links, or site problems you would rather send privately, use **Private feedback** in the page footer. If the on-site feedback tools are unavailable, or the issue concerns the repository itself, you can also use [GitHub Issues](https://github.com/yangtaomijian/password-fvn-guide/issues).
+
+
+::: {.pw-discussions-entry}
+[View all discussions](discussions.md)
+
+Read public discussions from every guide page in English and Chinese.
+:::

@@ -5,7 +5,7 @@ from pathlib import Path
 root = Path(__file__).resolve().parents[1]
 site = root / "_site"
 pages = (
-    "index.html",
+    "index.html", "discussions.html",
     "guide/route-overview.html", "guide/path-system.html", "guide/password-hints.html", "guide/faq.html",
     "collectibles/medals.html", "collectibles/compendium.html", "collectibles/gallery.html",
     "mechanics/password-checks.html", "mechanics/medal-persistence.html", "mechanics/affection.html",
@@ -47,4 +47,4 @@ for path, text in inputs.items():
     "/ /index.html 302\n/en/ /en/index.html 302\n/en /en/index.html 302\n", encoding="utf-8"
 )
 (site / ".assetsignore").write_text("**/.DS_Store\nsite-en/**\n", encoding="utf-8")
-print("Prepared 34 Password staging HTML pages and staging asset controls")
+print("Prepared 36 Password staging HTML pages and staging asset controls")

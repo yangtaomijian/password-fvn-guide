@@ -9,7 +9,7 @@ from html import escape, unescape
 from pathlib import Path
 
 
-EXPECTED_PAGES = 34
+EXPECTED_PAGES = 36
 HEAD_RE = re.compile(r"(<head\b[^>]*>)(.*?)(</head\s*>)", re.IGNORECASE | re.DOTALL)
 TITLE_RE = re.compile(r"<title>(.*?)</title>", re.IGNORECASE | re.DOTALL)
 OG_TITLE_RE = re.compile(

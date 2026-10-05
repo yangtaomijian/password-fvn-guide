@@ -1,5 +1,6 @@
 local paired_paths = {
   ["index.html"] = true,
+  ["discussions.html"] = true,
   ["guide/route-overview.html"] = true,
   ["guide/path-system.html"] = true,
   ["guide/password-hints.html"] = true,
@@ -20,6 +21,7 @@ local paired_paths = {
 
 local output_paths = {
   ["index.html"] = "index.html",
+  ["discussions.html"] = "discussions.html",
   ["route-overview.html"] = "guide/route-overview.html",
   ["path-system.html"] = "guide/path-system.html",
   ["password-hints.html"] = "guide/password-hints.html",

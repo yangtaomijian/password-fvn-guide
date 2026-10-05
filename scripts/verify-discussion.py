@@ -31,7 +31,7 @@ page_keys = {
     "extras/easter-eggs.html": "extras.easter-eggs",
 }
 assert len(page_keys) == 16
-expected_pages = {"index.html", *page_keys}
+expected_pages = {"index.html", "discussions.html", *page_keys}
 expected = {f"{prefix}{page}" for prefix in ("", "en/") for page in expected_pages}
 actual = {
     path.relative_to(site).as_posix() for path in site.rglob("*.html")
@@ -39,13 +39,13 @@ actual = {
     and path.name != "googlef0776754787f4a8e.html"
 }
 assert actual == expected, f"bilingual page set differs: missing={sorted(expected-actual)}, extra={sorted(actual-expected)}"
-assert len(actual) == 34
+assert len(actual) == 36
 
 # Both language projects own the same runtime and page map.
 asset_names = (
     "pw-discussion-config.html", "pw-discussion-fixtures.html", "pw-discussion-remote.html",
     "pw-discussion-runtime.html", "pw-discussion-ui.html", "pw-feedback-ui.html",
-    "pw-discussion.css", "pw-feedback.css",
+    "pw-discussion.css", "pw-feedback.css", "pw-discussion-hub.html",
 )
 for name in asset_names:
     assert (root / "assets" / name).read_bytes() == (root / "site-en/assets" / name).read_bytes(), name
@@ -79,13 +79,15 @@ for relative in sorted(expected):
     assert text.count("if (window.__pwDiscussionRuntime) return;") == 1, relative
     assert text.count("const pageKeys = Object.freeze({") == 1, relative
     assert text.count("main.after(mount);") == 1, relative
-    assert text.count("const runtime = window.__pwDiscussionRuntime;") == 2, relative
+    assert text.count("const runtime = window.__pwDiscussionRuntime;") == 3, relative
     assert text.count('class="pw-feedback-slot" type="button" disabled') == 1, relative
     assert text.count("trigger.disabled = false;") == 1, relative
     assert "https://giscus.app/client.js" not in text, f"active Giscus client in {relative}"
     assert 'id="giscus-base-theme"' not in text, f"active Giscus config in {relative}"
     assert 'class="giscus"' not in text, f"active Giscus container in {relative}"
-    if relative.endswith("index.html"):
+    if relative.endswith("discussions.html"):
+        assert 'id="pw-discussion-hub"' in text
+    elif relative.endswith("index.html"):
         assert relative in {"index.html", "en/index.html"}
     else:
         assert relative.removeprefix("en/") in page_keys
@@ -97,4 +99,4 @@ if staging:
     assert (site / ".assetsignore").is_file()
 else:
     assert not headers.exists(), "production build unexpectedly contains staging X-Robots-Tag"
-print(f"Password Discussion {'staging' if staging else 'production'} output: 17 ZH + 17 EN pages, 32 mounts, 34 feedback slots, no active Giscus")
+print(f"Password Discussion {'staging' if staging else 'production'} output: 18 ZH + 18 EN pages, 32 mounts, 36 feedback slots, no active Giscus")

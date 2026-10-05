@@ -9,6 +9,7 @@ project:
     - assets/pw-reference-v2b.js
   render:
     - index.md
+    - discussions.md
     - guide/route-overview.md
     - guide/path-system.md
     - guide/password-hints.md
@@ -227,6 +228,7 @@ format:
       - assets/pw-discussion-remote.html
       - assets/pw-discussion-runtime.html
       - assets/pw-discussion-ui.html
+      - assets/pw-discussion-hub.html
       - assets/pw-feedback-ui.html
     toc: true
     toc-depth: 3

@@ -31,6 +31,7 @@ EN_HOME_TITLE = "Password b0.85 Guide & Mechanics Reference"
 EN_HOME_DESCRIPTION = "An unofficial guide and walkthrough reference for Password, Grizz’s furry visual novel (FVN), covering b0.85 routes, endings, password hints, medals, Gallery completion, mechanics, and version differences."
 PAIRED = {
     "index.html",
+    "discussions.html",
     "guide/route-overview.html",
     "guide/path-system.html",
     "guide/password-hints.html",
@@ -149,7 +150,7 @@ def verify_pages() -> None:
     pages = html_pages(SITE)
     zh_pages = [path for path in pages if "en" not in path.relative_to(SITE).parts]
     en_pages = [path for path in pages if path.relative_to(SITE).parts[:1] == ("en",)]
-    if len(zh_pages) != 17 or len(en_pages) != 17 or len(pages) != 34:
+    if len(zh_pages) != len(PAIRED) or len(en_pages) != len(PAIRED) or len(pages) != 2 * len(PAIRED):
         raise AssertionError(
             f"page counts are {len(zh_pages)}/{len(en_pages)}/{len(pages)}"
         )
@@ -237,8 +238,8 @@ def sitemap_urls(path: Path) -> list[str]:
 
 def verify_sitemaps() -> None:
     for relative, expected_count, home, html_root, exclude_english in (
-        ("sitemap.xml", 17, ZH_ROOT, SITE, True),
-        ("en/sitemap.xml", 17, EN_ROOT, SITE / "en", False),
+        ("sitemap.xml", len(PAIRED), ZH_ROOT, SITE, True),
+        ("en/sitemap.xml", len(PAIRED), EN_ROOT, SITE / "en", False),
     ):
         urls = sitemap_urls(SITE / relative)
         if len(urls) != expected_count or home not in urls:
@@ -301,8 +302,8 @@ def verify_search_indexes() -> None:
     import json
 
     for path, expected in (
-        (SITE / "search.json", EXPECTED_ZH_PAGES),
-        (SITE / "en/search.json", EXPECTED_EN_PAGES),
+        (SITE / "search.json", EXPECTED_ZH_PAGES - {"discussions.html"}),
+        (SITE / "en/search.json", EXPECTED_EN_PAGES - {"discussions.html"}),
     ):
         records = json.loads(path.read_text(encoding="utf-8"))
         pages = {record["href"].split("#", 1)[0] for record in records}
@@ -315,14 +316,14 @@ def main() -> None:
     verify_sitemaps()
     verify_images()
     verify_search_indexes()
-    print("HTML pages: 34/34")
-    print("Descriptions, canonicals, lang, OG, Twitter: 34/34")
-    print("Chinese hreflang pages: 17/17")
-    print("English hreflang pages: 17/17")
-    print("Reciprocal language pairs: 17/17")
+    print("HTML pages: 36/36")
+    print("Descriptions, canonicals, lang, OG, Twitter: 36/36")
+    print("Chinese hreflang pages: 18/18")
+    print("English hreflang pages: 18/18")
+    print("Reciprocal language pairs: 18/18")
     print("Bilingual Versions pairs: 4/4")
-    print("Chinese sitemap URLs: 17")
-    print("English sitemap URLs: 17")
+    print("Chinese sitemap URLs: 18")
+    print("English sitemap URLs: 18")
     print("Normalized sitemap home URLs: 2/2")
     print("Search index page sets: 17/17 + 17/17")
     print("Social images present and 1200x630: 4/4 source/output")
