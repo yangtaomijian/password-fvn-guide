@@ -29,3 +29,11 @@
 .aa-Panel:has(.quarto-search-no-results) .aa-Panel--scrollable {
   overflow-y: auto;
 }
+
+/* Mobile empty hints wrap beyond Quarto's fixed 60px centered slot.
+   Let the result source take its content height so the scroller can reach it. */
+@media (max-width: 767.98px) {
+  .aa-DetachedContainer .aa-SourceNoResults {
+    height: auto !important;
+  }
+}

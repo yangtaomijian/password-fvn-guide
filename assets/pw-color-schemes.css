@@ -165,6 +165,8 @@ footer .nav-footer p { margin: 0; overflow-wrap: anywhere; }
     padding-left: calc(var(--pw-left-panel-width) + 1rem);
     padding-right: 1rem;
   }
+  /* Home has no page TOC, so its footer centers across the full page. */
+  body.pw-home.pw-custom-layout-ready footer.footer { padding-left: 1rem; }
   footer .nav-footer { max-width: 960px; margin-inline: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
