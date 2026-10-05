@@ -2,6 +2,8 @@ project:
   type: website
   output-dir: _site
   resources:
+    # Preserve the social image URL used by older shared links.
+    - assets/social/password-b085-guide-zh.png
     - googlef0776754787f4a8e.html
     - assets/fonts/Newsreader-OFL.txt
     - assets/pw-reference-v2b.js
