@@ -86,10 +86,8 @@ website:
             text: Affection System and Point Guide
           - href: mechanics/affection-differences.md
             text: Affection Checks and Story Differences
-      - text: Extras
-        menu:
-          - href: extras/easter-eggs.md
-            text: Easter Eggs and Hidden Inputs
+      - href: extras/easter-eggs.md
+        text: Easter Eggs
 
       - text: Version Archives
         menu:
@@ -141,10 +139,8 @@ website:
           - href: mechanics/affection-differences.md
             text: Affection Checks and Story Differences
 
-      - section: "Extras"
-        contents:
-          - href: extras/easter-eggs.md
-            text: Easter Eggs and Hidden Inputs
+      - href: extras/easter-eggs.md
+        text: Easter Eggs
 
       - section: "Version Archives"
         contents:

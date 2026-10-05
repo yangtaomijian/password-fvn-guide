@@ -526,3 +526,19 @@ body footer.footer #quarto-back-to-top:is(:hover, :focus-visible) {
   #quarto-sidebar .pw-language-switch > svg { display: block; flex: 0 0 20px; width: 20px; height: 20px; }
   #quarto-sidebar .pw-language-switch:focus-visible { outline: 2px solid var(--pw-primary); outline-offset: 2px; }
 }
+
+/* Keep 攻略 together and make the requested mobile title hierarchy explicit. */
+@media (max-width: 767.98px) {
+  html[lang^='zh'] body.pw-home #title-block-header h1.title {
+    white-space: nowrap;
+  }
+  html[lang^='zh'] body.pw-home .pw-home-title-continuation {
+    display: block;
+  }
+}
+@media (max-width: 359.98px) {
+  /* Eight Chinese glyphs still need one complete line on a 320px screen. */
+  html[lang^='zh'] body.pw-home #title-block-header h1.title {
+    font-size: 1.7rem;
+  }
+}

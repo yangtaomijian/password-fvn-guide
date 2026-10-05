@@ -119,10 +119,8 @@ website:
           - text: "好感度检定与剧情差异"
             href: mechanics/affection-differences.md
 
-      - text: 其他
-        menu:
-          - href: extras/easter-eggs.md
-            text: 彩蛋与隐藏输入
+      - href: extras/easter-eggs.md
+        text: 彩蛋
 
       - text: 版本档案
         menu:
@@ -174,10 +172,8 @@ website:
           - text: "好感度检定与剧情差异"
             href: mechanics/affection-differences.md
 
-      - section: "其他"
-        contents:
-          - href: extras/easter-eggs.md
-            text: 彩蛋与隐藏输入
+      - href: extras/easter-eggs.md
+        text: 彩蛋
 
       - section: "版本档案"
         contents:

@@ -49,12 +49,16 @@ A run that begins on the Path C side can therefore finish as Path C, Path D, or 
 
 When Sal reaches the D14 mill sequence alive, the main outcomes are:
 
+::: {.d14-result-table .table-responsive}
+
 | Starting side | D14 choice | Final result |
 |---|---|---|
 | Path C side | **Save Benson.** | Path C |
 | Path C side | **Save Sal.** | Story continues as Path D |
 | Path D side | **Save Sal.** | Remains on Path D |
 | Path D side | **Save Benson.** | Path E |
+
+:::
 
 On the Path C side, saving Sal causes Benson to die. Oswin then takes his own life, so the story moves from Path C to Path D. Other outcomes in which everyone dies lead to Path E.
 

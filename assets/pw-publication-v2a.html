@@ -48,9 +48,14 @@
       ? 'UNOFFICIAL GUIDE & REFERENCE · b0.85'
       : '非官方攻略与参考 · b0.85';
     heading.before(eyebrow);
-    heading.textContent = english
-      ? 'Password Guide & Mechanics Reference'
-      : 'Password 中文攻略与机制资料库';
+    if (english) {
+      heading.textContent = 'Password Guide & Mechanics Reference';
+    } else {
+      const continuation = document.createElement('span');
+      continuation.className = 'pw-home-title-continuation';
+      continuation.textContent = '攻略与机制资料库';
+      heading.replaceChildren(document.createTextNode('Password 中文'), continuation);
+    }
   };
 
   if (document.readyState === 'loading') {

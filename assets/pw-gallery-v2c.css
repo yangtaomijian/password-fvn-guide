@@ -139,3 +139,30 @@ main.content :is(#gallery-memories, #gallery-trauma).gallery-coordinate-table ta
     line-height: 1.48;
   }
 }
+
+/* Size full-index dates to their content and keep coordinates full-width. */
+@media (max-width: 767.98px) {
+  #gallery-trigger-index .gallery-trigger-group .gallery-trigger-table-scroll tbody > tr {
+    grid-template-columns: minmax(0, 1fr) fit-content(38%);
+  }
+
+  #gallery-trigger-index .gallery-trigger-group .gallery-trigger-table-scroll tbody > tr > td:first-child {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    row-gap: 0.25rem;
+  }
+
+  #gallery-trigger-index .gallery-trigger-group .gallery-trigger-table-scroll tbody > tr > td:first-child > a {
+    grid-column: 1;
+  }
+
+  #gallery-trigger-index .gallery-trigger-group .gallery-trigger-table-scroll tbody > tr > td:first-child > br {
+    display: none;
+  }
+
+  #gallery-trigger-index .gallery-trigger-group .gallery-trigger-table-scroll tbody > tr > td:first-child > small {
+    grid-column: 1 / -1;
+    white-space: nowrap;
+  }
+}

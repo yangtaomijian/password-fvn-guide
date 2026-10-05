@@ -3,10 +3,33 @@ const assert = require('node:assert/strict');
 const {chromium,webkit}=require('playwright');
 const prefix='pw',route='collectibles/gallery.html',hash='memories',ready='pw-custom-layout-ready';
 const base=process.env.GUIDE_BASE_URL;assert(base,'Set GUIDE_BASE_URL to local bilingual preview');
+async function fragmentLanding(p,hash) {
+ // A preserved fragment has a two-stage landing around header settlement.
+ // Verify its real destination before issuing a competing scroll-to-top action.
+ await p.waitForFunction(hash=>{
+  const target=document.getElementById(hash),h=document.querySelector('#quarto-header');
+  return target && scrollY>0 && h.classList.contains('headroom--not-top') &&
+   !h.getAnimations().some(a=>a.playState==='running') &&
+   Math.abs(target.getBoundingClientRect().top-Math.max(0,h.getBoundingClientRect().bottom)-10)<=1;
+ },hash);
+}
+async function revealHeader(p) {
+ await p.evaluate(() => scrollTo({top:0,behavior:'instant'}));
+ await p.waitForFunction(() => {
+  const h=document.querySelector('#quarto-header');
+  return scrollY<=1 && h.classList.contains('headroom--top') &&
+   !h.classList.contains('headroom--unpinned') && h.getBoundingClientRect().top>=-1 &&
+   !h.getAnimations().some(a=>a.playState==='running');
+ });
+}
 async function open(p){
- await p.evaluate(()=>scrollTo({top:0,behavior:'instant'}));await p.waitForTimeout(250);
+ await revealHeader(p);
+ // Breakpoint closes remove .show before Bootstrap finishes .collapsing;
+ // a toggle click during that transition is intentionally ignored by Bootstrap.
+ await p.waitForFunction(()=>!document.querySelector('.quarto-sidebar-collapse-item.collapsing'));
+ assert.equal(await p.locator('#quarto-sidebar').evaluate(e=>e.classList.contains('show')),false,'Opener starts from a fully closed navigation');
  await p.locator('#quarto-header .quarto-btn-toggle').click();
- await p.waitForFunction(()=>document.querySelector('#quarto-sidebar').classList.contains('show'));
+ await p.waitForFunction(()=>document.querySelector('#quarto-sidebar').classList.contains('show')&&!document.querySelector('.quarto-sidebar-collapse-item.collapsing'));
 }
 async function close(p){
  await p.waitForFunction(()=>document.querySelector('#quarto-sidebar-glass').classList.contains('show')&&!document.querySelector('#quarto-sidebar-glass').classList.contains('collapsing'));
@@ -18,7 +41,7 @@ async function run(name,type,options){
  const b=await type.launch({headless:true,...options});let checks=0;
  try{for(const locale of ['', 'en/'])for(const colorScheme of ['light','dark']){
   const p=await b.newPage({viewport:{width:390,height:874},colorScheme});
-  await p.goto(`${base}/${locale}${route}?preview=language#${hash}`);await p.locator(`body.${ready}`).waitFor();
+  await p.goto(`${base}/${locale}${route}?preview=language#${hash}`);await p.locator(`body.${ready}`).waitFor();await fragmentLanding(p,hash);
   const identity=await p.locator(`.${prefix}-language-switch`).evaluate(link=>{link.dataset.identityProbe='original';return link.href;});
   for(const width of [320,360,390,768,991,992,1100,1440]){
    await p.setViewportSize({width,height:874});
@@ -56,13 +79,15 @@ async function run(name,type,options){
   await p.waitForFunction(()=>document.activeElement.classList.contains('quarto-btn-toggle'));checks++;
   await open(p);await link.focus();const target=await link.evaluate(a=>a.href);
   await Promise.all([p.waitForURL(target),p.keyboard.press('Enter')]);await p.locator(`body.${ready}`).waitFor();
-  assert.equal(new URL(p.url()).hash,`#${hash}`);assert.equal(new URL(p.url()).search,'?preview=language');assert.equal(new URL(p.url()).pathname.includes('/en/'),!locale);checks++;
+  assert.equal(new URL(p.url()).hash,`#${hash}`);assert.equal(new URL(p.url()).search,'?preview=language');assert.equal(new URL(p.url()).pathname.includes('/en/'),!locale);await fragmentLanding(p,hash);checks++;
   await open(p);assert.equal(await p.locator(`.${prefix}-nav-language .${prefix}-language-switch`).count(),1);await close(p);
   await p.locator(`.${prefix}-search-launcher`).click();await p.locator('.aa-DetachedContainer').waitFor();await p.keyboard.press('Escape');await p.locator('.aa-DetachedContainer').waitFor({state:'hidden'});checks++;
   // Search restores launcher focus asynchronously; then reveal the auto-hiding header.
   await p.waitForFunction(prefix=>document.activeElement.classList.contains(`${prefix}-search-launcher`),prefix);
-  await p.evaluate(()=>scrollTo({top:0,behavior:'instant'}));await p.waitForTimeout(300);
-  await p.locator('.quarto-color-scheme-toggle').click();await p.waitForTimeout(100);
+  await revealHeader(p);
+  const darkBefore=await p.locator('body').evaluate(b=>b.classList.contains('quarto-dark'));
+  await p.locator('.quarto-color-scheme-toggle').click();
+  await p.waitForFunction(before=>document.body.classList.contains('quarto-dark')!==before,darkBefore);
   assert.equal(await p.locator(`.${prefix}-nav-language .${prefix}-language-switch`).count(),1);checks++;
   await p.close();
  }

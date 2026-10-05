@@ -4860,3 +4860,115 @@ main.content .pw-entry-grid h3 a:not(.anchorjs-link) {
   font-weight: 650;
   line-height: 1;
 }
+
+
+/* Viewport-owned tablet TOC, with its existing Quarto grid space reserved. */
+.pw-toc-slot { display: none; }
+@media (min-width: 768px) and (max-width: 1099.98px) {
+  .pw-toc-slot {
+    display: block;
+    grid-column: body-end / screen-end;
+    grid-row: 1;
+    align-self: start;
+    min-width: 0;
+  }
+  #pw-page-toc-panel.pw-toc-viewport-ready {
+    position: fixed !important;
+    left: var(--pw-toc-track-left) !important;
+    right: auto !important;
+    width: var(--pw-toc-track-width) !important;
+    max-width: var(--pw-toc-track-width) !important;
+    top: calc(var(--pw-header-height) + 0.3rem) !important;
+    height: calc(100dvh - var(--pw-header-height) - 0.3rem) !important;
+    max-height: calc(100dvh - var(--pw-header-height) - 0.3rem) !important;
+    margin: 0 !important;
+    z-index: 1015;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    overflow-anchor: none;
+    scrollbar-width: thin;
+  }
+  body:has(#quarto-header.headroom--unpinned) #pw-page-toc-panel.pw-toc-viewport-ready {
+    top: 0 !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+  }
+}
+
+/* One mobile policy for ordinary Markdown and named source tables. Existing
+   adaptive records and gallery coordinates retain their specialized layouts.
+   Normal word boundaries supply intrinsic column minima; wider tables scroll
+   inside their wrapper instead of squeezing English into individual letters. */
+main.content .pw-mobile-table-scroll {
+  display: block;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto !important;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+}
+main.content .pw-mobile-table-scroll:focus-visible {
+  outline: 2px solid var(--pw-accent);
+  outline-offset: 2px;
+}
+@media (max-width: 767.98px) {
+  body main.content .pw-mobile-table-scroll:not(.pw-adaptive-table) table {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    table-layout: auto !important;
+  }
+  body main.content .pw-mobile-table-scroll:not(.pw-adaptive-table) :is(col, th, td) {
+    width: auto !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+  #quarto-document-content .pw-mobile-table-scroll:not(.pw-adaptive-table) :is(th, td) code {
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+}
+
+/* Full single-page titles stay reachable at the existing 992px navbar switch. */
+@media (min-width: 992px) and (max-width: 1279.98px) {
+  #quarto-header #navbarCollapse { flex: 1 1 0 !important; }
+  #quarto-header #navbarCollapse .navbar-nav {
+    min-width: 0;
+    flex-wrap: wrap;
+  }
+  #quarto-header #navbarCollapse .nav-link[href$="extras/easter-eggs.html"] {
+    white-space: normal;
+  }
+}
+
+/* A single-page category keeps primary sidebar typography without a collapse. */
+@media (max-width: 1099.98px) {
+  #quarto-sidebar .pw-nav-direct-section {
+    margin-top: .75rem;
+    margin-bottom: .32rem;
+  }
+  #quarto-sidebar .pw-nav-direct-section > .sidebar-item-container {
+    display: flex !important;
+    align-items: center !important;
+    min-height: 2.5rem;
+  }
+  #quarto-sidebar .pw-nav-direct-section > .sidebar-item-container > .sidebar-link {
+    display: flex !important;
+    align-items: center !important;
+    flex: 1 1 auto;
+    min-width: 0;
+    line-height: 1.35 !important;
+  }
+  #quarto-sidebar .pw-nav-direct-section > .sidebar-item-container :is(.sidebar-link, .menu-text) {
+    font-size: .77rem !important;
+    font-weight: 700 !important;
+    letter-spacing: .08em !important;
+  }
+  #quarto-sidebar .pw-nav-direct-section > .sidebar-item-container > .sidebar-link:not(.active) {
+    color: var(--pw-text-faint) !important;
+  }
+  html[lang^='zh'] #quarto-sidebar .pw-nav-direct-section > .sidebar-item-container :is(.sidebar-link, .menu-text) {
+    letter-spacing: .035em !important;
+  }
+}

@@ -204,7 +204,7 @@
       collectibles: "collectibles",
       mechanics: "mechanics",
       versions: "version archives",
-      extras: "extras"
+      extras: "easter eggs"
     };
     const links = Array.from(document.querySelectorAll(
       "#quarto-header .navbar-nav > .nav-item > .nav-link"
@@ -237,15 +237,31 @@
 
     rootElement.dataset.pwLayoutControlsInitialized = "true";
 
-    // Bare Markdown tables need the same local overflow containment as named tables.
+    // Easter Eggs remains a primary category even with a direct destination.
+    document.querySelector('#quarto-sidebar .sidebar-menu-container > ul > li > .sidebar-item-container > a[href$="extras/easter-eggs.html"]')
+      ?.closest('li').classList.add('pw-nav-direct-section');
+
+    // Keep native/adaptive table ownership; every remaining source table gets
+    // one local scroller, including Quarto's generated Bootstrap wrappers.
     document.querySelectorAll("main.content table").forEach((table) => {
-      if (table.closest(".table-responsive, .quarto-bootstrap-table, .pw-table-scroll, .gallery-coordinate-table, #gallery-trigger-index, #gallery-non-gallery-index")) return;
-      const scroll = document.createElement("div");
-      scroll.className = "pw-table-scroll";
-      table.before(scroll);
-      scroll.append(table);
+      if (table.closest(".gallery-coordinate-table, #gallery-trigger-index, #gallery-non-gallery-index")) return;
+      let scroll = table.closest(".table-responsive, .quarto-bootstrap-table, .pw-table-scroll");
+      if (!scroll) {
+        scroll = document.createElement("div");
+        scroll.className = "pw-table-scroll";
+        table.before(scroll);
+        scroll.append(table);
+      }
+      scroll.classList.add("pw-mobile-table-scroll");
+      scroll.setAttribute("tabindex", "0");
+      scroll.setAttribute("role", "region");
+      scroll.setAttribute("aria-label", document.documentElement.lang.startsWith("en")
+        ? "Table; scroll horizontally if needed" : "表格；必要时可左右滚动");
     });
 
+
+    rootElement.dataset.pwTablesReady = "true";
+    document.dispatchEvent(new Event("pw:tables-ready"));
 
     // Dock the existing return control when the footer is visible, avoiding text overlap.
     const footer = document.querySelector("footer.footer");
@@ -553,6 +569,35 @@
     measureHeader();
     if (header && "ResizeObserver" in window) {
       new ResizeObserver(measureHeader).observe(header);
+    }
+
+    // Retain Quarto's real grid track as an empty slot. The visible TOC is
+    // fixed to that track, so footer/detail height changes cannot push it away.
+    if (rightSidebar) {
+      const slot = document.createElement("div");
+      slot.className = "pw-toc-slot";
+      slot.setAttribute("aria-hidden", "true");
+      rightSidebar.before(slot);
+      const tablet = matchMedia("(min-width: 768px) and (max-width: 1099.98px)");
+      const measureTocTrack = () => {
+        if (!tablet.matches) return;
+        const rect = slot.getBoundingClientRect();
+        rootElement.style.setProperty("--pw-toc-track-left", `${rect.left}px`);
+        rootElement.style.setProperty("--pw-toc-track-width", `${rect.width}px`);
+        rightSidebar.classList.add("pw-toc-viewport-ready");
+      };
+      let pendingTrackFrame = 0;
+      const scheduleTocTrack = () => {
+        if (pendingTrackFrame) return;
+        pendingTrackFrame = requestAnimationFrame(() => {
+          pendingTrackFrame = 0;
+          measureTocTrack();
+        });
+      };
+      measureTocTrack();
+      new ResizeObserver(scheduleTocTrack).observe(slot);
+      window.addEventListener("resize", measureTocTrack);
+      tablet.addEventListener("change", measureTocTrack);
     }
 
     const toc = rightSidebar?.querySelector("#TOC");

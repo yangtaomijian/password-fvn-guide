@@ -14,7 +14,7 @@ toc: true
 
 ## 主要变化一览
 
-::: {.table-responsive}
+::: {.table-responsive .changes-at-a-glance-table}
 | 领域 | b0.85 的主要变化 |
 |---|---|
 | 后记 | 新增角色档案、追加场景与背景资料界面 |

@@ -55,12 +55,16 @@ Sal 线在 D10 放弃密码检定后，会根据此前 Oswin 的状态继续留�
 
 当 Sal 活着抵达 D14 磨坊事件时，主要结果如下：
 
+::: {.d14-result-table .table-responsive}
+
 | 起始方向 | D14 选择 | 最终结果 |
 |---|---|---|
 | Path C 一侧 | **Save Benson.** | 保持 Path C |
 | Path C 一侧 | **Save Sal.** | 剧情转入 Path D |
 | Path D 一侧 | **Save Sal.** | 保持 Path D |
 | Path D 一侧 | **Save Benson.** | 进入 Path E |
+
+:::
 
 在 Path C 一侧选择救 Sal，会导致 Benson 死亡，随后 Oswin 自尽，因此流程会从 Path C 转入 Path D。其他若干会让所有人死亡的结果则会进入 Path E。
 
