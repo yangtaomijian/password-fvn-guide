@@ -252,10 +252,14 @@ body #pw-page-toc-panel #TOC ul ul .nav-link.active { color: var(--pw-heading) !
 
 /* Desktop TOC rhythm: align its title and list without changing type sizes. */
 @media (min-width: 1100px) {
-  body #pw-page-toc-panel { padding: 14px .8rem 1.5rem 20px !important; }
+  /* Keep the 14px inset inside the opaque sticky toolbar, not above it. */
+  body #pw-page-toc-panel {
+    padding: 0 .8rem 1.5rem 20px !important;
+    scroll-padding-top: calc(14px + 2rem + .5rem + 5px);
+  }
   body #pw-page-toc-panel .pw-panel-toolbar {
     min-height: 0;
-    padding: 0 0 .5rem;
+    padding: 14px 0 .5rem;
     gap: .5rem;
     border-bottom-color: color-mix(in srgb, var(--pw-border) 65%, transparent);
   }
@@ -564,3 +568,22 @@ body footer.footer #quarto-back-to-top:is(:hover, :focus-visible) {
     font-size: 1.7rem;
   }
 }
+
+/* Desktop branch choices stay independent of native active-heading folding. */
+@media (min-width: 1100px) {
+  body #pw-page-toc-panel #TOC .guide-toc-branch[data-desktop-expanded="true"] { display: block !important; }
+  body #pw-page-toc-panel #TOC .guide-toc-branch[data-desktop-expanded="false"] { display: none !important; }
+  body #pw-page-toc-panel #TOC .guide-toc-branch-item { position: relative; }
+  body #pw-page-toc-panel #TOC .guide-toc-branch-item > a.nav-link { padding-right: 1.7rem !important; }
+  body #pw-page-toc-panel #TOC .guide-toc-branch-toggle {
+    position: absolute; top: .1rem; right: 0; z-index: 2;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1.5rem; height: 1.7rem; padding: 0;
+    border: 0; border-radius: 3px; background: transparent;
+    color: var(--pw-text-faint); font: inherit; line-height: 1; cursor: pointer;
+  }
+  body #pw-page-toc-panel #TOC .guide-toc-branch-toggle:hover { color: var(--pw-heading); background: color-mix(in srgb, var(--pw-accent) 8%, transparent); }
+  body #pw-page-toc-panel #TOC .guide-toc-branch-toggle:focus-visible { outline: 2px solid var(--pw-accent); outline-offset: 1px; }
+  body #pw-page-toc-panel #TOC a.guide-toc-parent { color: var(--pw-heading) !important; font-weight: 650; border-left-color: var(--pw-accent) !important; }
+}
+body #pw-page-toc-panel #TOC .guide-toc-branch-toggle[hidden] { display: none !important; }

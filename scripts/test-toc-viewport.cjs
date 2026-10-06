@@ -28,8 +28,10 @@ async function run(name,type,options){const b=await type.launch({headless:true,.
   }
   await p.setViewportSize({width:1440,height:390});await p.evaluate(()=>scrollTo({top:0,behavior:'instant'}));await frames(p);
   const panel=p.locator('#pw-page-toc-panel');const s=await geometry(p);assert(s.scrollHeight>s.clientHeight,'Long TOC must have independent scroll range');
+  // Real manual rail entry pauses following before independent scrolling.
+  await p.mouse.move(100,250);await frames(p);
   const y=s.y;await panel.evaluate(e=>e.scrollTop=e.scrollHeight);assert.equal(await p.evaluate(()=>scrollY),y,'TOC scrolling does not scroll document');checks++;
-  const link=panel.locator('#TOC a[data-scroll-target]').first();await link.click();const hash=await link.getAttribute('data-scroll-target');
+  const link=panel.locator('#TOC a[data-scroll-target]').first();await link.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));await frames(p);await link.click();const hash=await link.getAttribute('data-scroll-target');
   assert.equal(decodeURIComponent(new URL(p.url()).hash),decodeURIComponent(hash));
   await p.waitForFunction(hash=>[...document.querySelectorAll('#TOC a.active')].some(a=>a.getAttribute('data-scroll-target')===hash),hash);checks++;
   await p.close();
