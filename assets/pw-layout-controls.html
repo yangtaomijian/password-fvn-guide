@@ -4,6 +4,12 @@
 
   const LEFT_KEY = "pw-guide-left-sidebar-collapsed";
   const RIGHT_KEY = "pw-guide-right-toc-collapsed";
+  const DESKTOP_TOC_KEY = "pw-desktop-toc-collapsed-v1";
+  let desktopTocCollapsed = false;
+  const readDesktopToc = () => {
+    try { desktopTocCollapsed = sessionStorage.getItem(DESKTOP_TOC_KEY) === "1"; } catch {}
+    return desktopTocCollapsed;
+  };
   const DESKTOP_QUERY = window.matchMedia("(min-width: 1100px)");
   const RIGHT_PANEL_QUERY = window.matchMedia("(min-width: 768px)");
   const PAGE_PATHS = [
@@ -343,7 +349,7 @@
         try { localStorage.setItem(key, JSON.stringify(preferences)); } catch {}
       });
     }
-    const rightSidebar = document.querySelector("#pw-page-toc-panel");
+    const rightSidebar = document.querySelector("#pw-page-toc-panel")?.querySelector("#TOC")?.parentElement;
 
     // Quarto already follows prefers-color-scheme while its override is absent.
     // Clear only that override to restore both initial and live system following.
@@ -540,6 +546,13 @@
     }
 
     if (rightSidebar) {
+      const english = document.documentElement.lang.startsWith("en");
+      for (const [button, text] of [[rightCollapseButton, english ? "Collapse" : "收起"], [rightOpenButton, english ? "Expand TOC" : "展开目录"]]) {
+        const label = document.createElement("span");
+        label.className = "pw-desktop-toc-label";
+        label.textContent = text;
+        button.append(label);
+      }
       rightSidebar.prepend(
         createToolbar("本页目录", rightCollapseButton)
       );
@@ -756,7 +769,10 @@
       );
 
       if (persist) {
-        safeStorageSet(RIGHT_KEY, collapsed ? "1" : "0");
+        if (DESKTOP_QUERY.matches) {
+          desktopTocCollapsed = collapsed;
+          try { sessionStorage.setItem(DESKTOP_TOC_KEY, collapsed ? "1" : "0"); } catch {}
+        } else safeStorageSet(RIGHT_KEY, collapsed ? "1" : "0");
       }
     }
 
@@ -769,6 +785,8 @@
     }
 
     function applyResponsiveState() {
+      const active = document.activeElement;
+      const hadTocFocus = rightSidebar?.contains(active) || active === rightOpenButton || active?.matches(".pw-mobile-toc-toggle");
       if (DESKTOP_QUERY.matches) {
         // Desktop site navigation lives in the navbar; keep the hidden rail inert.
         setLeftCollapsed(true, false);
@@ -783,8 +801,7 @@
 
       if (RIGHT_PANEL_QUERY.matches) {
         mobileToc?.apply();
-        // The desktop left TOC stays visible, independent of the old right-rail preference.
-        setRightCollapsed(!DESKTOP_QUERY.matches && safeStorageGet(RIGHT_KEY) === "1", false);
+        setRightCollapsed(DESKTOP_QUERY.matches ? readDesktopToc() : safeStorageGet(RIGHT_KEY) === "1", false);
       } else {
         body.classList.remove("pw-right-collapsed");
         if (rightSidebar) {
@@ -794,9 +811,17 @@
         }
         mobileToc?.apply();
       }
+      if (hadTocFocus) requestAnimationFrame(() => {
+        if (active.getClientRects().length && !active.closest("[inert]") && getComputedStyle(active).visibility !== "hidden") return;
+        const target = RIGHT_PANEL_QUERY.matches
+          ? (body.classList.contains("pw-right-collapsed") ? rightOpenButton : rightCollapseButton)
+          : document.querySelector(".pw-mobile-toc-toggle");
+        target?.focus({preventScroll:true});
+      });
     }
 
     applyResponsiveState();
+    window.addEventListener("pageshow", applyResponsiveState);
     DESKTOP_QUERY.addEventListener("change", applyResponsiveState);
     RIGHT_PANEL_QUERY.addEventListener("change", applyResponsiveState);
   };
