@@ -178,7 +178,8 @@
 
 /* Local scope extension: independent persistent tree section and hub entry. */
 #pw-public-discussion .pw-discussion-heading { display:flex; align-items:baseline; justify-content:space-between; gap:.6rem 1rem; flex-wrap:wrap; }
-#pw-public-discussion .pw-discussion-heading h2 { flex:1; }
+#pw-public-discussion .pw-discussion-heading h2 { flex:1 0 auto; min-width:0; }
+#pw-public-discussion .pw-discussion-refresh { flex:none; }
 #pw-public-discussion .pw-discussion-hub-link { font-size:.86rem; }
 #pw-public-discussion .pw-discussion-persistent { margin:1.3rem 0 1.7rem; }
 #pw-public-discussion .pw-discussion-persistent[hidden] { display:none!important; }
@@ -227,3 +228,11 @@
 
 /* The publication title block already displays this page description. */
 #pw-discussion-hub #description { display:none; }
+
+/* Keep mobile comment actions reachable while the fixed guide control is visible. */
+@media (max-width: 767.98px) {
+  body:has(#pw-public-discussion .pw-discussion-composer-host:not([hidden])) #quarto-back-to-top {
+    visibility: hidden !important;
+    pointer-events: none;
+  }
+}

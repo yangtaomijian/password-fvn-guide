@@ -40,6 +40,22 @@
     '/en/extras/easter-eggs.html': 'extras.easter-eggs',
   });
 
+  // Only existing anchors in guide prose can become a new comment's section link.
+  // Discussion links and shell controls must never be stored as pageHash.
+  function getCommentPageHash() {
+    const hash = location.hash;
+    if (!hash || Array.from(hash).length > 256 || /[?#]/.test(hash.slice(1))) return '';
+    let id;
+    try { id = decodeURIComponent(hash.slice(1)); } catch { return ''; }
+    if (/^(?:[0-9a-f]{8}-[0-9a-f-]{27}|(?:pw|dw|kt)-comment-|discussion|quarto|toc-|title-block|fn(?:ref)?[-\d])/i.test(id)) return '';
+    const main = document.querySelector('#quarto-content > main#quarto-document-content');
+    const target = document.getElementById(id);
+    if (!target || !main?.contains(target) || target === main ||
+        target.closest('header, footer, nav, aside, form, dialog, .quarto-title-block, .quarto-title, .footnotes, [role="doc-endnotes"], #pw-discussion-hub') ||
+        !target.matches('section[id], h2[id], h3[id], h4[id], h5[id], h6[id], p[id], li[id], blockquote[id], table[id], figure[id]')) return '';
+    return hash;
+  }
+
   function getContext() {
     const locale = document.documentElement.lang;
     if (locale !== 'en' && locale !== 'zh-CN') return null;
@@ -62,7 +78,7 @@
   const transport = localHost ? window.__pwDiscussionFixtureTransport ?? null :
     (stagingHost || productionHost) ? window.__pwDiscussionRemoteTransport ?? null : null;
   window.__pwDiscussionRuntime = Object.freeze({
-    getContext, transport, mode: transport ?
+    getContext, getCommentPageHash, transport, mode: transport ?
       (localHost ? 'fixture' : stagingHost ? 'staging' : 'production') : 'inactive',
   });
   const context = getContext();
