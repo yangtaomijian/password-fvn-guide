@@ -69,6 +69,20 @@
     replyMissing: '回复当前不可用的评论',
     replyUnavailable: '当前回复对象已不可用，草稿仍然保留。请刷新核对其状态。',
   };
+  const reactionWords = context.locale === 'en' ? {
+    label: 'Emoji reactions', add: 'Add a reaction', choices: 'Choose a reaction', selected: 'selected',
+    loading: 'Loading reactions…', failed: 'Reactions couldn’t load. Try again.',
+    writeFailed: 'Reaction couldn’t be saved. Try again.', rate: 'Too many reactions. Wait a moment and try again.',
+    unknown: 'Reaction result is uncertain. Check its current state before trying again.',
+    storage: 'Reactions are read-only because browser storage is unavailable.', retry: 'Refresh reactions',
+    names: { like: 'Helpful', heart: 'Thanks', smile: 'Happy', celebrate: 'Celebrate', thinking: 'Thinking' },
+  } : {
+    label: '表情反应', add: '添加表情反应', choices: '选择表情', selected: '已选',
+    loading: '正在读取表情…', failed: '表情读取失败，请重试。', writeFailed: '表情未能保存，请重试。',
+    rate: '表情操作过于频繁，请稍后再试。', unknown: '表情操作结果不确定，请先核对当前状态再操作。',
+    storage: '浏览器存储不可用，表情仅供查看。', retry: '刷新表情',
+    names: { like: '赞同、有帮助', heart: '喜欢、感谢', smile: '开心、友善', celebrate: '庆祝', thinking: '思考、保留意见' },
+  };
   const dateFormat = new Intl.DateTimeFormat(context.locale, {
     year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
   });
@@ -140,6 +154,236 @@
     }
     return response;
   };
+  // Reactions have their own cache, identity and errors. They never reject comment operations.
+  const reactionTypes = ['like', 'heart', 'smile', 'celebrate', 'thinking'];
+  const reactionEmoji = { like: '👍', heart: '❤️', smile: '😄', celebrate: '🎉', thinking: '🤔' };
+  const reactionReadEnabled = typeof runtime.transport.readReactions === 'function';
+  const reactionWriteEnabled = reactionReadEnabled && typeof runtime.transport.setReaction === 'function';
+  const visitorStorageKey = 'carambi.password.reactionVisitorId';
+  const reactionCache = new Map();
+  // Epoch is only for view/identity changes; each comment independently owns its latest read token.
+  let reactionEpoch = 0, reactionReadSerial = 0, reactionScheduled = false, reactionMenuId = null;
+  let reactionVisitor, reactionStorageAvailable = false;
+  const reactionEntry = id => {
+    if (!reactionCache.has(id)) reactionCache.set(id, { data: null, pending: false, unknown: false,
+      error: '', revision: 0, readToken: null });
+    return reactionCache.get(id);
+  };
+  function visitorId() {
+    let id = null;
+    try {
+      id = localStorage.getItem(visitorStorageKey);
+      if (!/^[0-9a-f]{64}$/.test(id ?? '')) {
+        const bytes = new Uint8Array(32); crypto.getRandomValues(bytes);
+        id = Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
+        localStorage.setItem(visitorStorageKey, id);
+        if (localStorage.getItem(visitorStorageKey) !== id) throw Error('STORAGE_UNAVAILABLE');
+      }
+      reactionStorageAvailable = true;
+    } catch { id = null; reactionStorageAvailable = false; }
+    if (id !== reactionVisitor) {
+      reactionVisitor = id; reactionEpoch++;
+      for (const entry of reactionCache.values()) {
+        // Keep public counts; selected/eligibility belong to the current stored identity.
+        if (entry.data) entry.data = { ...entry.data, selected: [], canReact: false };
+        entry.revision++; entry.unknown = false;
+      }
+    }
+    return id;
+  }
+  function validReaction(row) {
+    return row && typeof row.commentId === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(row.commentId) &&
+      typeof row.canReact === 'boolean' && row.counts && Object.keys(row.counts).length === reactionTypes.length &&
+      reactionTypes.every(type => Number.isSafeInteger(row.counts[type]) && row.counts[type] >= 0) &&
+      Array.isArray(row.selected) && new Set(row.selected).size === row.selected.length &&
+      row.selected.every(type => reactionTypes.includes(type));
+  }
+  function reactionIds() {
+    return [...section.querySelectorAll('.pw-discussion-reactions')].map(panel => panel.dataset.commentId);
+  }
+  function closeReactionMenu(restoreFocus = false) {
+    const id = reactionMenuId; reactionMenuId = null;
+    if (!id) return;
+    updateReactionPanels(id);
+    if (restoreFocus) section.querySelector(`.pw-discussion-reactions[data-comment-id="${id}"] .pw-discussion-reaction-add`)?.focus({ preventScroll: true });
+  }
+  function reactionPanel(id) {
+    const panel = make('div', 'pw-discussion-reactions');
+    panel.dataset.commentId = id;
+    panel.setAttribute('role', 'group'); panel.setAttribute('aria-label', reactionWords.label);
+    fillReactionPanel(panel);
+    return panel;
+  }
+  function fillReactionPanel(panel) {
+    const id = panel.dataset.commentId, entry = reactionEntry(id), data = entry.data;
+    const focus = panel.contains(document.activeElement) ? document.activeElement : null;
+    const desiredFocus = focus?.dataset.reactionType || (focus?.classList.contains('pw-discussion-reaction-add') ? 'add' : focus?.classList.contains('pw-discussion-reaction-retry') ? 'retry' : null) || (document.activeElement === panel ? panel.dataset.focusControl : null);
+    delete panel.dataset.focusControl;
+    panel.replaceChildren();
+    panel.setAttribute('aria-busy', String(entry.pending || entry.readToken !== null));
+    const disabled = !reactionWriteEnabled || !reactionStorageAvailable || data?.canReact !== true || entry.pending || entry.unknown || entry.readToken !== null;
+    const chips = make('div', 'pw-discussion-reaction-chips');
+    function button(type, menu) {
+      const selected = data?.selected.includes(type) === true;
+      const count = data?.counts[type] ?? 0;
+      const node = make('button', 'pw-discussion-reaction', `${reactionEmoji[type]}${menu ? '' : ` ${count}`}${selected ? ' ✓' : ''}`);
+      node.type = 'button'; node.dataset.reactionType = type;
+      node.setAttribute('aria-pressed', String(selected));
+      node.setAttribute('aria-label', `${reactionWords.names[type]} · ${count}${selected ? ` · ${reactionWords.selected}` : ''}`);
+      node.disabled = disabled;
+      node.addEventListener('click', () => {
+        // Touch browsers need explicit focus before the pending panel replaces the button.
+        node.focus({ preventScroll: true }); changeReaction(id, type);
+      });
+      return node;
+    }
+    for (const type of reactionTypes) if ((data?.counts[type] ?? 0) > 0) chips.append(button(type, false));
+    const add = make('button', 'pw-discussion-reaction-add', '＋'); add.type = 'button';
+    add.setAttribute('aria-label', reactionWords.add); add.setAttribute('aria-expanded', String(reactionMenuId === id));
+    add.setAttribute('aria-controls', `pw-reaction-menu-${id}`); add.disabled = disabled;
+    add.addEventListener('click', () => {
+      if (reactionMenuId === id) { closeReactionMenu(true); return; }
+      closeReactionMenu(); reactionMenuId = id; updateReactionPanels(id);
+      section.querySelector(`#pw-reaction-menu-${id} button`)?.focus({ preventScroll: true });
+    });
+    chips.append(add); panel.append(chips);
+    const menu = make('div', 'pw-discussion-reaction-menu'); menu.id = `pw-reaction-menu-${id}`;
+    menu.setAttribute('role', 'group'); menu.setAttribute('aria-label', reactionWords.choices); menu.hidden = reactionMenuId !== id;
+    for (const type of reactionTypes) menu.append(button(type, true));
+    menu.addEventListener('keydown', event => {
+      const buttons = [...menu.querySelectorAll('button')]; const index = buttons.indexOf(document.activeElement);
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? 4 :
+        ['ArrowRight', 'ArrowDown'].includes(event.key) ? (index + 1) % 5 :
+        ['ArrowLeft', 'ArrowUp'].includes(event.key) ? (index + 4) % 5 : null;
+      if (next !== null) { event.preventDefault(); buttons[next].focus(); }
+    });
+    panel.append(menu);
+    const notice = make('div', 'pw-discussion-reaction-status'); notice.setAttribute('role', 'status'); notice.setAttribute('aria-live', 'polite');
+    const text = entry.unknown ? reactionWords.unknown : entry.error || (!reactionStorageAvailable ? reactionWords.storage : !data ? reactionWords.loading : '');
+    if (text) notice.append(make('span', '', text));
+    if (entry.error || entry.unknown || !reactionStorageAvailable) {
+      const retry = make('button', 'pw-discussion-reaction-retry', reactionWords.retry); retry.type = 'button';
+      retry.disabled = entry.pending || entry.readToken !== null;
+      retry.addEventListener('click', () => readReactions([id])); notice.append(retry);
+    }
+    panel.append(notice);
+    if (!menu.hidden) { positionReactionMenu(); queueMicrotask(positionReactionMenu); }
+    if (desiredFocus) {
+      const selector = desiredFocus === 'add' ? '.pw-discussion-reaction-add' : desiredFocus === 'retry' ? '.pw-discussion-reaction-retry' : `${reactionMenuId === id ? '.pw-discussion-reaction-menu' : '.pw-discussion-reaction-chips'} [data-reaction-type="${desiredFocus}"]`;
+      const control = panel.querySelector(selector) || add;
+      if (!control.disabled) control.focus({ preventScroll: true });
+      else { panel.tabIndex = -1; panel.dataset.focusControl = desiredFocus; panel.focus({ preventScroll: true }); }
+    }
+  }
+  // Only geometry: keep the picker near + without growing or clipping the comment tree.
+  function positionReactionMenu() {
+    if (!reactionMenuId) return;
+    const panel = section.querySelector(`.pw-discussion-reactions[data-comment-id="${reactionMenuId}"]`);
+    const add = panel?.querySelector('.pw-discussion-reaction-add');
+    const menu = panel?.querySelector('.pw-discussion-reaction-menu');
+    if (!add?.isConnected || !menu || menu.hidden) return;
+    const viewport = window.visualViewport;
+    const leftEdge = (viewport?.offsetLeft ?? 0) + 8, topEdge = (viewport?.offsetTop ?? 0) + 8;
+    const rightEdge = leftEdge + (viewport?.width ?? innerWidth) - 16;
+    const bottomEdge = topEdge + (viewport?.height ?? innerHeight) - 16;
+    menu.style.maxWidth = `${Math.max(44, rightEdge - leftEdge)}px`;
+    const anchor = add.getBoundingClientRect(), bounds = menu.getBoundingClientRect();
+    const toolbar = panel.closest('.pw-discussion-actions')?.getBoundingClientRect() ?? anchor;
+    const below = Math.max(anchor.bottom, toolbar.bottom) + 6;
+    const top = below + bounds.height <= bottomEdge ? below : Math.min(anchor.top, toolbar.top) - bounds.height - 6;
+    menu.style.left = `${Math.max(leftEdge, Math.min(anchor.left, rightEdge - bounds.width))}px`;
+    menu.style.top = `${Math.max(topEdge, Math.min(top, bottomEdge - bounds.height))}px`;
+  }
+  window.addEventListener('scroll', positionReactionMenu, true);
+  window.addEventListener('resize', positionReactionMenu);
+  window.visualViewport?.addEventListener('resize', positionReactionMenu);
+  window.visualViewport?.addEventListener('scroll', positionReactionMenu);
+  function updateReactionPanels(id) {
+    section.querySelectorAll('.pw-discussion-reactions').forEach(panel => {
+      if (!id || panel.dataset.commentId === id) fillReactionPanel(panel);
+    });
+  }
+  async function readReactions(ids = reactionIds()) {
+    if (!reactionReadEnabled) return;
+    const visitor = visitorId(), generation = reactionEpoch;
+    const token = ++reactionReadSerial;
+    ids = [...new Set(ids)].filter(id => !reactionEntry(id).pending);
+    const batches = []; for (let offset = 0; offset < ids.length; offset += 50) batches.push(ids.slice(offset, offset + 50));
+    await Promise.all(batches.map(async commentIds => {
+      const revisions = new Map(commentIds.map(id => [id, reactionEntry(id).revision]));
+      commentIds.forEach(id => { reactionEntry(id).readToken = token; }); updateReactionPanels();
+      try {
+        const request = { pageKey: context.pageKey, locale: context.locale, commentIds };
+        if (visitor) request.visitorId = visitor;
+        const response = await runtime.transport.readReactions(request);
+        if (response?.ok !== true || !Array.isArray(response.reactions) || response.reactions.length !== commentIds.length ||
+            new Set(response.reactions.map(row => row?.commentId)).size !== commentIds.length ||
+            !response.reactions.every(row => validReaction(row) && commentIds.includes(row.commentId))) throw Error('INVALID_REACTIONS');
+        if (generation !== reactionEpoch || visitor !== reactionVisitor) return;
+        for (const row of response.reactions) {
+          const entry = reactionEntry(row.commentId);
+          if (entry.pending || entry.readToken !== token || entry.revision !== revisions.get(row.commentId)) continue;
+          entry.data = { commentId: row.commentId, counts: { ...row.counts }, selected: [...row.selected], canReact: row.canReact };
+          entry.error = ''; entry.unknown = false;
+        }
+      } catch {
+        if (generation === reactionEpoch) for (const id of commentIds) {
+          const entry = reactionEntry(id);
+          if (!entry.pending && entry.readToken === token && entry.revision === revisions.get(id)) entry.error = reactionWords.failed;
+        }
+      } finally {
+        commentIds.forEach(id => { const entry = reactionEntry(id); if (entry.readToken === token) {
+          entry.readToken = null;
+          if (!entry.data && generation !== reactionEpoch && !entry.error) entry.error = reactionWords.failed;
+        } });
+        updateReactionPanels();
+      }
+    }));
+  }
+  function scheduleReactions() {
+    if (!reactionReadEnabled || reactionScheduled) return;
+    reactionScheduled = true;
+    queueMicrotask(() => { reactionScheduled = false; readReactions(); });
+  }
+  async function changeReaction(id, type) {
+    const entry = reactionEntry(id), previousVisitor = reactionVisitor, visitor = visitorId();
+    if (visitor !== previousVisitor) { await readReactions([id]); return; }
+    if (!visitor || !reactionWriteEnabled || entry.data?.canReact !== true || entry.pending || entry.unknown || entry.readToken !== null) {
+      updateReactionPanels(id); return;
+    }
+    const intent = entry.data.selected.includes(type) ? 'remove' : 'add';
+    entry.pending = true; entry.error = ''; const revision = ++entry.revision; const generation = reactionEpoch;
+    closeReactionMenu(); updateReactionPanels(id);
+    try {
+      const response = await runtime.transport.setReaction({ pageKey: context.pageKey, locale: context.locale, commentId: id, type, visitorId: visitor, intent });
+      if (response?.ok !== true || !validReaction(response.reaction) || response.reaction.commentId !== id) throw Error('INVALID_REACTION');
+      if (entry.revision === revision && visitor === reactionVisitor) {
+        entry.data = { commentId: id, counts: { ...response.reaction.counts }, selected: [...response.reaction.selected],
+          canReact: generation === reactionEpoch && response.reaction.canReact };
+        entry.unknown = false;
+      }
+    } catch (error) {
+      if (entry.revision === revision && visitor === reactionVisitor) {
+        const known = typeof error?.outcomeUnknown === 'boolean' ? !error.outcomeUnknown :
+          ['RATE_LIMITED', 'THREAD_LOCKED', 'NOT_REACTABLE', 'VALIDATION_FAILED'].includes(error?.code);
+        entry.unknown = !known;
+        if (error?.notReactable || ['THREAD_LOCKED', 'NOT_REACTABLE'].includes(error?.code))
+          entry.data = { ...entry.data, canReact: false };
+        entry.error = error?.code === 'RATE_LIMITED' ? reactionWords.rate : reactionWords.writeFailed;
+      }
+    } finally {
+      entry.pending = false; updateReactionPanels(id);
+      // Unknown writes are reconciled only by a read. Never repeat the write automatically.
+      if (entry.unknown || entry.data?.canReact === false || visitor !== reactionVisitor || generation !== reactionEpoch) await readReactions([id]);
+    }
+  }
+  section.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && reactionMenuId) { event.preventDefault(); closeReactionMenu(true); }
+  });
+  document.addEventListener('pointerdown', event => {
+    if (reactionMenuId && !event.target.closest('.pw-discussion-reactions')) closeReactionMenu();
+  });
+
   function message(kind, retry, errorText = words.error) {
     status.replaceChildren();
     if (!kind) return;
@@ -244,6 +488,7 @@
       if (reference) article.append(reference);
       article.append(make('p', 'pw-discussion-body', comment.body ?? ''));
       const actions = make('div', 'pw-discussion-actions');
+      if (reactionReadEnabled && root.status === 'published') actions.append(reactionPanel(comment.id));
       if (isRoot && typeof comment.pageHash === 'string' && /^#[^?#]{1,255}$/.test(comment.pageHash)) {
         const anchor = make('a', 'pw-discussion-fragment', words.fragment);
         anchor.href = context.pagePath + comment.pageHash;
@@ -297,6 +542,8 @@
   function renderPage() {
     const page = state.pages.get(state.activeVersion);
     if (!page) return;
+    // A comment-tree refresh/version change invalidates view eligibility, not other comments' writes.
+    reactionEpoch++;
     state.threadLocked = page.status === 'locked';
     lockedNotice.hidden = page.status !== 'locked';
     rootAction.hidden = !writeEnabled || state.threadLocked || state.activeVersion !== context.guideVersion;
@@ -317,6 +564,7 @@
     if (state.activeTarget === 'root' && (state.threadLocked || state.activeVersion !== context.guideVersion))
       closeComposer(false);
     else placeComposer();
+    scheduleReactions();
   }
 
   const form = make('form', 'pw-discussion-composer');
@@ -588,12 +836,13 @@
     const position = visible ? { id: visible.id, top: visible.getBoundingClientRect().top } : null;
     busy(true); refresh.textContent = words.refreshing; message();
     try { await refreshDiscussion(); message(); }
-    catch { message('error', manualRefresh, words.reloadFailed); }
+    catch { message('error', manualRefresh, words.reloadFailed); scheduleReactions(); }
     finally {
       busy(false); refresh.textContent = words.refresh;
       if (focused === refresh || !focused?.isConnected || !focused.getClientRects().length) refresh.focus({ preventScroll: true });
       const anchor = position && document.getElementById(position.id);
       window.scrollTo(scrollX, anchor ? window.scrollY + anchor.getBoundingClientRect().top - position.top : scrollY);
+      positionReactionMenu();
     }
   }
   function outcomeUnknown(error) {

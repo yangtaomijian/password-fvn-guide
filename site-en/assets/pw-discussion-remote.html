@@ -13,8 +13,64 @@
   if (origin !== `https://${expectedApiHost}` || !/^0x[A-Za-z0-9]+$/.test(turnstileSitekey)) return;
   const config = Object.freeze({ origin, turnstileSitekey });
   const endpoint = config.origin + '/v1/discussion';
+  const reactionTypes = ['like', 'heart', 'smile', 'celebrate', 'thinking'];
+  const uuid = value => typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
+  const validReaction = row => row && uuid(row.commentId) && typeof row.canReact === 'boolean' &&
+    row.counts && Object.keys(row.counts).length === reactionTypes.length && reactionTypes.every(type =>
+      Number.isSafeInteger(row.counts[type]) && row.counts[type] >= 0) && Array.isArray(row.selected) &&
+    new Set(row.selected).size === row.selected.length && row.selected.every(type => reactionTypes.includes(type));
+  async function performReactionRequest(path, payload, writing, signal) {
+    let response, data;
+    try {
+      response = await fetch(endpoint + path, { method: 'POST', mode: 'cors', credentials: 'omit', signal,
+        referrerPolicy: 'no-referrer', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
+    } catch {
+      const error = Error('REACTION_REQUEST_FAILED'); error.outcomeUnknown = writing; throw error;
+    }
+    try { data = await response.json(); } catch { /* Never expose upstream response text. */ }
+    const valid = response.status === 200 && data?.ok === true && (writing ?
+      validReaction(data.reaction) && data.reaction.commentId === payload.commentId :
+      Array.isArray(data.reactions) && data.reactions.length === payload.commentIds.length &&
+      new Set(data.reactions.map(row => row?.commentId)).size === payload.commentIds.length &&
+      data.reactions.every(row => validReaction(row) && payload.commentIds.includes(row.commentId)));
+    if (valid) {
+      const clean = row => ({ commentId: row.commentId, counts: { ...row.counts }, selected: [...row.selected], canReact: row.canReact });
+      return writing ? { ok: true, reaction: clean(data.reaction) } : { ok: true, reactions: data.reactions.map(clean) };
+    }
+    const error = Error('REACTION_REQUEST_FAILED');
+    error.code = response.status === 429 ? 'RATE_LIMITED' :
+      ['THREAD_LOCKED', 'NOT_REACTABLE', 'VALIDATION_FAILED'].includes(data?.code) ? data.code : 'REACTION_FAILED';
+    error.notReactable = error.code === 'THREAD_LOCKED' || error.code === 'NOT_REACTABLE' || data?.fieldErrors?.commentId === 'NOT_REACTABLE';
+    error.outcomeUnknown = writing && ![400, 401, 403, 404, 405, 409, 413, 415, 422, 423, 429].includes(response.status);
+    throw error;
+  }
+  async function reactionRequest(path, payload, writing) {
+    const controller = new AbortController(); let timer;
+    try {
+      return await Promise.race([performReactionRequest(path, payload, writing, controller.signal),
+        new Promise((resolve, reject) => { timer = setTimeout(() => {
+          controller.abort(); const error = Error('REACTION_REQUEST_FAILED');
+          error.outcomeUnknown = writing; reject(error);
+        }, 15000); })]);
+    } finally { clearTimeout(timer); }
+  }
   window.__pwDiscussionRemoteTransport = Object.freeze({
     turnstileSitekey: config.turnstileSitekey,
+    async readReactions(input) {
+      const payload = { pageKey: input.pageKey, locale: input.locale, commentIds: input.commentIds };
+      if (input.visitorId !== undefined) payload.visitorId = input.visitorId;
+      if (typeof payload.pageKey !== 'string' || !payload.pageKey || !['en', 'zh-CN'].includes(payload.locale) || !Array.isArray(payload.commentIds) || !payload.commentIds.length || payload.commentIds.length > 50 ||
+          !payload.commentIds.every(uuid) || new Set(payload.commentIds).size !== payload.commentIds.length ||
+          (payload.visitorId !== undefined && !/^[0-9a-f]{64}$/.test(payload.visitorId))) throw Error('REACTION_INPUT_INVALID');
+      return reactionRequest('/reactions/read', payload, false);
+    },
+    async setReaction(input) {
+      const payload = { pageKey: input.pageKey, locale: input.locale, commentId: input.commentId,
+        type: input.type, visitorId: input.visitorId, intent: input.intent };
+      if (typeof payload.pageKey !== 'string' || !payload.pageKey || !['en', 'zh-CN'].includes(payload.locale) || !uuid(payload.commentId) || !reactionTypes.includes(payload.type) ||
+          !/^[0-9a-f]{64}$/.test(payload.visitorId) || !['add', 'remove'].includes(payload.intent)) throw Error('REACTION_INPUT_INVALID');
+      return reactionRequest('/reactions', payload, true);
+    },
     async readDiscussion(request) {
       const url = new URL(endpoint);
       for (const key of ['pageKey', 'locale', 'guideVersion'])
