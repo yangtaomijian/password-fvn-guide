@@ -49,7 +49,7 @@ async function open(browser, locale, width, query = '') {
   await page.route('**/*', route => ['localhost', '127.0.0.1', '[::1]'].includes(new URL(route.request().url()).hostname) ? route.continue() : route.abort());
   await page.addInitScript(({ prefix, current, historical }) => {
     const id = n => `00000000-0000-4000-8000-${String(n).padStart(12, '0')}`;
-    const comment = (n, version, persistent = false) => ({ id: id(n), status: 'published', parentCommentId: null,
+    const comment = (n, version, persistent = false) => ({ id: id(n), status: 'published', canReply: true, parentCommentId: null,
       authorKind: 'guest', displayName: 'Reader', body: `Comment ${n}`, guideVersion: version,
       pageHash: null, pinnedAt: null, discussionScope: persistent ? 'persistent' : 'version',
       createdAt: '2026-10-10T00:00:00.000Z', replies: [] });
@@ -95,7 +95,7 @@ async function settled(page) {
 }
 async function ready(page) { await page.waitForFunction(prefix => !document.querySelector(`.${prefix}-discussion-submit`).disabled, prefix); }
 async function composer(page, reply = false) {
-  await page.locator(reply ? `#${prefix}-comment-${id(1)} ${sel('reply-action')}` : sel('add')).click();
+  await page.locator(reply ? `#${prefix}-comment-${id(1)} > ${sel('actions')} > ${sel('reply-action')}` : sel('add')).click();
   await page.locator(`#${prefix}-discussion-name`).fill('Draft reader');
   await page.locator(`#${prefix}-discussion-new-body`).fill(reply ? 'Reply draft' : 'Root draft');
   await ready(page);
@@ -144,7 +144,7 @@ async function run(name, type, options) {
       await page.evaluate(() => window.releaseRead()); await settled(page);
       await page.locator(sel('composer-actions') + ' button').last().click();
       assert.equal(await page.evaluate(() => document.activeElement.closest('article').dataset.commentId), id(1), 'Cancel restores the refreshed reply opener');
-      await page.locator(`#${prefix}-comment-${id(2)} ${sel('reply-action')}`).click();
+      await page.locator(`#${prefix}-comment-${id(2)} > ${sel('actions')} > ${sel('reply-action')}`).click();
       await page.locator(`#${prefix}-discussion-new-body`).fill('Last-page reply draft');
       await ready(page);
       await page.evaluate(() => { window.shiftRoots = true; });
@@ -166,7 +166,7 @@ async function run(name, type, options) {
         await page.locator(sel('refresh')).click(); await settled(page);
         assert(await page.locator(sel('submit')).isDisabled());
         await page.locator(sel('composer-actions') + ' button').last().click();
-        await page.locator(reply ? `#${prefix}-comment-${id(1)} ${sel('reply-action')}` : sel('add')).click();
+        await page.locator(reply ? `#${prefix}-comment-${id(1)} > ${sel('actions')} > ${sel('reply-action')}` : sel('add')).click();
         assert(await page.locator(sel('confirm-unposted')).isVisible());
         assert.equal(await page.locator(`#${prefix}-discussion-new-body`).inputValue(), reply ? 'Reply draft' : 'Root draft');
         assert.equal(await page.evaluate(() => window.posts.length), 1, 'No automatic retry');
@@ -254,7 +254,7 @@ async function run(name, type, options) {
       page = await open(browser, locale, width);
       await page.evaluate(version => { history.pushState(null, '', `?discussionVersion=${encodeURIComponent(version)}`); dispatchEvent(new PopStateEvent('popstate')); }, config.historical);
       await page.waitForFunction(({ prefix, historical }) => document.querySelector(`.${prefix}-discussion-version-buttons button[aria-pressed="true"]`)?.textContent.includes(historical), { prefix, ...config });
-      await page.locator(`#${prefix}-comment-${id(201)} ${sel('reply-action')}`).click();
+      await page.locator(`#${prefix}-comment-${id(201)} > ${sel('actions')} > ${sel('reply-action')}`).click();
       await page.locator(`#${prefix}-discussion-new-body`).fill('Reply navigation draft'); await ready(page);
       await page.evaluate(() => { window.postHold = true; window.postMode = 'unknown'; window.startReads = window.reads.length; });
       await page.locator(sel('submit')).click(); await page.waitForFunction(() => typeof window.releasePost === 'function');
