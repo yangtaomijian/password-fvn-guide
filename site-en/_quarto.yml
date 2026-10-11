@@ -84,9 +84,9 @@ website:
           - href: mechanics/medal-persistence.md
             text: Medal Persistence and Final Check
           - href: mechanics/affection.md
-            text: Affection System and Point Guide
+            text: Affection and Character Choice Guide
           - href: mechanics/affection-differences.md
-            text: Affection Checks and Story Differences
+            text: Affection and Story Variations
       - href: extras/easter-eggs.md
         text: Easter Eggs
 
@@ -136,9 +136,9 @@ website:
           - href: mechanics/medal-persistence.md
             text: Medal Persistence and Final Check
           - href: mechanics/affection.md
-            text: Affection System and Point Guide
+            text: Affection and Character Choice Guide
           - href: mechanics/affection-differences.md
-            text: Affection Checks and Story Differences
+            text: Affection and Story Variations
 
       - href: extras/easter-eggs.md
         text: Easter Eggs

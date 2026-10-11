@@ -81,12 +81,12 @@ Track medals, Compendium entries, and all 100 Gallery images.
 
 ### Mechanics
 
-Understand Vault input rules, persistent medal progress, affection checks, and story differences.
+Understand Vault input rules, persistent medal progress, character choices, and story variations.
 
 - [Vault Input and Password Checks](mechanics/password-checks.md)
 - [Medal Persistence and Final Check](mechanics/medal-persistence.md)
-- [Affection System and Point Guide](mechanics/affection.md)
-- [Affection Checks and Story Differences](mechanics/affection-differences.md)
+- [Affection and Character Choice Guide](mechanics/affection.md)
+- [Affection and Story Variations](mechanics/affection-differences.md)
 
 ### Extras
 

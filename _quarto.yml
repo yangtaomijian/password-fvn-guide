@@ -116,8 +116,8 @@ website:
           - href: mechanics/medal-persistence.md
             text: 奖牌持久化与最终检定
           - href: mechanics/affection.md
-            text: 好感度机制与加点
-          - text: "好感度检定与剧情差异"
+            text: 好感度与角色选择指南
+          - text: "好感度与剧情差分"
             href: mechanics/affection-differences.md
 
       - href: extras/easter-eggs.md
@@ -169,8 +169,8 @@ website:
           - href: mechanics/medal-persistence.md
             text: 奖牌持久化与最终检定
           - href: mechanics/affection.md
-            text: 好感度机制与加点
-          - text: "好感度检定与剧情差异"
+            text: 好感度与角色选择指南
+          - text: "好感度与剧情差分"
             href: mechanics/affection-differences.md
 
       - href: extras/easter-eggs.md

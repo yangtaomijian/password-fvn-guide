@@ -87,12 +87,12 @@ body-classes: pw-home
 
 ### 机制
 
-了解密码输入规则、奖牌持久记录和好感度检定。
+了解密码输入规则、奖牌持久记录、角色选择与剧情差分。
 
 - [密码输入与检定规则](mechanics/password-checks.md)
 - [奖牌持久化与最终检定](mechanics/medal-persistence.md)
-- [好感度机制与加点](mechanics/affection.md)
-- [好感度检定与剧情差异](mechanics/affection-differences.md)
+- [好感度与角色选择指南](mechanics/affection.md)
+- [好感度与剧情差分](mechanics/affection-differences.md)
 
 ### 彩蛋
 

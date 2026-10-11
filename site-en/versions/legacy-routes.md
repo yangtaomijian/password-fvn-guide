@@ -89,4 +89,4 @@ Several removed systems occurred inside route material without changing the lett
 | D11 injection decision | Lets the player decide whether and who receives the injection, recording different choice results that could affect local dialogue; Route, Path, medals, and ending are unchanged | [Legacy Mechanics Archive](legacy-mechanics.md) |
 :::
 
-The broader Dean interaction changes and the D19 relationship threshold do not change the lettered Path structure. See [Major Changes in b0.85](b085-changes.md) for details.
+The broader Dean interaction changes and the changes to D19 relationship outcomes do not change the lettered Path structure. See [Major Changes in b0.85](b085-changes.md) for details.

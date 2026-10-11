@@ -78,7 +78,7 @@ Not every story image appears in the Gallery, and the displayed completion numbe
 
 No. Affection does not determine the lettered Path, password success, survival, medals, or Path P.
 
-It changes dialogue, intimate options, some CGs, and the D19 relationship outcome. See [Affection System and Point Guide](../mechanics/affection.md).
+It changes dialogue, intimate options, some CGs, and the D19 relationship outcome. See [Affection and Character Choice Guide](../mechanics/affection.md).
 
 ### Why is a Compendium entry still locked?
 

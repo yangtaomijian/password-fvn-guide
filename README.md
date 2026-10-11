@@ -25,7 +25,7 @@
 | 角色路线、字母线、结局与 Path P | Character Routes, lettered Paths, endings, and Path P |
 | 四次主要密码检定的逐级提示 | Progressive hints for the four main password checks |
 | 十二枚奖牌、100 格 CG 画廊与后记解锁条件 | All twelve medals, the 100-slot Gallery, and Compendium unlocks |
-| 好感度加点、关系判定与剧情差异 | Affection gains, relationship checks, and story differences |
+| 角色选择、恋爱与友情结果、剧情差分 | Character choices, romance and friendship outcomes, and story variations |
 | 密码输入规则、奖牌持久记录与彩蛋 | Vault input rules, persistent medal progress, and Easter eggs |
 | b0.7 与 b0.85 的版本差异及旧版内容档案 | Differences between b0.7 and b0.85, with legacy content archives |
 
