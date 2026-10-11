@@ -16,7 +16,7 @@ The first three Vault visits include two optional inputs and one day with no acc
 |---:|---|---|
 | D1 | `THE END` | Clears the recorded endings, then quits the game |
 | D2 | — | No input is accepted as the correct D2 password in b0.85 |
-| D3 | `THE LOVERS` | Adds 5 affection points to each of the six main characters |
+| D3 | `THE LOVERS` | Helps Dave grow closer to all six main characters |
 
 :::
 
@@ -36,9 +36,9 @@ D2 still opens the Vault input screen, but no answer is accepted as correct on t
 
 ### `THE LOVERS`
 
-Entering `THE LOVERS` on D3 adds 5 points to all six affection values. It is the largest single event in normal b0.85 play that raises all six at once.
+Entering `THE LOVERS` on D3 makes Dave feel closer to all his friends. It supports later intimacy and can change story variations or make romance begin automatically. Follow the character guide’s specified Easter-egg choices when you want to retain a D19 relationship menu.
 
-See [Affection System and Point Guide](../mechanics/affection.md) for later thresholds and character-specific checks.
+See [Affection and Character Choice Guide](../mechanics/affection.md) for concrete choice routes and character variations.
 
 ## D1 Coffee-Cup Name Easter Eggs
 
@@ -57,9 +57,9 @@ For example, `Dave` works, while `dave` and `DAVE` use the generic response.
 
 ### Dave and the six main characters
 
-Entering `Dave` triggers a dedicated response and adds 1 affection point to each of the six main characters.
+Entering `Dave` triggers a dedicated response and helps Dave grow closer to all six main characters.
 
-Entering `Dean`, `Tyson`, `Roswell`, `Orlando`, `Hoss`, or `Sal` triggers that character’s dedicated response and adds **1 affection point only to that character**.
+Entering `Dean`, `Tyson`, `Roswell`, `Orlando`, `Hoss`, or `Sal` triggers that character’s dedicated response and helps Dave grow closer **to that character**.
 
 These names do not replace the driver.
 
@@ -83,7 +83,7 @@ Rem is credited as a **Diamond Patron**. This input does not change affection or
 
 ## Hidden Driver Names
 
-`Wilson`, `Timber`, and `Zylus` replace the default driver later on D1. Each name also adds 1 affection point to all six main characters when the driver scene begins; the bonus does not occur during the cup dialogue.
+`Wilson`, `Timber`, and `Zylus` replace the default driver later on D1. Each driver branch also positively affects Dave’s relationships with all six main characters. That effect occurs during the driver scene rather than the cup dialogue.
 
 ### `Wilson`
 
@@ -113,14 +113,14 @@ Zylus is credited as a **Diamond Patron**.
 
 | Input | Dedicated cup response | Affection effect | Driver | Additional note |
 |---|---|---|---|---|
-| `Dave` | Yes | All six `+1` | Default | Dave-name response |
-| Six main character names | Yes | Matching character `+1` | Default | One character only |
+| `Dave` | Yes | Closer to all six | Default | Dave-name response |
+| Six main character names | Yes | Closer to the matching character | Default | One character only |
 | `Chase` | Yes | None | Default | *Echo* reference |
 | `Civ` | Yes | None | Default | Civ Valian reference |
 | `Rem` | Yes | None | Default | Credited Diamond Patron |
-| `Wilson` | Yes | All six `+1` at the driver check | Wilson | Hidden driver |
-| `Timber` | Yes | All six `+1` at the driver check | Timber | Credited Diamond Patron |
-| `Zylus` | No; generic response | All six `+1` at the driver check | Zylus | Credited Diamond Patron |
+| `Wilson` | Yes | Closer to all six during the driver scene | Wilson | Hidden driver |
+| `Timber` | Yes | Closer to all six during the driver scene | Timber | Credited Diamond Patron |
+| `Zylus` | No; generic response | Closer to all six during the driver scene | Zylus | Credited Diamond Patron |
 
 :::
 
@@ -158,4 +158,4 @@ See [Twelve-Medal Collection Guide](../collectibles/medals.md) and [Medal Persis
 ## Related guides
 
 - [Tiered Password Hints](../guide/password-hints.md)
-- [Affection System and Point Guide](../mechanics/affection.md)
+- [Affection and Character Choice Guide](../mechanics/affection.md)

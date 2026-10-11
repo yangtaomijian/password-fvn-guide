@@ -283,13 +283,12 @@ toc: true
 
 ## 不在画廊中的图片
 
-以下四张图片均未收录在 b0.85 的画廊中，其中三张会在剧情中出现。
+以下三张图片会在正常剧情中出现，但未收录在 b0.85 的画廊中。
 
 ::: {#gallery-non-gallery-index .gallery-non-gallery-index}
 
 | 场景 | 画廊条目 | 最早出现 | 剧情线索 |
 |---|---|---|---|
-| <span class="gallery-scene-label">Dean 未在正常流程出现的图片</span> | 否 | 正常流程不会出现 | b0.85 正常游玩中看不到这张图片，也没有对应的画廊按钮。 |
 | <span class="gallery-scene-label">D23 信封里的白毛男子照片</span> | 否 | D23 A/B | "Carefully I looked at the man's features. He looked like a magician, or maybe it was just the fancy cut of his coat. His white fur did remind me a little of the Easter Bunny though. " / "Oswin said it'd be fine if I read the note, so long as Roswell got it too. Though I wasn't sure if the rules still applied given the assumption was that I'd be the one getting back." |
 | <span class="gallery-scene-label">D22 Hammond 家庭照片补充画面</span> | 否 | D22 A/B | "I breathed out, shaking my head." / Dave "But now Oswin is dead, and wondering about that probably doesn't matter." |
 | <span class="gallery-scene-label">Roswell 后日谈画面</span> | 否 | Roswell 后日谈 | Thanatos "I understand. " / Roswell "No, you're an assistant for work. " |
@@ -304,7 +303,7 @@ toc: true
 
 ## 相关页面
 
-- [好感度机制与加点](../mechanics/affection.md)
+- [好感度与角色选择指南](../mechanics/affection.md)
 - [字母线系统](../guide/path-system.md)
 
 <script src="../assets/gallery-locator.js" defer></script>

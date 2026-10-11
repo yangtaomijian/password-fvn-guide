@@ -1,23 +1,23 @@
 ---
-title: "Affection Checks and Story Differences"
-description: "How affection thresholds change dialogue, intimacy scenes, choices, and D19 relationship outcomes in Password b0.85"
+title: "Affection and Story Variations"
+description: "Concrete prerequisite choices, observable story variations, and D19 romance and friendship outcomes for six characters in Password b0.85"
 toc: true
 ---
 
-The six affection values in *Password* b0.85 change parts of the dialogue, story, and relationship outcomes.
+Character interactions in *Password* b0.85 change parts of the dialogue, intimate scenes, and relationship outcomes.
 
-For every point-awarding choice and the full list of available points, see [Affection System and Point Guide](affection.md).
+See the [character choice guide](affection.md#complete-point-list) for dates and exact menus. This page groups prerequisite choices and story outcomes by scene to help you replay different **variations**.
 
 ::: {.callout-important}
 ## Reading the tables
 
-The tables cover differences caused by **affection checks**:
-
-- every threshold uses “greater than or equal to,” so Dean affection ≥ 5 is already satisfied at exactly 5;
-- a difference appears only when the story reaches that check, and most checks also depend on the character route, date, earlier choices, or other story conditions; when several thresholds are satisfied, the highest matching result is used.
+- “Intimate plan,” “reserved plan,” and similar names refer to the complete plans in the character guide. Make only the specified changes, keeping other choices identical.
+- Plans assume D1 `Chase` and no D3 `THE LOVERS`. Saves with relationship Easter eggs or different D5 movies or D7 family topics may produce different menus.
+- Start from a save before the changed choice. D9 morning comfort precedes the daytime companion menu; later choices cannot change a variation already seen.
+- Reach the relevant character route and date. D15–D16 plans apply to Path A/B; scenes that also require successful Vault checks are noted in the tables below.
 :::
 
-## Character-specific checks
+## Character story variations {#character-specific-checks}
 
 ::: {.panel-tabset .character-tabs group="affection-character"}
 
@@ -25,14 +25,14 @@ The tables cover differences caused by **affection checks**:
 
 ::: {.affection-difference-table .table-responsive .table-scroll-large}
 
-| Check | Main story locations | Additional conditions | Dialogue or story effect |
+| Replay target | Main story locations | Choices/checkpoints | Dialogue or story effect |
 |---|---|---|---|
-| Orlando affection ≥ 5 | D6 after Orlando's dinner; D9 morning | D6 requires the Orlando Route and a successful D6 Vault check | On D6, Orlando proposes kissing practice under the pretext of helping Dave prepare for Dean, and the D6 Orlando practice-kiss CG is displayed. Below 5, the practice scene is skipped. On D9 morning, values from 5 through 9 use the more hesitant comfort scene: Orlando asks whether he can help, but remains unsure. |
-| Orlando affection ≥ 7 | D6 kissing practice | The Orlando affection ≥ 5 practice scene must already be active | After the first kiss, Dave actively pulls Orlando closer and kisses back. A follow-up choice appears; choosing `Yes.` awards another point. Below 7, the scene ends after the first practice kiss without Dave's more active response. |
-| Orlando affection ≥ 10 | D9 morning; D19 Orlando kitchen scene | D9 uses this comfort scene at 10 or more; D19 requires the Orlando Route and the failed Dean-date outcome that leads into the kitchen scene | On D9, Orlando recognizes that Dave is close to breaking down, touches his face, and presses him to say whether someone hurt him. On D19, values from 10 through 19 show `I love you too.` / `Stay quiet.`, allowing the player to accept or reject Orlando. |
-| Orlando affection ≥ 15 | D15 A/B dream; D16 A/B morning; D16 Orlando event | Orlando Route or the corresponding Orlando scene | In the D15 dream, Dave challenges Orlando for continually using Dean as an excuse and starts questioning whether he loves Orlando too. On D16 morning, Orlando's emotional distance is framed as genuinely painful. In the character event, Dave directly confronts Orlando for diverting every serious conversation back toward Dean. |
-| Orlando affection ≥ 18 | D10 night on the Orlando Route | Orlando Route | Both branches still contain a kiss. At 18 or more, Orlando touches Dave's face and initiates more directly, and Dave interprets it as an emotionally meaningful kiss. Below 18, Orlando first asks Dave to close his eyes and the moment is more hesitant and experimental. If the D6 practice kiss has already occurred, the D10 scene also refers back to it. |
-| Orlando affection ≥ 20 | D18 Orlando scene; two D19 Orlando scenes | The D18 variation also requires a successful D17 Vault check; D19 requires the relevant Orlando branches | On D18, Dave takes Orlando's hand, pulls him closer, and increases the physical intimacy of the scene. One D19 follow-up contains a small reciprocal-touch variation. In the later kitchen confession, Orlando explicitly says he loves Dave, and the two automatically become a couple. |
+| Practice kiss / hesitant comfort | D6 after Orlando's dinner; D9 morning | Use the tentative plan in the character guide; pass the D6 Vault check. The intimate plan also gives the practice kiss, but uses more direct D9 comfort; the automatic-rejection plan gives the version without practice. | On D6 Orlando proposes kissing practice to help Dave prepare for Dean, displaying the practice-kiss CG. If the practice scene does not occur, the CG does not appear. On the tentative route’s D9 morning, Orlando offers to help but remains hesitant. |
+| Return kiss after practice | D6 kissing practice | Use the intimate plan through D6; use the tentative plan to compare the first-kiss-only version. | Dave pulls Orlando closer and kisses back after the first kiss, then receives a `Yes.` / `No.` follow-up menu. The first-kiss-only version ends without this more active response. |
+| Direct comfort / kitchen response menu | D9 morning; D19 Orlando kitchen scene | Use the intimate or response-menu plan for D9. For D19 use the response-menu plan on the Orlando Route and continue to the kitchen after Dean’s date ends. | On D9 Orlando recognizes Dave is close to breaking down, touches his face, and asks whether someone hurt him. The D19 menu plan offers `I love you too.` / `Stay quiet.` to accept or reject romance. |
+| Challenging the Dean excuse | D15 A/B dream; D16 A/B morning; D16 Orlando event | Use the intimate or response-menu plan on Path A/B. The tentative plan gives the more reserved version. | In the D15 dream, Dave challenges Orlando for using Dean as an excuse and questions whether he loves Orlando too. On D16 morning, Orlando’s distance genuinely hurts Dave; in the character event, Dave confronts him for steering every serious conversation toward Dean. |
+| Direct / tentative D10 kiss | D10 night on the Orlando Route | The intimate plan gives the more direct kiss; the response-menu and tentative plans give the hesitant kiss. | Both versions include a kiss. In the direct version, Orlando touches Dave’s face and Dave interprets it as emotionally meaningful; the tentative version begins with Orlando asking Dave to close his eyes. A previous D6 practice kiss is also recalled here. |
+| Physical intimacy / automatic confession | D18 Orlando scene; two D19 Orlando scenes | Use the intimate plan. D18 also requires passing the D17 Vault check; D19 requires reaching the corresponding Orlando branches. | On D18 Dave takes Orlando’s hand and pulls him closer; a D19 follow-up adds reciprocal touching. At the later kitchen confession, Orlando explicitly says he loves Dave and the relationship begins automatically. |
 
 :::
 
@@ -42,9 +42,9 @@ The tables cover differences caused by **affection checks**:
 
 | Condition | Result |
 |---|---|
-| Orlando affection ≥ 20 | Dave automatically accepts Orlando and enters the relationship sequence. |
-| Orlando affection 10–19 | `I love you too.` / `Stay quiet.` appears, allowing the player to accept or reject. |
-| Orlando affection below 10 | The story automatically follows Orlando's rejection branch without offering a romantic response. |
+| Intimate plan | Automatically accepts Orlando and enters romance. |
+| Response-menu plan | `I love you too.` accepts romance; `Stay quiet.` follows rejection. |
+| Automatic-rejection plan | Automatically follows the rejection branch. |
 
 :::
 
@@ -52,13 +52,13 @@ The tables cover differences caused by **affection checks**:
 
 ::: {.affection-difference-table .table-responsive .table-scroll-large}
 
-| Check | Main story locations | Additional conditions | Dialogue or story effect |
+| Replay target | Main story locations | Choices/checkpoints | Dialogue or story effect |
 |---|---|---|---|
-| Dean affection ≥ 5 | D5 Dean Route hot tub | Dean Route and the D5 `Romance` movie choice | Dean treats the movie choice as a possible signal from Dave, the D5 Dean hot-tub kiss CG is displayed, and the later kiss-confirmation menu is reached. Below 5, the scene still contains flirting but not the formal kiss choice. The CG appears before the confirmation menu, so choosing `No` afterward does not prevent its Gallery unlock. |
-| Dean affection ≥ 10 | End of the D19 Dean date | Reach the Dean post-date branch | Dave says that he also looked forward to the date and frames his feelings as close to love, then continues into the relationship and intimate scene. Below 10, Dave concludes that the date did not create enough romantic chemistry. |
-| Dean affection ≥ 15 | D9 morning; D15 A/B dream; D16 A/B morning | Corresponding Dean scenes | On D9, Dean distinguishes casual sex from intimacy with someone important. In the D15 dream, Dave admits how strongly he likes Dean. On D16 morning, Dean's embrace is associated with safety, softness, and wanting to wake up that way regularly. |
-| Dean affection ≥ 17 | D10 night | Dean Route and a successful D10 Vault check | Dave realizes that his feelings may have grown beyond ordinary liking and thinks that the two of them will need a serious conversation. |
-| Dean affection ≥ 20 | D18 post-meeting Dean scene | Dean Route and a successful D17 Vault check | Dave changes `I appreciate it` into the more personal `I appreciate you`, explicitly anticipates the next day's date, and initiates a stronger kissing sequence before they stop to rest. |
+| Hot-tub kiss CG | D5 Dean Route hot tub | Use Dean’s D5 CG plan; the movie must be `Romance`. For the flirting-only version: skip D2 `Greenhouse.`, message Hoss on D3, skip D4 `Call for help.`, choose Hoss at D5 dinner, then `Do nothing` during the movie. | Dean interprets the movie as a hint, displays the hot-tub kiss CG, then offers a kiss confirmation. The CG appears first, so `No` still unlocks it. The flirting-only version has no formal kiss choice. |
+| Romance / friendship after the date | End of the D19 Dean date | On the Dean Route, compare the romance and friendship plans. Dean’s date on other character routes returns to friendship. | In the romance version, Dave says he wanted the date too and describes feelings close to love, leading to the relationship and intimacy scene. In the friendship version, Dave finds no sufficient romantic spark. |
+| Intimacy discussion and safety | D9 morning; D15 A/B dream; D16 A/B morning | Use Dean’s more-intimate-variations plan. The ordinary romance plan is more reserved on D9 and in the D15 dream, but D15 `Hold off.` also gives the D16 feeling of safety. The friendship plan gives the reserved version. | On D9 Dean distinguishes casual sex from intimacy with someone important. In the D15 dream Dave admits liking Dean very much. On D16 morning the embrace feels safe and soft, making Dave want to wake this way often. |
+| Feelings beyond ordinary liking | D10 night | Use the more-intimate-variations plan and pass the D10 Vault check. The ordinary romance plan omits this realization. | Dave realizes his feelings for Dean may exceed ordinary liking and thinks they should have a serious conversation later. |
+| `I appreciate you` | D18 post-meeting Dean scene | Use the more-intimate-variations plan and pass the D17 Vault check. The ordinary romance plan uses `I appreciate it`. | On D18 Dave says the more personal `I appreciate you`, explicitly anticipates the next day’s date, and initiates stronger kissing before they stop to rest. |
 
 :::
 
@@ -68,8 +68,8 @@ The tables cover differences caused by **affection checks**:
 
 | Condition | Result |
 |---|---|
-| Dean affection ≥ 10 | Dave automatically begins a relationship with Dean, followed by the intimate scene. |
-| Dean affection below 10 | Dave decides that the date did not produce enough romantic chemistry, and the relationship does not form. |
+| Romance plan | Automatically begins romance and intimacy, with no final confirmation menu. |
+| Friendship plan | The date lacks a romantic spark; no relationship begins. |
 
 :::
 
@@ -77,14 +77,14 @@ The tables cover differences caused by **affection checks**:
 
 ::: {.affection-difference-table .table-responsive .table-scroll-large}
 
-| Check | Main story locations | Additional conditions | Dialogue or story effect |
+| Replay target | Main story locations | Choices/checkpoints | Dialogue or story effect |
 |---|---|---|---|
-| Tyson affection ≥ 10 | D9 morning; D9 night Tyson event; D19 relationship check | On D9 morning, reaching 16 uses a different comfort scene | Dave directly asks for a hug, and Tyson stays to comfort him. During D9 night, Tyson explains more of his trust, grooming sensitivity, and relationship to his wolf identity. On D19, values from 10 through 19 show `I love you.` / `...`. |
-| Tyson affection ≥ 15 | D9 night; D15 A/B; D16 A/B morning; D18 Tyson scenes | At some locations, reaching 18 uses a different version | On D9 night, Dave says that being at home with Tyson could matter more than the mansion. In the D15 dream, he says that he loves Tyson, and in the waking conversation he nearly says it aloud. On D16 morning, Dave begins framing the attachment as possible romantic love rather than only brotherhood. D18 adds further conflict around whether their bond is familial or romantic. |
-| Tyson affection ≥ 16 | D9 morning | Replaces the 10-point morning scene | Dave directly says that he wants his father. Tyson gives a fuller embrace and acknowledges that Dave's father was almost a father to him as well, making their shared loss explicit. |
-| Tyson affection ≥ 17 | D9 Tyson character event | Reach the conversation about Dave's father | Adds one short acknowledgment that Tyson also wishes he could receive fatherly advice. |
-| Tyson affection ≥ 18 | D9 night; D10 Tyson investigation; D16 A/B Tyson event | The D9 version replaces the 15-point scene | On D9 night, Dave comes close to a confession and says that he still wants Tyson even when the relationship hurts. On D10, Tyson asks Dave to promise that he will remain happy regardless of what happens. The D16 event adds more direct physical attraction, relationship anxiety, and emotional openness. |
-| Tyson affection ≥ 20 | D18 Tyson scenes; D19 Tyson Route | Corresponding Tyson scenes | D18 adds stronger gaze, touch, hugging, and romantic framing. On D19, Dave more directly calls Tyson special and automatically answers the confession, beginning a relationship with Tyson before the later intimate scene. |
+| Asking for a hug / trust dialogue | D9 morning; D9 night Tyson event; D19 relationship check | Use the D19 response-menu plan, choosing Dean as the D9 companion. | On D9 morning Dave directly asks for a hug and Tyson stays to comfort him. At night Tyson explains his trust, sensitivity during brushing, and relationship to his wolf identity. This plan offers `I love you.` / `...` on D19. |
+| Being together at home / love and brotherhood | D9 night; D15 A/B; D16 A/B morning; D18 Tyson scenes | Use the response-menu plan, but choose `Tyson.` as the D9 companion; keep D15 `'Tyson'.`. | On D9 night Dave says being together at home may matter more than the mansion. In the D15 dream he says he loves Tyson and nearly says it again after waking. On D16 morning he considers the attachment romantic; D18 expands the conflict between family and romance. The intimate plan uses the more direct near-confession on D9 night. |
+| Shared loss of a father | D9 morning | Use the intimate plan, changing only D2 to `You could use a shower.` and the D3 message to Hoss; choose Dean as the D9 companion. | On D9 morning Dave says he wants his father. Tyson gives a fuller hug and admits Dave’s father was almost his own father too, making their shared loss explicit. |
+| Wanting fatherly advice | D9 Tyson character event | Use the preceding plan, but choose `Tyson.` as the D9 companion. This choice occurs after morning comfort. | The D9 character discussion about Dave’s father adds a short admission that Tyson also wishes he had fatherly advice. The preceding plan omits this extra dialogue. |
+| Near-confession / more direct attraction | D9 night; D10 Tyson investigation; D16 A/B Tyson event | Use the intimate plan, changing only D2 to `You could use a shower.`. Keep Tyson as the D3 message recipient and D9 companion. | On D9 night Dave nearly confesses and wants Tyson even if the relationship hurts him. On D10 Tyson asks Dave to promise to stay happy; D16 adds more direct attraction, relationship anxiety, emotional openness, and `As something more.`. |
+| Stronger intimacy / automatic confession | D18 Tyson scenes; D19 Tyson Route | Use the intimate plan through D18–D19. The response-menu plan gives the more reserved version. | D18 adds stronger gazes, touches, hugs, and romantic context. On D19 Dave calls Tyson special more directly and automatically reciprocates, entering romance and the subsequent intimacy scene. |
 
 :::
 
@@ -94,9 +94,9 @@ The tables cover differences caused by **affection checks**:
 
 | Condition | Result |
 |---|---|
-| Tyson affection ≥ 20 | Dave automatically responds to Tyson and continues into the relationship and intimate scene. |
-| Tyson affection 10–19 | `I love you.` / `...` appears, allowing the player to accept or remain silent. |
-| Tyson affection below 10 | Dave automatically rejects a romantic relationship and describes Tyson as a brother he loves rather than a partner. |
+| Intimate plan | Automatically reciprocates and enters romance and intimacy. |
+| Response-menu plan | `I love you.` accepts romance; `...` remains quiet and retains brotherhood. |
+| Automatically-staying-brothers plan | Automatically rejects romance and sees Tyson as a beloved brother. |
 
 :::
 
@@ -104,12 +104,12 @@ The tables cover differences caused by **affection checks**:
 
 ::: {.affection-difference-table .table-responsive .table-scroll-large}
 
-| Check | Main story locations | Additional conditions | Dialogue or story effect |
+| Replay target | Main story locations | Choices/checkpoints | Dialogue or story effect |
 |---|---|---|---|
-| Roswell affection ≥ 5 | D6 lunch; D9 morning | Roswell Route for the D6 event | On D6, Roswell admits that he may want more than friendship and opens `Kiss him.`, `Hug him.`, and `Do nothing.`. Both affectionate choices show the D6 Roswell kiss CG; `Do nothing.` avoids it. Below 5, Roswell initiates automatically and the kiss CG still appears. On D9, this threshold selects the middle, more awkward comfort branch. |
-| Roswell affection ≥ 10 | D9 morning; D19 Roswell Route | On D9, replaces the 5-point scene | Roswell more quickly recognizes Dave's distress, sits with him, and offers to listen. On D19, values from 10 through 19 show `Relationship` / `Friendship`. |
-| Roswell affection ≥ 15 | D15 A/B night; D16 A/B morning; D16 Roswell event | Corresponding Roswell scenes | Dave initiates closer sleep contact on D15. On D16 morning, he comforts Roswell after the nightmare and questions whether their closeness is love or deep friendship. The later event shows `I like {i}you{/i}.`; choosing it visibly pleases Roswell and awards 2 more points. |
-| Roswell affection ≥ 20 | D19 Roswell Route | Reach the final Roswell relationship conversation | Dave says that he cannot accept Roswell leaving before their relationship has truly begun, and the relationship forms automatically. |
+| Lunch response / awkward comfort | D6 lunch; D9 morning | The choice plan offers the D6 response menu; the reserved plan gives awkward D9 comfort. For Roswell’s automatic D6 kiss: skip D2 `Museum.`, message Hoss and ask Tyson in the D3 argument, choose D4 maze `Yeah.`, then `Nah.` back at the mansion and `Vacation`, followed by D6 `Nah.` → `Truth`. | D6 offers `Kiss him.`, `Hug him.`, and `Do nothing.`. The first two display the same kiss CG; the last avoids it. Roswell’s automatic-kiss version also displays the CG. The reserved plan gives awkward D9 morning comfort. |
+| Listening / relationship menu | D9 morning; D19 Roswell Route | Use Roswell’s romance/friendship choice plan. | On D9 Roswell notices Dave’s distress more quickly, sits beside him, and offers to listen, replacing the awkward comfort. D19 offers `Relationship` / `Friendship`. |
+| Sleeping closer / `I like you.` | D15 A/B night; D16 A/B morning; D16 Roswell event | Continue the choice plan with D15 `Agree.` and D16 `I like you.` on Path A/B. The reserved plan omits that option. | On D15 night Dave moves closer to sleep. On D16 morning he comforts Roswell after a nightmare and wonders whether this is love or deep friendship. The character event offers `I like you.` (with *you* emphasized); Roswell is visibly happy with that response. |
+| Automatically accepting romance | D19 Roswell Route | Use the choice plan and also enter `THE LOVERS` on D3; reach the final D19 conversation. | Dave says he cannot accept Roswell leaving before the relationship has truly begun, and automatically becomes his partner. |
 
 :::
 
@@ -119,25 +119,25 @@ The tables cover differences caused by **affection checks**:
 
 | Condition | Result |
 |---|---|
-| Roswell affection ≥ 20 | Dave automatically accepts Roswell and begins the relationship. |
-| Roswell affection 10–19 | `Relationship` / `Friendship` appears, allowing the player to decide. |
-| Roswell affection below 10 | The story automatically keeps the relationship as friendship. |
+| Automatic-romance plan | Automatically accepts Roswell and becomes his partner. |
+| Romance/friendship choice plan | `Relationship` accepts romance; `Friendship` retains friendship. |
+| Reserved plan | Automatically remains friendship. |
 
 :::
 
 ### Hoss
 
-Hoss has two kiss CGs tied to different affection outcomes, making his checks especially relevant to Gallery completion.
+Hoss’s two kiss CGs come from scenes on different dates and should be checked separately.
 
 ::: {.affection-difference-table .table-responsive .table-scroll-large}
 
-| Check | Main story locations | Additional conditions | Dialogue or story effect |
+| Replay target | Main story locations | Choices/checkpoints | Dialogue or story effect |
 |---|---|---|---|
-| Hoss affection ≥ 5 | D6 pool and lunch sequence | Hoss Route | Hoss treats the time together more like a date and flirts more openly, including saying that he better understands why Dean is interested in Dave. Below 5, his response is more restrained. |
-| Hoss affection ≥ 12 | D8 morning; D8 room and hidden library; D9 morning and night | The formal library kiss requires the Hoss Route | Hoss gives Dave a cheek kiss on D8 morning and later refers back to it. In the hidden-library scene on the Hoss Route, he kisses Dave, the story remembers that kiss, and the D8 hidden-library kiss CG appears. D9 adds stronger concern, flirting, and references to wanting another kiss. Below 12 in the library, the kiss is skipped and the game instead awards 2 affection points. |
-| Hoss affection ≥ 15 | D15 A/B; D16 A/B morning and Hoss event; D18; D19 | Corresponding Hoss scenes | In the D15 dream, Dave nearly kisses Hoss. In waking conversation, Hoss gives a forehead kiss but tells Dave to resolve his feelings for Dean. On D16, Dave directly asks whether Hoss likes him romantically. D18 hints that someone else could pursue Dave if Dean does not. D19 shows `Try dating.` / `Stay friends.` when 20 is not reached. |
-| Hoss affection ≥ 16 | D10 Hoss investigation | Only if Dave has already kissed Hoss | Adds lines about Hoss envying Tyson's willingness to care for Dave openly. If Dave has not yet kissed Hoss, a separate story condition determines whether the D10 kiss occurs. |
-| Hoss affection ≥ 20 | D19 Hoss Route | Reach the final Hoss relationship conversation | Adds more direct relationship discussion, begins the relationship automatically, and displays the D19 Hoss relationship CG. No acceptance or rejection menu appears at this level. |
+| Pool date and flirting | D6 pool and lunch sequence | Use Hoss’s D8 CG plan. For reserved responses: D2 `Yoga?`, D3 message Dean, skip D4 `Stay.`, skip D5 `You can pick.` and both supportive performance responses, choose Dean at dinner and `Horror`, then choose Tyson on D6 and skip `Guys like me?` / `Neither.`. | On D6 Hoss treats their time more like a date and flirts openly, including saying he better understands Dean’s interest in Dave. The reserved version is more restrained. |
+| Formal D8 kiss / D9 concern | D8 morning; D8 room and hidden library; D9 morning and night | Complete the D8 CG plan before entering the library. For the late-kiss replay, change only D2 to `Yoga?` and the D3 message to Dean. | The CG plan gives a D8 morning cheek kiss, then a formal library kiss and CG, which later scenes remember. D9 adds concern, flirting, and wanting another kiss. The late-kiss plan skips the D8 library kiss and kisses Dave on D9 night, without unlocking the D8 CG. |
+| Romantic questions / relationship menu | D15 A/B; D16 A/B morning and Hoss event; D18; D19 | Use the D8–D19 relationship-menu plan; D15–D16 applies to Path A/B. | In the D15 dream Dave almost kisses Hoss; after waking Hoss kisses his forehead and asks him to resolve his feelings for Dean first. On D16 Dave directly asks about romantic interest; D18 hints someone else may be interested if Dean is not; D19 offers `Try dating.` / `Stay friends.`. |
+| Envying Tyson’s open concern | D10 Hoss investigation | Use the CG plan, confirming the formal D8 kiss. For the alternate dialogue, change only D8 to skip `Hold his hand`, D9 companion to Dean, and D9 night to `...want you to stay.`. | On D10, after a previous kiss, Hoss envies Tyson’s ability to openly care for Dave; the comparison plan emphasizes Tyson’s confidence in disregarding others’ opinions. If no kiss has occurred when this investigation is reached, Hoss gives Dave a first kiss in a separate scene; it still does not unlock the D8 CG. |
+| Automatic romance / relationship CG | D19 Hoss Route | Use Hoss’s automatic-romance plan, choosing both supportive D5 performance responses. | D19 adds more direct relationship discussion, begins romance automatically, and displays the relationship CG. This version has no accept/reject menu. |
 
 :::
 
@@ -147,9 +147,9 @@ Hoss has two kiss CGs tied to different affection outcomes, making his checks es
 
 | Condition | Result |
 |---|---|
-| Hoss affection ≥ 20 | Dave and Hoss automatically become a couple, and the D19 Hoss relationship CG appears. |
-| Hoss affection 15–19 | `Try dating.` / `Stay friends.` appears. |
-| Hoss affection below 15 | The relationship automatically remains friendship. |
+| Automatic-romance plan | Automatically begins romance and displays the D19 relationship CG. |
+| D8–D19 relationship-menu plan | `Try dating.` begins romance and displays the D19 CG; `Stay friends.` retains friendship. |
+| Automatic-friendship replay | Automatically remains friendship. |
 
 :::
 
@@ -159,12 +159,12 @@ Hoss has two kiss CGs tied to different affection outcomes, making his checks es
 
 | CG | Actual requirement | Meaning |
 |---|---|---|
-| D8 hidden-library kiss CG | Hoss Route and Hoss affection ≥ 12 | Formal D8 hidden-library kiss |
-| D19 Hoss relationship CG | Successful D19 Hoss relationship | Automatic at 20, or accepted through `Try dating.` at 15–19 |
+| D8 hidden-library kiss CG | Hoss Route; follow the D8 CG plan and see the formal kiss | CG displayed in the D8 library scene |
+| D19 Hoss relationship CG | A successful D19 relationship | Available through automatic romance or accepting with `Try dating.` |
 
 :::
 
-If Hoss affection is below 12 at the D8 hidden-library check, the library kiss does not occur. Raising Hoss affection to 12 or higher before the D9 night Hoss scene can still trigger a mouth kiss, which the later story remembers as a kiss between Dave and Hoss. This does not retroactively unlock the missed D8 hidden-library kiss CG.
+If no formal kiss occurs in the D8 library, a D9 night kiss can still happen and be remembered later, but it does not unlock the D8 CG. See the [Hoss choice guide](affection.md#tabset-1-5) for the replay plan.
 
 For coordinates and the earliest normal display locations, see [CG Gallery Completion Index](../collectibles/gallery.md).
 
@@ -172,12 +172,12 @@ For coordinates and the earliest normal display locations, see [CG Gallery Compl
 
 ::: {.affection-difference-table .table-responsive .table-scroll-large}
 
-| Check | Main story locations | Additional conditions | Dialogue or story effect |
+| Replay target | Main story locations | Choices/checkpoints | Dialogue or story effect |
 |---|---|---|---|
-| Sal affection ≥ 8 | D8; D9 morning | On D9, this result is used from 8 through 14 | D8 adds only a brief glance and muted response. On D9, Sal notices that Dave is troubled and explains that he came to check on him, but remains restrained. |
-| Sal affection ≥ 15 | D9 morning and Sal event; D9 night; D15 A/B; D16 A/B; D18; D19 | Most locations require the Sal Route or the corresponding Sal scene | Sal asks more directly what is upsetting Dave. The D9 character scene expands the Abi discussion, and `Approach.` succeeds as a hug instead of being rejected. Sal stays on D9 night at any affection level; reaching this threshold changes the invitation and cuddle dialogue. D15–D18 adds greater physical closeness, Sal's affection for Dave despite his imperfections, and conflict over whether loving Dave would betray Dean. D19 shows `Romantic` / `Platonic` when 20 is not reached. |
-| Sal affection ≥ 16 | D11 A/B Sal dialogue | Reach the relevant conversation | When asked whether he likes someone, Sal admits that he does and that the feeling is recent and still difficult to process. He does not identify the person here. Below 16, this short answer is omitted. |
-| Sal affection ≥ 20 | D19 Sal sequence | Reach the final Sal relationship flow | Adds the injured-Sal arrival material and later has Sal explicitly call his feelings a crush and ask about dating after leaving the mountain. Dave accepts automatically. |
+| Reserved looks and comfort | D8; D9 morning | Use Sal’s reserved plan; the intimate plan gives more direct D9 comfort. | D8 adds brief eye contact and a restrained response. On the reserved plan’s D9 morning, Sal notices Dave has something on his mind and explains he came to check on him, but remains reserved. |
+| Accepted hug / more intimate dialogue | D9 morning and Sal event; D9 night; D15 A/B; D16 A/B; D18; D19 | Use the intimate or relationship-menu plan. On D9 keep the specified Uno choice before choosing `Approach.`. | Sal asks more directly why Dave is upset, expands the Abi discussion, and accepts `Approach.` as a hug. He also stays overnight in other versions, but the invitation and cuddle dialogue differ. D15–D18 adds physical closeness, acceptance of Dave’s imperfections, and conflict over whether loving Dave betrays Dean. The D19 menu plan offers `Romantic` / `Platonic`. |
+| Brief admission of liking someone | D11 A/B Sal dialogue | Use the reserved plan, changing only D9 night to `...want to talk more?`, then replay D11 A/B. The intimate and relationship-menu plans also include it. | Sal admits liking someone, having realized it recently and still finding it difficult, without identifying the person. The reserved plan with D9 `...want to cuddle?` omits this short answer. |
+| Automatically accepting a date | D19 Sal sequence | Use Sal’s intimate plan and reach the final D19 sequence. | An injured Sal arrives in the relevant scene; later he explicitly admits his attraction to Dave and asks about dating after leaving the mountain. Dave automatically accepts. |
 
 :::
 
@@ -187,21 +187,20 @@ For coordinates and the earliest normal display locations, see [CG Gallery Compl
 
 | Condition | Result |
 |---|---|
-| Sal affection ≥ 20 | Sal directly admits his crush, Dave automatically accepts, and Dave and Sal become a couple. |
-| Sal affection 15–19 | `Romantic` / `Platonic` appears. |
-| Sal affection below 15 | Sal emphasizes close friendship, and the story automatically remains platonic. |
+| Intimate plan | Automatically accepts the invitation and begins romance. |
+| Relationship-menu / reserved plan | `Romantic` accepts romance; `Platonic` retains a platonic relationship. |
+| Automatic-platonic plan | Emphasizes close friendship and retains a platonic relationship. |
 
 :::
 
 :::
-
 ::: {.callout-warning}
-## Do not interpret the numbers as fixed relationship ranks
+## Intimacy is not a fixed relationship rank
 
-Affection has no universal relationship ranks. The same value can affect narration, intimate scenes, dialogue choices, or a relationship depending on the scene, so it cannot simply be labeled “friend,” “crush,” or “partner.”
+A hug, kiss, or overnight stay does not by itself mean romance. Keep earlier menus consistent when replaying variations, and confirm the actual relationship through the D19 response.
 :::
 
 ## Related guides
 
-- [Affection System and Point Guide](affection.md)
+- [Affection and Character Choice Guide](affection.md)
 - [CG Gallery Completion Index](../collectibles/gallery.md)

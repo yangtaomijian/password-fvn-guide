@@ -283,13 +283,12 @@ The index below lists each CG by character, with an early appearance date and ne
 
 ## Images outside the Gallery
 
-These four images are absent from the b0.85 Gallery. Three appear during the story.
+These three images appear during normal story play but are absent from the b0.85 Gallery.
 
 ::: {#gallery-non-gallery-index .gallery-non-gallery-index}
 
 | Scene | Gallery entry | Earliest appearance | Story clue |
 |---|---|---|---|
-| <span class="gallery-scene-label">Dean image absent from normal play</span> | No | Not shown in normal play | This image does not appear during a normal b0.85 playthrough and has no Gallery button. |
 | <span class="gallery-scene-label">D23 envelope photo of white-furred man</span> | No | D23 A/B | "Carefully I looked at the man's features. He looked like a magician, or maybe it was just the fancy cut of his coat. His white fur did remind me a little of the Easter Bunny though. " / "Oswin said it'd be fine if I read the note, so long as Roswell got it too. Though I wasn't sure if the rules still applied given the assumption was that I'd be the one getting back." |
 | <span class="gallery-scene-label">D22 additional Hammond family photo</span> | No | D22 A/B | "I breathed out, shaking my head." / Dave "But now Oswin is dead, and wondering about that probably doesn't matter." |
 | <span class="gallery-scene-label">Roswell Epilogue image</span> | No | Roswell Epilogue | Thanatos "I understand. " / Roswell "No, you're an assistant for work. " |
@@ -304,7 +303,7 @@ In b0.85, this slot may not refresh as expected. If Trauma row 7, column 4 remai
 
 ## Related guides
 
-- [Affection System and Point Guide](../mechanics/affection.md)
+- [Affection and Character Choice Guide](../mechanics/affection.md)
 - [Lettered Path System](../guide/path-system.md)
 
 <script src="../assets/gallery-locator.js" defer></script>

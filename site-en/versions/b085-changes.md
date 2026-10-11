@@ -23,7 +23,7 @@ The comparison below is limited to **b0.7 and b0.85** and should not be applied 
 | Password systems | Retires two accepted D7 alternatives and the complete D11 optional Vault flow |
 | D8 interaction | Replaces Oswin's free-text question system with scripted dialogue |
 | Dean-related scenes | Converts several choice-driven scenes into fixed sequences |
-| Dean relationship | Changes the D19 threshold and removes the middle-range confirmation choice |
+| Dean relationship | Removes the accept/reject romance menu after the D19 date |
 | Path P | Adds a mandatory final input and an explicit cross-save true-ending completion record |
 | Gallery | Reduces the number of slots from 104 to 100 |
 | CGs | Redraws two Tyson CGs and removes four older Dean adult CGs |
@@ -124,7 +124,7 @@ Examples include:
 - **D9:** the kiss/change-subject menu is removed;
 - **D10:** the repeatable four-suspect question menu is replaced by a fixed investigation scene.
 
-These changes reduce optional exposition and player control and also alter how some Dean affection points are obtained. They do not change the underlying A–G Path structure.
+These changes reduce optional exposition and player control and also change the interactions through which Dave develops his relationship with Dean. They do not change the underlying A–G Path structure.
 
 ### D19 relationship resolution
 
@@ -133,11 +133,11 @@ Dean's relationship check changes as follows:
 ::: {.d19-result-table .table-responsive .table-scroll-compact}
 | Build | D19 result |
 |---|---|
-| b0.7 | Dean affection ≥ 20: relationship automatic; Dean affection 10–19: player accepts or rejects; Dean affection < 10: rejection |
-| b0.85 | Dean affection ≥ 10: relationship automatic; Dean affection < 10: rejection |
+| b0.7 | After the date: automatic romance, an accept/reject menu, or rejection for lack of a romantic spark. |
+| b0.85 | On the Dean Route, Dave reciprocates automatically or finds no romantic spark; there is no accept/reject menu. On other character routes, the date returns to friendship. |
 :::
 
-b0.85 lowers the automatic relationship threshold and removes the confirmation choice previously offered at 10–19 points.
+b0.85 makes some formerly optional relationship outcomes automatic. To replay Dean’s friendship outcome, change earlier interactions; see the [character choice guide](../mechanics/affection.md#tabset-1-2).
 
 ## Path P additions
 
@@ -247,7 +247,7 @@ A guide is likely describing b0.7 rather than b0.85 if it instructs the player t
 - type free-form questions for Oswin on D8;
 - revisit the Vault on D11 for `METEMPSYCHOSIS`;
 - choose who should receive the D11 injection;
-- make a D19 Dean relationship decision in the 10–19 affection range;
+- accept or reject Dean through a menu after the D19 date;
 - unlock a 104-slot Gallery.
 
 Use the current b0.85 guides for route, password, Compendium, and collection requirements.
