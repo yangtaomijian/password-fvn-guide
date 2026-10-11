@@ -83,6 +83,49 @@
     storage: '浏览器存储不可用，表情仅供查看。', retry: '刷新表情',
     names: { like: '赞同、有帮助', heart: '喜欢、感谢', smile: '开心、友善', celebrate: '庆祝', thinking: '思考、保留意见' },
   };
+  const subscriptionWords = context.locale === 'en' ? {
+    optIn: 'Email me when someone replies directly to this comment', email: 'Email (private)',
+    help: 'Optional and private. Verify within 24 hours; the subscription lasts 365 days after verification. The first subscription email cannot be changed. Cancel from any subscription email. This choice stays only in this tab.',
+    title: 'Email updates for your posted comment', sending: 'Your comment is posted. Requesting a verification email…',
+    invalid: 'Your comment is posted. Enter a valid email to request verification; do not post again.',
+    unavailable: 'Your comment is posted. Email subscriptions are unavailable. You can retry only the subscription.',
+    failed: 'The verification email request failed. Your comment is already posted.',
+    rate: 'Too many email requests. Wait before retrying the subscription; your comment is posted.',
+    fixed: 'The subscription email is fixed and cannot be replaced. Check its status.',
+    unknown: 'The email request result is uncertain. Check its status before retrying. Your comment is already posted.',
+    statusFailed: 'Couldn’t check the private subscription status. Try checking again; do not repost your comment.',
+    noProof: 'Your comment is posted, but email updates could not be linked to it. Do not repost your comment.',
+    retry: 'Request verification email', check: 'Check subscription status', checking: 'Checking subscription status…',
+    states: {
+      not_requested: 'No verification email has been requested. Your comment is already posted.',
+      verification_pending: 'The email service accepted the verification request. Delivery is not confirmed; the subscription is not active until you verify.',
+      verification_failed: 'The verification email request failed. Your comment is already posted.',
+      verification_unknown: 'The email request result is uncertain. Check its status before retrying; do not repost your comment.',
+      active: 'Email verified. You are subscribed to direct replies to this comment. Cancel using the link in a subscription email.',
+      cancelled: 'This email subscription was cancelled and cannot be restarted for this comment.',
+      expired: 'This email subscription expired and cannot be restarted for this comment.',
+    },
+  } : {
+    optIn: '有人直接回复这条评论时，通过邮件通知我', email: '邮箱（仅私下使用）',
+    help: '可选，邮箱不会公开。须在 24 小时内验证，验证后有效 365 天；首次订阅邮箱不能更换，可随时通过邮件退订。此选择仅保留在当前标签页。',
+    title: '已发布评论的邮件订阅', sending: '评论已发布，正在请求验证邮件…',
+    invalid: '评论已发布。请输入有效邮箱来请求验证，无需再次发表评论。',
+    unavailable: '评论已发布，邮件订阅暂不可用。可以只重试订阅。',
+    failed: '验证邮件请求失败；评论已经发布。', rate: '邮件请求过于频繁，请稍后只重试订阅；评论已经发布。',
+    fixed: '订阅邮箱已固定，不能更换。请核对订阅状态。',
+    unknown: '邮件请求结果不确定。请先核对订阅状态，再决定是否重试；评论已经发布。',
+    statusFailed: '无法核对私有订阅状态，请再次核对；无需重新发表评论。',
+    noProof: '评论已发布，但邮件订阅无法关联到这条评论。无需重新发表评论。',
+    retry: '请求验证邮件', check: '核对订阅状态', checking: '正在核对订阅状态…',
+    states: {
+      not_requested: '尚未请求验证邮件；评论已经发布。',
+      verification_pending: '邮件服务已接受验证请求，尚不能确认送达；验证邮箱后订阅才会生效。',
+      verification_failed: '验证邮件请求失败；评论已经发布。',
+      verification_unknown: '邮件请求结果不确定，请先核对订阅状态；无需重新发表评论。',
+      active: '邮箱已验证，将通知你对这条评论的直接回复。可通过订阅邮件中的链接退订。',
+      cancelled: '此邮件订阅已取消，不能为这条评论重新订阅。', expired: '此邮件订阅已过期，不能为这条评论重新订阅。',
+    },
+  };
   const dateFormat = new Intl.DateTimeFormat(context.locale, {
     year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
   });
@@ -112,6 +155,7 @@
   postNotice.setAttribute('role', 'status');
   postNotice.setAttribute('aria-live', 'polite');
   postNotice.tabIndex = -1;
+  const subscriptionResults = make('div', 'pw-discussion-subscription-results');
   const lockedNotice = make('p', 'pw-discussion-locked', words.locked);
   lockedNotice.hidden = true;
   const rootAction = make('button', 'pw-discussion-action pw-discussion-add', words.add);
@@ -133,13 +177,15 @@
   const persistentMore = make('button', 'pw-discussion-action', words.loadMore);
   persistentMore.type = 'button'; persistentMore.hidden = true;
   persistent.append(persistentHeading, persistentNote, persistentComments, persistentMore);
-  section.append(headingRow, explainer, persistent, versionContext, status, postNotice, lockedNotice,
+  section.append(headingRow, explainer, persistent, versionContext, status, postNotice, subscriptionResults, lockedNotice,
     rootAction, composerHost, comments, more, versions);
   mount.append(section);
   mount.hidden = false;
 
   const remoteMode = runtime.mode === 'staging' || runtime.mode === 'production';
   const writeEnabled = (remoteMode || (runtime.mode === 'fixture' && runtime.transport.fixtureCanWrite === true)) && typeof runtime.transport.postComment === 'function';
+  const subscriptionEnabled = writeEnabled && typeof runtime.transport.enrollSubscription === 'function' &&
+    typeof runtime.transport.readSubscriptionStatus === 'function';
   const reportEnabled = (remoteMode || (runtime.mode === 'fixture' && runtime.transport.fixtureCanWrite === true)) && typeof runtime.transport.sendFeedback === 'function';
   const state = { persistent: null, activeVersion: context.guideVersion, pages: new Map(), index: [], pending: false,
     drafts: new Map(), uncertainTargets: new Set(), activeTarget: null, activeReplyRootId: null, replyUnavailable: false, opener: null, posting: false, threadLocked: false };
@@ -584,6 +630,20 @@
   bodyInput.id = 'pw-discussion-new-body'; bodyInput.rows = 5;
   const bodyError = make('p', 'pw-discussion-field-error');
   bodyError.id = 'pw-discussion-body-error'; bodyInput.setAttribute('aria-describedby', bodyError.id);
+  const subscriptionChoice = make('div', 'pw-discussion-subscription-choice');
+  subscriptionChoice.hidden = !subscriptionEnabled;
+  const optInLabel = make('label', 'pw-discussion-subscription-opt-label');
+  const subscriptionOptIn = make('input', 'pw-discussion-subscription-opt-in');
+  subscriptionOptIn.type = 'checkbox';
+  optInLabel.append(subscriptionOptIn, make('span', '', subscriptionWords.optIn));
+  const emailLabel = make('label', 'pw-discussion-subscription-email-label', subscriptionWords.email);
+  emailLabel.htmlFor = 'pw-discussion-subscription-email'; emailLabel.hidden = true;
+  const subscriptionEmail = make('input', 'pw-discussion-input pw-discussion-subscription-email');
+  subscriptionEmail.id = emailLabel.htmlFor; subscriptionEmail.type = 'email';
+  subscriptionEmail.autocomplete = 'off'; subscriptionEmail.maxLength = 254; subscriptionEmail.hidden = true;
+  const emailHelp = make('p', 'pw-discussion-subscription-help', subscriptionWords.help);
+  emailHelp.id = 'pw-discussion-subscription-help'; subscriptionEmail.setAttribute('aria-describedby', emailHelp.id);
+  subscriptionChoice.append(optInLabel, emailLabel, subscriptionEmail, emailHelp);
   const honeypot = make('input', 'pw-discussion-honeypot');
   honeypot.type = 'text'; honeypot.name = 'website'; honeypot.autocomplete = 'off';
   honeypot.tabIndex = -1; honeypot.setAttribute('aria-hidden', 'true');
@@ -602,7 +662,7 @@
   cancel.type = 'button';
   actions.append(submit, cancel);
   form.append(composerTarget, identity, nameLabel, nameInput, nameError, bodyLabel, bodyInput, bodyError,
-    honeypot, verifySlot, formStatus, verifyRetry, confirmUnposted, actions);
+    subscriptionChoice, honeypot, verifySlot, formStatus, verifyRetry, confirmUnposted, actions);
   if (writeEnabled) composerHost.append(form);
 
   let turnstileScript = null;
@@ -612,7 +672,7 @@
   const points = value => Array.from(value).length;
   function saveDraft() {
     if (state.activeTarget) state.drafts.set(state.activeTarget,
-      { name: nameInput.value, body: bodyInput.value });
+      { name: nameInput.value, body: bodyInput.value, subscriptionOptIn: subscriptionOptIn.checked, subscriptionEmail: subscriptionEmail.value });
   }
   function fieldError(input, messageNode, messageText) {
     messageNode.textContent = messageText || '';
@@ -624,6 +684,7 @@
     fieldError(bodyInput, bodyError, '');
   }
   function updateSubmit() {
+    subscriptionOptIn.disabled = subscriptionEmail.disabled = state.posting;
     const uncertain = state.uncertainTargets.has(state.activeTarget);
     confirmUnposted.hidden = !uncertain;
     const reply = activeReply();
@@ -767,6 +828,8 @@
     state.activeTarget = target; state.activeReplyRootId = selected?.root.id ?? null; state.opener = opener;
     const draft = state.drafts.get(target);
     nameInput.value = draft?.name ?? ''; bodyInput.value = draft?.body ?? '';
+    subscriptionOptIn.checked = draft?.subscriptionOptIn === true; subscriptionEmail.value = draft?.subscriptionEmail ?? '';
+    emailLabel.hidden = subscriptionEmail.hidden = !subscriptionOptIn.checked;
     honeypot.value = '';
     clearFieldErrors(); postNotice.textContent = '';
     submit.textContent = target === 'root' ? words.rootSubmit : words.replySubmit;
@@ -858,6 +921,97 @@
     if (error?.fieldErrors?.body) fieldError(bodyInput, bodyError, words.emptyBody);
     return words.postFailed;
   }
+  const validSubscriptionExpiry = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(value) &&
+    Number.isFinite(Date.parse(value)) && new Date(value).toISOString() === value;
+  const subscriptionStates = Object.keys(subscriptionWords.states);
+  const validSubscription = result => result?.ok === true && result.subscription &&
+    subscriptionStates.includes(result.subscription.state) && typeof result.subscription.mayRetry === 'boolean' &&
+    (result.subscription.expiresAt === undefined || validSubscriptionExpiry(result.subscription.expiresAt));
+  const validEmail = email => typeof email === 'string' && email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  function newSubscriptionProof() {
+    try { return Array.from(crypto.getRandomValues(new Uint8Array(32)), byte => byte.toString(16).padStart(2, '0')).join(''); }
+    catch { return null; }
+  }
+  function showSubscription(snapshot, commentId) {
+    // These objects and their credentials live only in this closure; no public comment metadata or storage.
+    const card = make('section', 'pw-discussion-subscription-result');
+    const title = make('h3', '', subscriptionWords.title);
+    const notice = make('p', 'pw-discussion-subscription-status');
+    notice.setAttribute('role', 'status'); notice.setAttribute('aria-live', 'polite'); notice.tabIndex = -1;
+    const label = make('label', 'pw-discussion-subscription-correction', subscriptionWords.email);
+    const email = make('input', 'pw-discussion-input pw-discussion-subscription-correct-email');
+    email.type = 'email'; email.autocomplete = 'off'; email.maxLength = 254; email.value = snapshot.email;
+    label.append(email);
+    const retry = make('button', 'pw-discussion-action pw-discussion-subscription-retry', subscriptionWords.retry);
+    const check = make('button', 'pw-discussion-action pw-discussion-subscription-check', subscriptionWords.check);
+    retry.type = check.type = 'button';
+    const controls = make('div', 'pw-discussion-subscription-controls'); controls.append(retry, check);
+    card.append(title, notice, label, controls); subscriptionResults.prepend(card);
+    const job = { commentId, proof: snapshot.proof, email: snapshot.email, pending: false,
+      fixed: false, unknown: false, localInvalid: !validEmail(snapshot.email), result: null, error: '', retryable: true };
+    const usable = /^[0-9a-f]{64}$/.test(job.proof ?? '') &&
+      typeof commentId === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(commentId);
+    function paint() {
+      // Capture the editor at paint time, after any scrolling/editing during this request.
+      const focused = document.activeElement;
+      const editor = state.activeTarget && !composerHost.hidden ?
+        (form.contains(focused) && focused.matches('input, textarea') ? focused : bodyInput) : null;
+      const before = editor?.getBoundingClientRect();
+      const viewportTop = window.visualViewport?.offsetTop ?? 0;
+      const preserveEditor = before?.height > 0 && before.top < viewportTop + (window.visualViewport?.height ?? innerHeight) && before.bottom > viewportTop;
+      const previousHeight = card.getBoundingClientRect().height;
+      const stateName = job.result?.state;
+      label.hidden = !job.localInvalid || job.fixed || !usable;
+      email.disabled = job.pending;
+      retry.hidden = !usable || job.unknown || ['active', 'cancelled', 'expired', 'verification_pending', 'verification_unknown'].includes(stateName) ||
+        (!job.localInvalid && !(job.result ? job.result.mayRetry : job.retryable));
+      check.hidden = !usable || job.localInvalid;
+      retry.disabled = check.disabled = job.pending;
+      notice.textContent = !usable ? subscriptionWords.noProof : job.pending ? job.message :
+        job.error || (job.localInvalid ? subscriptionWords.invalid : stateName ? subscriptionWords.states[stateName] : subscriptionWords.sending);
+      if (preserveEditor && editor.isConnected && Math.abs(card.getBoundingClientRect().height - previousHeight) > .5) {
+        const movement = editor.getBoundingClientRect().top - before.top;
+        if (Math.abs(movement) > .5) window.scrollBy({ top: movement, behavior: 'instant' });
+      }
+    }
+    async function request(checkOnly) {
+      if (job.pending || !usable || (!checkOnly && (job.unknown || retry.hidden))) return;
+      if (!checkOnly && !job.fixed) {
+        job.email = email.value.trim(); job.localInvalid = !validEmail(job.email);
+        if (job.localInvalid) { job.error = ''; paint(); email.focus({ preventScroll: true }); return; }
+      }
+      const focused = document.activeElement === (checkOnly ? check : retry);
+      job.pending = true; job.message = checkOnly ? subscriptionWords.checking : subscriptionWords.sending; paint();
+      const input = { commentId: job.commentId, pageKey: context.pageKey, locale: context.locale, subscriptionProof: job.proof };
+      try {
+        const response = await (checkOnly ? runtime.transport.readSubscriptionStatus(input) : runtime.transport.enrollSubscription({ ...input, email: job.email }));
+        if (!validSubscription(response)) { const error = Error('SUBSCRIPTION_RESPONSE_INVALID'); error.outcomeUnknown = true; throw error; }
+        job.result = { ...response.subscription }; job.error = '';
+        job.unknown = response.subscription.state === 'verification_unknown';
+        if (!checkOnly || response.subscription.state !== 'not_requested') job.fixed = true;
+      } catch (error) {
+        if (checkOnly) { job.error = subscriptionWords.statusFailed; }
+        else {
+          job.unknown = error?.outcomeUnknown !== false;
+          job.fixed = job.fixed || job.unknown || error?.code === 'SUBSCRIPTION_EMAIL_FIXED';
+          job.error = job.unknown ? subscriptionWords.unknown : error?.code === 'SUBSCRIPTION_EMAIL_INVALID' ? subscriptionWords.invalid :
+            error?.code === 'SUBSCRIPTION_UNAVAILABLE' ? subscriptionWords.unavailable : error?.code === 'SUBSCRIPTION_RATE_LIMITED' ? subscriptionWords.rate :
+            error?.code === 'SUBSCRIPTION_EMAIL_FIXED' ? subscriptionWords.fixed : subscriptionWords.failed;
+          job.localInvalid = !job.fixed && error?.code === 'SUBSCRIPTION_EMAIL_INVALID';
+          job.retryable = error?.code !== 'SUBSCRIPTION_EMAIL_FIXED';
+        }
+      } finally {
+        job.pending = false; paint();
+        // Restore only our own clicked control; never take focus from a new draft or another card.
+        if (focused && [document.body, retry, check].includes(document.activeElement)) {
+          const next = !check.hidden ? check : !retry.hidden ? retry : notice; next.focus({ preventScroll: true });
+        }
+      }
+    }
+    retry.addEventListener('click', () => { retry.focus({ preventScroll: true }); void request(false); });
+    check.addEventListener('click', () => { check.focus({ preventScroll: true }); void request(true); });
+    paint(); if (usable && !job.localInvalid) void request(false);
+  }
   async function submitDraft(event) {
     event.preventDefault();
     const target = state.activeTarget;
@@ -867,6 +1021,9 @@
       saveDraft(); placeComposer(); updateSubmit(); return;
     }
     if (!token) { formStatus.textContent = words.verifyWait; return; }
+    const subscriptionSnapshot = subscriptionEnabled && subscriptionOptIn.checked ?
+      { email: subscriptionEmail.value.trim(), proof: newSubscriptionProof() } : null;
+    let subscriptionPostedId = null;
     const usedToken = token;
     token = null;
     state.posting = true; updateSubmit(); cancel.disabled = true;
@@ -883,9 +1040,13 @@
       replyToCommentId: selected?.comment.id ?? null,
       turnstileToken: usedToken, honeypot: honeypot.value,
     };
+    if (subscriptionSnapshot?.proof) payload.subscriptionProof = subscriptionSnapshot.proof;
     try {
       const posted = await runtime.transport.postComment(payload);
       if (posted?.httpStatus !== 201) throw Error('DISCUSSION_POST_FAILED');
+      subscriptionPostedId = posted.commentId;
+      // Subscription work is deliberately outside the comment request catch and refresh lifecycle.
+      if (subscriptionSnapshot) queueMicrotask(() => { try { showSubscription(subscriptionSnapshot, subscriptionPostedId); } catch { /* Never change the confirmed public outcome. */ } });
       state.drafts.delete(target); state.uncertainTargets.delete(target);
       state.activeTarget = null; state.activeReplyRootId = null; state.replyUnavailable = false; state.opener = null;
       clearWidget(); composerHost.hidden = true; comments.before(composerHost);
@@ -941,6 +1102,8 @@
     });
     nameInput.addEventListener('input', saveDraft);
     bodyInput.addEventListener('input', saveDraft);
+    subscriptionOptIn.addEventListener('change', () => { emailLabel.hidden = subscriptionEmail.hidden = !subscriptionOptIn.checked; saveDraft(); });
+    subscriptionEmail.addEventListener('input', saveDraft);
     form.addEventListener('submit', submitDraft);
   }
   async function loadVersion(guideVersion) {

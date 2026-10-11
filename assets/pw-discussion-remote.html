@@ -54,8 +54,55 @@
         }, 15000); })]);
     } finally { clearTimeout(timer); }
   }
+  const validSubscriptionExpiry = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(value) &&
+    Number.isFinite(Date.parse(value)) && new Date(value).toISOString() === value;
+  const subscriptionStates = ['not_requested', 'verification_pending', 'verification_failed',
+    'verification_unknown', 'active', 'cancelled', 'expired'];
+  const subscriptionCodes = ['SUBSCRIPTION_UNAVAILABLE', 'SUBSCRIPTION_EMAIL_INVALID',
+    'SUBSCRIPTION_EMAIL_FIXED', 'SUBSCRIPTION_RATE_LIMITED'];
+  async function subscriptionRequest(path, input, writing) {
+    const payload = { commentId: input.commentId, pageKey: input.pageKey, locale: input.locale,
+      subscriptionProof: input.subscriptionProof };
+    if (writing) payload.email = input.email;
+    if (!uuid(payload.commentId) || typeof payload.pageKey !== 'string' || !payload.pageKey ||
+        !['en', 'zh-CN'].includes(payload.locale) || !/^[0-9a-f]{64}$/.test(payload.subscriptionProof) ||
+        (writing && typeof payload.email !== 'string')) throw Error('SUBSCRIPTION_INPUT_INVALID');
+    const controller = new AbortController(); let timer;
+    try {
+      return await Promise.race([(async () => {
+        let response, data;
+        try {
+          response = await fetch(config.origin + '/v1/email-subscriptions' + path, {
+            method: 'POST', mode: 'cors', credentials: 'omit', referrerPolicy: 'no-referrer',
+            signal: controller.signal, redirect: 'error', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload),
+          });
+          try { data = await response.json(); } catch { /* Keep private upstream text private. */ }
+        } catch {
+          const error = Error('SUBSCRIPTION_REQUEST_FAILED'); error.outcomeUnknown = true; throw error;
+        }
+        const row = data?.subscription;
+        if (response.status === 200 && data?.ok === true && row &&
+            subscriptionStates.includes(row.state) && typeof row.mayRetry === 'boolean' &&
+            (row.expiresAt === undefined || validSubscriptionExpiry(row.expiresAt))) {
+          return { ok: true, subscription: { state: row.state, mayRetry: row.mayRetry,
+            ...(row.expiresAt === undefined ? {} : { expiresAt: row.expiresAt }) } };
+        }
+        const error = Error('SUBSCRIPTION_REQUEST_FAILED');
+        error.code = response.status === 429 ? 'SUBSCRIPTION_RATE_LIMITED' :
+          subscriptionCodes.includes(data?.code) ? data.code : 'SUBSCRIPTION_FAILED';
+        const knownReject = response.status !== 200 && data?.ok === false && subscriptionCodes.includes(data?.code);
+        error.outcomeUnknown = !knownReject && ![400, 401, 403, 404, 405, 409, 413, 415, 422, 423, 429].includes(response.status);
+        throw error;
+      })(), new Promise((resolve, reject) => { timer = setTimeout(() => {
+        controller.abort(); const error = Error('SUBSCRIPTION_REQUEST_FAILED');
+        error.outcomeUnknown = true; reject(error);
+      }, 15000); })]);
+    } finally { clearTimeout(timer); }
+  }
   window.__pwDiscussionRemoteTransport = Object.freeze({
     turnstileSitekey: config.turnstileSitekey,
+    enrollSubscription(input) { return subscriptionRequest('', input, true); },
+    readSubscriptionStatus(input) { return subscriptionRequest('/status', input, false); },
     async readReactions(input) {
       const payload = { pageKey: input.pageKey, locale: input.locale, commentIds: input.commentIds };
       if (input.visitorId !== undefined) payload.visitorId = input.visitorId;
@@ -98,10 +145,12 @@
         replyToCommentId: input.replyToCommentId ?? null,
         turnstileToken: input.turnstileToken, honeypot: input.honeypot,
       };
+      if (input.subscriptionProof !== undefined) payload.subscriptionProof = input.subscriptionProof;
       let response;
       try {
         response = await fetch(endpoint + '/comments', {
           method: 'POST', mode: 'cors', credentials: 'omit', referrerPolicy: 'no-referrer',
+          ...(/^[0-9a-f]{64}$/.test(input.subscriptionProof ?? '') ? { redirect: 'error' } : {}),
           headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload),
         });
       } catch {
