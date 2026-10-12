@@ -539,7 +539,11 @@
       if (reactionReadEnabled && root.status === 'published') actions.append(reactionPanel(comment.id));
       if (isRoot && typeof comment.pageHash === 'string' && /^#[^?#]{1,255}$/.test(comment.pageHash)) {
         const anchor = make('a', 'pw-discussion-fragment', words.fragment);
-        anchor.href = context.pagePath + comment.pageHash;
+        // Older responses lack publicationLocale and retain the current-page fallback.
+        const publicationLocale = ['en', 'zh-CN'].includes(comment.publicationLocale)
+          ? comment.publicationLocale : context.locale;
+        const guidePath = context.pagePath.replace(/^\/en\//, '/');
+        anchor.href = (publicationLocale === 'en' ? '/en' : '') + guidePath + comment.pageHash;
         actions.append(anchor);
       }
       if (canReply(root, comment)) {

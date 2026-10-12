@@ -65,6 +65,9 @@ config = {
     "pw-discussion-api": "https://discussion-staging.carambi.com" if staging else "https://discussion.carambi.com",
     "pw-discussion-turnstile-sitekey": "0x4AAAAAAFEW58ENHynCclX5" if staging else "0x4AAAAAAFE9bmYvoR54zpRe",
 }
+for prefix in ('', 'en/'):
+    for name in ('pw-discussion.css', 'pw-feedback.css'):
+        assert (site / prefix / 'assets' / name).is_file(), f"missing required asset: {prefix}assets/{name}"
 for relative in sorted(expected):
     text = (site / relative).read_text(encoding="utf-8")
     for name, value in config.items():
@@ -78,6 +81,11 @@ for relative in sorted(expected):
     assert all(value not in text for value in forbidden), f"mixed environment config in {relative}"
     assert text.count("if (window.__pwDiscussionRuntime) return;") == 1, relative
     assert text.count("const pageKeys = Object.freeze({") == 1, relative
+    # Compare Discussion identity and output completeness, never translated guide prose.
+    built_versions = re.findall(r"const guideVersion = '([^']+)'", text)
+    assert built_versions == ['b0.85'], f"Discussion version differs in {relative}"
+    built_map = dict(re.findall(r"\n    '(/(?:en/)?[^']+\.html)': '([^']+)',", text))
+    assert built_map == wanted, f"Discussion page identity differs in {relative}"
     assert text.count("main.after(mount);") == 1, relative
     assert text.count("const runtime = window.__pwDiscussionRuntime;") == 3, relative
     assert text.count('class="pw-feedback-slot" type="button" disabled') == 1, relative
@@ -87,6 +95,7 @@ for relative in sorted(expected):
     assert 'class="giscus"' not in text, f"active Giscus container in {relative}"
     if relative.endswith("discussions.html"):
         assert 'id="pw-discussion-hub"' in text
+        assert 'id=\"language\"' not in text and 'language-label' not in text, relative
     elif relative.endswith("index.html"):
         assert relative in {"index.html", "en/index.html"}
     else:
