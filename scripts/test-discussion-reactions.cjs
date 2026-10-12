@@ -22,7 +22,7 @@ async function open(browser,locale,width,options={}) {
   await page.route('**/*', route => ['localhost','127.0.0.1','[::1]'].includes(new URL(route.request().url()).hostname) ? route.continue() : route.abort());
   await page.addInitScript(options => {
     const id = n => `00000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
-    const types=['like','heart','smile','celebrate','thinking'];
+    const types=['like','heart','smile','celebrate','thinking','sad'];
     window.reportOpens=[];Object.defineProperty(window,'__pwFeedbackDialog',{get:()=>({openReport:n=>window.reportOpens.push(n)}),set(){}});
     window.reactionReads=[];window.reactionWrites=[];window.commentsPosts=[];window.verifyCalls=0;
     window.reactMode='normal';window.readFail=false;window.locked=false;window.disabledTargets=[];window.versionReads=[];
@@ -32,13 +32,13 @@ async function open(browser,locale,width,options={}) {
     window.turnstile={render(slot,callbacks){window.verifyCalls++;queueMicrotask(()=>callbacks.callback('synthetic-token'));return 1;},remove(){}};
     const counts=new Map(),selected=new Map();
     const data=(n,visitor)=>{
-      if(!counts.has(n)) counts.set(n,options.emptyReactions?{like:0,heart:0,smile:0,celebrate:0,thinking:0}:options.allReactions?{like:2,heart:2,smile:2,celebrate:2,thinking:2}:{like:2,heart:1,smile:0,celebrate:0,thinking:0});
+      if(!counts.has(n)) counts.set(n,options.emptyReactions?{like:0,heart:0,smile:0,celebrate:0,thinking:0,sad:0}:options.allReactions?{like:2,heart:2,smile:2,celebrate:2,thinking:2,sad:2}:{like:2,heart:1,smile:0,celebrate:0,thinking:0,sad:0});
       return {commentId:n,counts:{...counts.get(n)},selected:[...(selected.get(n+'|'+visitor)||[])],canReact:!window.locked&&!window.disabledTargets.includes(n)};
     };
     const row=(n,version,parent=null)=>({id:id(n),parentCommentId:parent&&id(parent),replyToCommentId:parent&&id(parent),replyTo:null,
       status:'published',canReply:true,guideVersion:version,discussionScope:'version',authorKind:'guest',displayName:'Synthetic <b>name</b>',
       body:'Synthetic comment '+n,createdAt:'2026-10-10T08:00:00Z',pageHash:null,replies:[]});
-    const transport={fixtureCanWrite:true,turnstileSitekey:'0xTest',
+    const transport={reactionVersion:2,fixtureCanWrite:true,turnstileSitekey:'0xTest',
       async readDiscussion(request){window.versionReads.push(request);if(window.commentReadFail)throw Error('Synthetic comments read failed');const a=row(1,request.guideVersion);a.replies=[row(2,request.guideVersion,1)];
         a.status=window.rootStatus||'published';if(a.status!=='published'){a.body=null;a.displayName=null;}
         a.canReply=false; // Reaction eligibility must not be inferred from canReply.
@@ -80,7 +80,7 @@ async function centerClick(page, locator, width) {
 async function pick(page,n,type){await page.locator(add(n)).click();await page.locator(`${panel(n)} .pw-discussion-reaction-menu [data-reaction-type="${type}"]`).click();await settled(page);}
 async function draft(page,text){await page.locator('.pw-discussion-add').click();await page.locator('#pw-discussion-new-body').fill(text);await page.waitForFunction(()=>!document.querySelector('.pw-discussion-submit').disabled);}
 async function run(name,engine,executablePath){const browser=await engine.launch({headless:true,...(executablePath?{executablePath}:{})});let scenarios=0;
-try{for(const locale of ['zh-CN','en'])for(const width of [390,1440]){
+try{for(const locale of ['zh-CN','en'])for(const width of [320,390,1440]){
  let page=await open(browser,locale,width);
  assert.equal(await page.locator('.pw-discussion-reactions').count(),3,'Published root/reply/persistent only');
  assert.equal(await page.locator(add(1)).isEnabled(),true,'canReply=false must not disable canReact=true');
@@ -93,8 +93,8 @@ try{for(const locale of ['zh-CN','en'])for(const width of [390,1440]){
  await page.keyboard.press('Escape');assert.equal(await page.evaluate(()=>document.activeElement.classList.contains('pw-discussion-reaction-add')),true);
  await page.locator(add(1)).focus();await page.keyboard.press('Enter');await page.keyboard.press('Enter');await settled(page);
  assert.equal(await page.evaluate(()=>document.activeElement.dataset.reactionType),'like','Keyboard choice restores focus to resulting chip');
- for(const type of ['heart','smile','celebrate','thinking']) await pick(page,1,type);
- assert.equal(await page.locator(`${panel(1)} .pw-discussion-reaction-chips [aria-pressed="true"]`).count(),5);
+ for(const type of ['heart','smile','celebrate','thinking','sad']) await pick(page,1,type);
+ assert.equal(await page.locator(`${panel(1)} .pw-discussion-reaction-chips [aria-pressed="true"]`).count(),6);
  assert((await page.locator(chip(1,'heart')).innerText()).includes('✓'));
  await page.locator(chip(1,'thinking')).focus();await page.keyboard.press('Enter');await settled(page);
  assert.equal(await page.locator(chip(1,'thinking')).count(),0);assert.equal(await page.evaluate(()=>document.activeElement.classList.contains('pw-discussion-reaction-add')),true,'Removing final count restores plus focus');
@@ -141,7 +141,7 @@ try{for(const locale of ['zh-CN','en'])for(const width of [390,1440]){
  await draft(page,'Storage blocked still posts');await page.locator('.pw-discussion-submit').click();await page.waitForFunction(()=>window.commentsPosts.length===1);
  await page.close();scenarios++;
 
- page=await open(browser,locale,width,{missingMethods:true});assert.equal(await page.locator('.pw-discussion-reactions').count(),0);assert.equal(await page.locator('.pw-discussion-comment').count(),3);await draft(page,'Old transport works');await page.close();scenarios++;
+ page=await open(browser,locale,width,{missingMethods:true});assert.equal(await page.locator('.pw-discussion-reactions').count(),0);assert.equal(await page.locator('.pw-discussion-comment').count(),2);await draft(page,'Old transport works');await page.close();scenarios++;
 
  page=await open(browser,locale,width);await draft(page,'Late read draft');
  await page.evaluate(()=>{window.holdRead=true;});await page.locator('.pw-discussion-refresh').click();await page.waitForFunction(()=>window.releaseRead!==null);
@@ -192,7 +192,7 @@ try{for(const locale of ['zh-CN','en'])for(const width of [390,1440]){
  await centerClick(page,plus,width);const menu=page.locator(`${panel(5)} .pw-discussion-reaction-menu`);assert(await menu.isVisible());
  assert.equal(await page.evaluate(()=>document.documentElement.scrollHeight),docBefore,'Floating menu cannot grow document');
  const bounds=await menu.boundingBox();assert(bounds.x>=0&&bounds.y>=0&&bounds.x+bounds.width<=width+.5&&bounds.y+bounds.height<=900+.5,JSON.stringify(bounds));
- assert.equal(await menu.locator('button').count(),5);
+ assert.equal(await menu.locator('button').count(),6);
  const overlaps=await page.locator(ownToolbar).evaluate((node,box)=>[...node.querySelectorAll('.pw-discussion-reaction-chips button, :scope > .pw-discussion-reply-action, :scope > .pw-discussion-report-action')].filter(b=>{const r=b.getBoundingClientRect();return r.left<box.x+box.width&&r.right>box.x&&r.top<box.y+box.height&&r.bottom>box.y;} ).length,bounds);
  assert.equal(overlaps,0,'Menu must not cover this toolbar controls');
  await centerClick(page,menu.locator('[data-reaction-type="heart"]'),width);await settled(page);
@@ -218,12 +218,12 @@ async function transportTest(){const source=fs.readFileSync(path.join(root,'asse
  let request,reply,network=false;const window={};
  vm.runInNewContext(source,{window,AbortController,setTimeout,clearTimeout,location:{hostname:'password.carambi.com'},URL,document:{querySelector:q=>({content:q.includes('environment')?'production':q.includes('api')?'https://discussion.carambi.com':'0xTest'})},
  fetch:async(url,opts)=>{request={url,...opts};if(network)throw Error('SECRET');return {status:reply.status,json:async()=>reply.body};}});
- const counts={like:2,heart:0,smile:0,celebrate:0,thinking:0},row={commentId:id(1),counts,selected:[],canReact:true};
- reply={status:200,body:{ok:true,reactions:[row]}};await window.__pwDiscussionRemoteTransport.readReactions({pageKey:'guide.route-overview',locale:'en',commentIds:[id(1)],visitorId:'a'.repeat(64)});
+ const counts={like:2,heart:0,smile:0,celebrate:0,thinking:0,sad:0},row={commentId:id(1),counts,selected:[],canReact:true};
+ reply={status:200,body:{ok:true,reactions:[row]}};await window.__pwDiscussionRemoteTransport.readReactions({reactionVersion:2,pageKey:'guide.route-overview',locale:'en',commentIds:[id(1)],visitorId:'a'.repeat(64)});
  assert(request.url.endsWith('/reactions/read'));assert(!request.url.includes('a'.repeat(64)));assert.equal(request.credentials,'omit');assert.equal(JSON.parse(request.body).visitorId,'a'.repeat(64));
  for(const invalid of [{...row,counts:{...counts,extra:1}},{...row,counts:{...counts,heart:-1}},{...row,selected:['bad']},{...row,canReact:'true'},{...row,commentId:id(2)}]){
-  reply={status:200,body:{ok:true,reactions:[invalid]}};await assert.rejects(window.__pwDiscussionRemoteTransport.readReactions({pageKey:'p',locale:'en',commentIds:[id(1)]}),e=>e.message==='REACTION_REQUEST_FAILED');}
- const input={pageKey:'guide.route-overview',locale:'en',commentId:id(1),type:'heart',visitorId:'a'.repeat(64),intent:'add',turnstileToken:'MUST_NOT_SEND'};
+  reply={status:200,body:{ok:true,reactions:[invalid]}};await assert.rejects(window.__pwDiscussionRemoteTransport.readReactions({reactionVersion:2,pageKey:'p',locale:'en',commentIds:[id(1)]}),e=>e.message==='REACTION_REQUEST_FAILED');}
+ const input={reactionVersion:2,pageKey:'guide.route-overview',locale:'en',commentId:id(1),type:'heart',visitorId:'a'.repeat(64),intent:'add',turnstileToken:'MUST_NOT_SEND'};
  reply={status:200,body:{ok:true,reaction:row}};await window.__pwDiscussionRemoteTransport.setReaction(input);assert.equal(JSON.parse(request.body).turnstileToken,undefined);assert.equal(JSON.parse(request.body).intent,'add');
  reply={status:429,body:{message:'SECRET'}};await assert.rejects(window.__pwDiscussionRemoteTransport.setReaction(input),e=>e.code==='RATE_LIMITED'&&e.outcomeUnknown===false&&e.message==='REACTION_REQUEST_FAILED');
  reply={status:200,body:{ok:true,reaction:{...row,commentId:id(2)}}};await assert.rejects(window.__pwDiscussionRemoteTransport.setReaction(input),e=>e.outcomeUnknown===true);

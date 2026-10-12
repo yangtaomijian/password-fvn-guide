@@ -75,13 +75,13 @@
     writeFailed: 'Reaction couldn’t be saved. Try again.', rate: 'Too many reactions. Wait a moment and try again.',
     unknown: 'Reaction result is uncertain. Check its current state before trying again.',
     storage: 'Reactions are read-only because browser storage is unavailable.', retry: 'Refresh reactions',
-    names: { like: 'Helpful', heart: 'Thanks', smile: 'Happy', celebrate: 'Celebrate', thinking: 'Thinking' },
+    names: { like: 'Helpful', heart: 'Thanks', smile: 'Happy', celebrate: 'Celebrate', thinking: 'Thinking', sad: 'Sad / Sympathy' },
   } : {
     label: '表情反应', add: '添加表情反应', choices: '选择表情', selected: '已选',
     loading: '正在读取表情…', failed: '表情读取失败，请重试。', writeFailed: '表情未能保存，请重试。',
     rate: '表情操作过于频繁，请稍后再试。', unknown: '表情操作结果不确定，请先核对当前状态再操作。',
     storage: '浏览器存储不可用，表情仅供查看。', retry: '刷新表情',
-    names: { like: '赞同、有帮助', heart: '喜欢、感谢', smile: '开心、友善', celebrate: '庆祝', thinking: '思考、保留意见' },
+    names: { like: '赞同、有帮助', heart: '喜欢、感谢', smile: '开心、友善', celebrate: '庆祝', thinking: '思考、保留意见', sad: '难过、共情' },
   };
   const subscriptionWords = context.locale === 'en' ? {
     optIn: 'Email me when someone replies directly to this comment', email: 'Email (private)',
@@ -201,8 +201,9 @@
     return response;
   };
   // Reactions have their own cache, identity and errors. They never reject comment operations.
-  const reactionTypes = ['like', 'heart', 'smile', 'celebrate', 'thinking'];
-  const reactionEmoji = { like: '👍', heart: '❤️', smile: '😄', celebrate: '🎉', thinking: '🤔' };
+  const reactionProtocol = runtime.transport.reactionVersion === 2 ? { reactionVersion: 2 } : {};
+  const reactionTypes = ['like', 'heart', 'smile', 'celebrate', 'thinking', ...(reactionProtocol.reactionVersion === 2 ? ['sad'] : [])];
+  const reactionEmoji = { like: '👍', heart: '❤️', smile: '😄', celebrate: '🎉', thinking: '🤔', sad: '😢' };
   const reactionReadEnabled = typeof runtime.transport.readReactions === 'function';
   const reactionWriteEnabled = reactionReadEnabled && typeof runtime.transport.setReaction === 'function';
   const visitorStorageKey = 'carambi.password.reactionVisitorId';
@@ -359,7 +360,7 @@
       const revisions = new Map(commentIds.map(id => [id, reactionEntry(id).revision]));
       commentIds.forEach(id => { reactionEntry(id).readToken = token; }); updateReactionPanels();
       try {
-        const request = { pageKey: context.pageKey, locale: context.locale, commentIds };
+        const request = { ...reactionProtocol, pageKey: context.pageKey, locale: context.locale, commentIds };
         if (visitor) request.visitorId = visitor;
         const response = await runtime.transport.readReactions(request);
         if (response?.ok !== true || !Array.isArray(response.reactions) || response.reactions.length !== commentIds.length ||
@@ -401,7 +402,7 @@
     entry.pending = true; entry.error = ''; const revision = ++entry.revision; const generation = reactionEpoch;
     closeReactionMenu(); updateReactionPanels(id);
     try {
-      const response = await runtime.transport.setReaction({ pageKey: context.pageKey, locale: context.locale, commentId: id, type, visitorId: visitor, intent });
+      const response = await runtime.transport.setReaction({ ...reactionProtocol, pageKey: context.pageKey, locale: context.locale, commentId: id, type, visitorId: visitor, intent });
       if (response?.ok !== true || !validReaction(response.reaction) || response.reaction.commentId !== id) throw Error('INVALID_REACTION');
       if (entry.revision === revision && visitor === reactionVisitor) {
         entry.data = { commentId: id, counts: { ...response.reaction.counts }, selected: [...response.reaction.selected],

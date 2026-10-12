@@ -13,9 +13,17 @@
   if (origin !== `https://${expectedApiHost}` || !/^0x[A-Za-z0-9]+$/.test(turnstileSitekey)) return;
   const config = Object.freeze({ origin, turnstileSitekey });
   const endpoint = config.origin + '/v1/discussion';
-  const reactionTypes = ['like', 'heart', 'smile', 'celebrate', 'thinking'];
+  const legacyReactionTypes = ['like', 'heart', 'smile', 'celebrate', 'thinking'];
+  function reactionTypesFor(input) {
+    if (input.reactionVersion !== undefined && input.reactionVersion !== 1 && input.reactionVersion !== 2) throw Error('INVALID_REACTION_VERSION');
+    return input.reactionVersion === 2 ? [...legacyReactionTypes, 'sad'] : legacyReactionTypes;
+  }
+  function reactionProtocol(input) {
+    reactionTypesFor(input);
+    return input.reactionVersion === undefined ? {} : { reactionVersion: input.reactionVersion };
+  }
   const uuid = value => typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
-  const validReaction = row => row && uuid(row.commentId) && typeof row.canReact === 'boolean' &&
+  const validReaction = (row, reactionTypes = legacyReactionTypes) => row && uuid(row.commentId) && typeof row.canReact === 'boolean' &&
     row.counts && Object.keys(row.counts).length === reactionTypes.length && reactionTypes.every(type =>
       Number.isSafeInteger(row.counts[type]) && row.counts[type] >= 0) && Array.isArray(row.selected) &&
     new Set(row.selected).size === row.selected.length && row.selected.every(type => reactionTypes.includes(type));
@@ -29,10 +37,10 @@
     }
     try { data = await response.json(); } catch { /* Never expose upstream response text. */ }
     const valid = response.status === 200 && data?.ok === true && (writing ?
-      validReaction(data.reaction) && data.reaction.commentId === payload.commentId :
+      validReaction(data.reaction, reactionTypesFor(payload)) && data.reaction.commentId === payload.commentId :
       Array.isArray(data.reactions) && data.reactions.length === payload.commentIds.length &&
       new Set(data.reactions.map(row => row?.commentId)).size === payload.commentIds.length &&
-      data.reactions.every(row => validReaction(row) && payload.commentIds.includes(row.commentId)));
+      data.reactions.every(row => validReaction(row, reactionTypesFor(payload)) && payload.commentIds.includes(row.commentId)));
     if (valid) {
       const clean = row => ({ commentId: row.commentId, counts: { ...row.counts }, selected: [...row.selected], canReact: row.canReact });
       return writing ? { ok: true, reaction: clean(data.reaction) } : { ok: true, reactions: data.reactions.map(clean) };
@@ -100,11 +108,12 @@
     } finally { clearTimeout(timer); }
   }
   window.__pwDiscussionRemoteTransport = Object.freeze({
+    reactionVersion: 2,
     turnstileSitekey: config.turnstileSitekey,
     enrollSubscription(input) { return subscriptionRequest('', input, true); },
     readSubscriptionStatus(input) { return subscriptionRequest('/status', input, false); },
     async readReactions(input) {
-      const payload = { pageKey: input.pageKey, locale: input.locale, commentIds: input.commentIds };
+      const payload = { ...reactionProtocol(input), pageKey: input.pageKey, locale: input.locale, commentIds: input.commentIds };
       if (input.visitorId !== undefined) payload.visitorId = input.visitorId;
       if (typeof payload.pageKey !== 'string' || !payload.pageKey || !['en', 'zh-CN'].includes(payload.locale) || !Array.isArray(payload.commentIds) || !payload.commentIds.length || payload.commentIds.length > 50 ||
           !payload.commentIds.every(uuid) || new Set(payload.commentIds).size !== payload.commentIds.length ||
@@ -112,9 +121,9 @@
       return reactionRequest('/reactions/read', payload, false);
     },
     async setReaction(input) {
-      const payload = { pageKey: input.pageKey, locale: input.locale, commentId: input.commentId,
+      const payload = { ...reactionProtocol(input), pageKey: input.pageKey, locale: input.locale, commentId: input.commentId,
         type: input.type, visitorId: input.visitorId, intent: input.intent };
-      if (typeof payload.pageKey !== 'string' || !payload.pageKey || !['en', 'zh-CN'].includes(payload.locale) || !uuid(payload.commentId) || !reactionTypes.includes(payload.type) ||
+      if (typeof payload.pageKey !== 'string' || !payload.pageKey || !['en', 'zh-CN'].includes(payload.locale) || !uuid(payload.commentId) || !reactionTypesFor(input).includes(payload.type) ||
           !/^[0-9a-f]{64}$/.test(payload.visitorId) || !['add', 'remove'].includes(payload.intent)) throw Error('REACTION_INPUT_INVALID');
       return reactionRequest('/reactions', payload, true);
     },
