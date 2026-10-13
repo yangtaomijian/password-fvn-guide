@@ -535,10 +535,10 @@
     }
 
     if (
-      nonGalleryDetails.length !== 4 ||
-      nonGalleryByGuideId.size !== 4
+      nonGalleryDetails.length !== 3 ||
+      nonGalleryByGuideId.size !== 3
     ) {
-      throw new Error(`Expected 4 non-Gallery records; found: ${nonGalleryDetails.length}`);
+      throw new Error(`Expected 3 non-Gallery records; found: ${nonGalleryDetails.length}`);
     }
 
     records.forEach((record) => {
@@ -591,7 +591,7 @@
 
     ensureTriggerTableScrollers();
     ensureNonGalleryTableScroller();
-    console.info("Gallery locator data linked: 100 Gallery + 4 non-Gallery");
+    console.info("Gallery locator data linked: 100 Gallery + 3 non-Gallery");
   } catch (error) {
     showReadError(error, "Unable to link Gallery data");
     return;

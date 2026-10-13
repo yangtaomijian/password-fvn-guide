@@ -536,10 +536,10 @@
     }
 
     if (
-      nonGalleryDetails.length !== 4 ||
-      nonGalleryByGuideId.size !== 4
+      nonGalleryDetails.length !== 3 ||
+      nonGalleryByGuideId.size !== 3
     ) {
-      throw new Error(`预期 4 条不在画廊记录，实际: ${nonGalleryDetails.length}`);
+      throw new Error(`预期 3 条不在画廊记录，实际: ${nonGalleryDetails.length}`);
     }
 
     records.forEach((record) => {
@@ -590,7 +590,7 @@
 
     ensureTriggerTableScrollers();
     ensureNonGalleryTableScroller();
-    console.info("Gallery locator data linked: 100 张画廊 CG + 4 条非画廊记录");
+    console.info("Gallery locator data linked: 100 张画廊 CG + 3 条非画廊记录");
   } catch (error) {
     showReadError(error, "画廊数据连接异常");
     return;
