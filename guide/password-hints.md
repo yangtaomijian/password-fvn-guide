@@ -18,7 +18,7 @@ b0.85 中共有四组会显著影响主线走向的关键密码，输入时间�
 ::: {.callout-important}
 ## 使用原则
 
-本站默认只提供分级提示，不直接公开关键密码。
+本站默认只提供分级提示，不直接公开关键密码；Path P 的三级提示除外，展开后会显示完整密码。
 
 建议先阅读一级提示；仍然无法找到答案时，再依次展开二级和三级提示。三级提示中的 `_` 代表一个被隐藏的字母。
 
@@ -183,12 +183,18 @@ Path P 的最终流程中包含一个独立密码。它不属于普通的按日�
 仔细阅读 Thanatos 在键盘输入前说出的内容。
 </details>
 
-<details>
-<summary><strong>二和三级提示</strong></summary>
+<details id="final-path-p-tier-2-hint">
+<summary><strong>二级提示</strong></summary>
 
 这个词表示把某人**神化**，或把凡人提升到神圣地位的过程。
 
 无需从其他字母线或坏结局中寻找信息。
+</details>
+
+<details id="final-path-p-tier-3-hint">
+<summary><strong>三级提示</strong></summary>
+
+完整密码：`APOTHEOSIS`。
 </details>
 
 ## 可选输入与旧版内容

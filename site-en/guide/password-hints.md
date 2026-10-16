@@ -18,7 +18,7 @@ The final Path P sequence also contains a simpler standalone password. D1 and D3
 ::: {.callout-important}
 ## How to use this page
 
-This guide provides progressive hints rather than revealing the key passwords outright.
+This guide provides progressive hints rather than revealing the key passwords outright, except for the final Path P Tier 3 hint, which shows the full password when opened.
 
 Start with Tier 1. Open Tier 2 only when necessary, then use Tier 3 as the final step. In the letter patterns, each `_` represents one hidden letter.
 
@@ -181,12 +181,18 @@ The final Path P sequence contains a standalone password that is separate from t
 Read Thanatos's wording immediately before the keyboard prompt.
 </details>
 
-<details>
-<summary><strong>Tier 2 and Tier 3 hints</strong></summary>
+<details id="final-path-p-tier-2-hint">
+<summary><strong>Tier 2 hint</strong></summary>
 
 The word means the process of **deifying someone** or **elevating a mortal to divine status**.
 
 You do not need information from another Path or bad ending.
+</details>
+
+<details id="final-path-p-tier-3-hint">
+<summary><strong>Tier 3 hint</strong></summary>
+
+Full password: `APOTHEOSIS`.
 </details>
 
 ## Optional and legacy inputs
