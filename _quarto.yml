@@ -201,6 +201,7 @@ format:
     canonical-url: true
     include-in-header:
       - assets/pw-discussion-config.html
+      - assets/pw-ai-beta-loader.html
     template-partials:
       - templates/metadata.html
     variables:
