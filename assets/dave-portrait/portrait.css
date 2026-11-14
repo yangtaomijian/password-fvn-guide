@@ -1,0 +1,13 @@
+/* Homepage notebook portrait layout. Provenance is retained in project records. */
+#pw-home-scene .dave-portrait-row{position:relative;min-height:210px;width:100%;margin-top:18px;display:flex;align-items:center;padding-left:114px;box-sizing:border-box}
+#pw-home-scene .dave-portrait-figure{position:absolute;left:-33px;bottom:2px;width:136px;height:226px;pointer-events:none;user-select:none;opacity:0;transition:opacity .2s ease;filter:drop-shadow(2px 3px 2px #0002);z-index:2}
+#pw-home-scene .dave-portrait-figure svg{display:block;width:100%;height:100%}
+#pw-home-scene .dave-portrait-row .margin-note{margin:0!important;max-width:220px;font-size:12px;line-height:1.8;transform:none}
+#pw-home-scene.dave-reading .dave-portrait-figure{opacity:1}
+#pw-home-scene .dave-portrait-row+.folio{margin-top:auto}
+@media(max-width:760px){
+ #pw-home-scene .dave-portrait-row{min-height:145px;margin-top:12px;padding-left:108px}
+ #pw-home-scene .dave-portrait-figure{left:0;bottom:0;width:90px;height:145px}
+ #pw-home-scene .dave-portrait-row .margin-note{display:block!important;font-size:11px!important;max-width:185px}
+}
+@media(prefers-reduced-motion:reduce){#pw-home-scene .dave-portrait-figure{transition:none}}
