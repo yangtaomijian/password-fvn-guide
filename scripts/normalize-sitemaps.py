@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Normalize only the two generated sitemap homepage locations."""
+"""Normalize sitemap homepages and declare both language sitemaps."""
 
 from __future__ import annotations
 
@@ -47,6 +47,15 @@ def main() -> None:
         raise SystemExit("usage: normalize-sitemaps.py ROOT_SITEMAP EN_SITEMAP")
     for argument in sys.argv[1:]:
         normalize(Path(argument))
+    # Crawlers read only the host-root robots.txt, not /en/robots.txt.
+    robots = Path(sys.argv[1]).parent / "robots.txt"
+    text = robots.read_text(encoding="utf-8")
+    declarations = {line.strip().lower() for line in text.splitlines()}
+    for url in ("https://password.carambi.com/sitemap.xml", "https://password.carambi.com/en/sitemap.xml"):
+        line = f"Sitemap: {url}"
+        if line.lower() not in declarations:
+            text = text.rstrip() + "\n" + line + "\n"
+    robots.write_text(text, encoding="utf-8")
 
 
 if __name__ == "__main__":

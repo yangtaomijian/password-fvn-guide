@@ -260,8 +260,8 @@ def verify_sitemaps() -> None:
         if set(urls) != expected:
             raise AssertionError(f"{relative}: URL set does not match generated pages")
 
-    if (SITE / "robots.txt").read_text(encoding="utf-8").strip() != f"Sitemap: {BASE}/sitemap.xml":
-        raise AssertionError("Chinese robots.txt mismatch")
+    if (SITE / "robots.txt").read_text(encoding="utf-8").strip() != f"Sitemap: {BASE}/sitemap.xml\nSitemap: {BASE}/en/sitemap.xml":
+        raise AssertionError("Root robots.txt must declare both language sitemaps")
     if (SITE / "en/robots.txt").read_text(encoding="utf-8").strip() != f"Sitemap: {BASE}/en/sitemap.xml":
         raise AssertionError("English robots.txt mismatch")
 
@@ -312,6 +312,7 @@ def verify_search_indexes() -> None:
 
 
 def main() -> None:
+
     verify_pages()
     verify_sitemaps()
     verify_images()
