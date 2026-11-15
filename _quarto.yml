@@ -2,11 +2,13 @@ project:
   type: website
   output-dir: _site
   resources:
+    - assets/favicon-32x32.png
+    - assets/apple-touch-icon.png
     - assets/portrait-blink/
     - assets/home-scene/
     - assets/dave-portrait/
     # Preserve the social image URL used by older shared links.
-    - assets/social/password-b085-guide-zh.png
+    - assets/social/
     - googlef0776754787f4a8e.html
     - assets/fonts/Newsreader-OFL.txt
     - assets/pw-reference-v2b.js
@@ -42,7 +44,7 @@ seo-language: zh-CN
 seo-site-url: "https://password.carambi.com/"
 seo-site-title: "Password b0.85 中文攻略与机制资料库"
 seo-site-name: "Password b0.85 中文攻略与机制资料库"
-seo-image-url: "https://password.carambi.com/assets/social/password-fvn-guide-zh.png"
+seo-image-url: "https://password.carambi.com/assets/social/password-guide-zh-13d38127a467.png"
 seo-zh-site-url: "https://password.carambi.com/"
 seo-en-site-url: "https://password.carambi.com/en/"
 language:

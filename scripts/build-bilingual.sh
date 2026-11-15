@@ -24,8 +24,8 @@ mkdir -p "$ROOT/_site/en"
 cp -a "$ROOT/site-en/_site/." "$ROOT/_site/en/"
 
 mkdir -p "$ROOT/_site/assets/social" "$ROOT/_site/en/assets/social"
-cp "$ROOT/assets/social/password-fvn-guide-zh.png" "$ROOT/_site/assets/social/password-fvn-guide-zh.png"
-cp "$ROOT/site-en/assets/social/password-fvn-guide-en.png" "$ROOT/_site/en/assets/social/password-fvn-guide-en.png"
+cp "$ROOT/assets/social/password-guide-zh-13d38127a467.png" "$ROOT/_site/assets/social/password-guide-zh-13d38127a467.png"
+cp "$ROOT/site-en/assets/social/password-guide-en-def4d9f2d793.png" "$ROOT/_site/en/assets/social/password-guide-en-def4d9f2d793.png"
 
 python3 "$ROOT/scripts/normalize-sitemaps.py" "$ROOT/_site/sitemap.xml" "$ROOT/_site/en/sitemap.xml"
 python3 "$ROOT/scripts/normalize-layout.py" "$ROOT/_site"

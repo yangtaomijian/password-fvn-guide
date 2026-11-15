@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import struct
 import sys
 import xml.etree.ElementTree as ET
@@ -17,13 +18,10 @@ SITE = ROOT / "_site"
 BASE = "https://password.carambi.com"
 ZH_ROOT = f"{BASE}/"
 EN_ROOT = f"{BASE}/en/"
-ZH_IMAGE = f"{BASE}/assets/social/password-fvn-guide-zh.png"
-EN_IMAGE = f"{BASE}/en/assets/social/password-fvn-guide-en.png"
-# Historical OG image paths from before the permanent site rename.
-SOCIAL_IMAGE_ALIASES = {
-    "assets/social/password-b085-guide-zh.png": "assets/social/password-fvn-guide-zh.png",
-    "en/assets/social/password-b085-guide-en.png": "en/assets/social/password-fvn-guide-en.png",
-}
+ZH_IMAGE = f"{BASE}/assets/social/password-guide-zh-13d38127a467.png"
+EN_IMAGE = f"{BASE}/en/assets/social/password-guide-en-def4d9f2d793.png"
+# Immutable historical share image URLs and original content hashes.
+HISTORICAL_SOCIAL_IMAGES = {'assets/social/password-fvn-guide-zh.png': '9a4eef5d13ec346b89b1dad38437d57b990dcbbcbe294a1d05fd2a32bdca4c79', 'assets/social/password-b085-guide-zh.png': '9a4eef5d13ec346b89b1dad38437d57b990dcbbcbe294a1d05fd2a32bdca4c79', 'en/assets/social/password-fvn-guide-en.png': '0798cc03250e0b70e1a489d0bdc49a6e8c0b090e6359d8f31553bf271b857cfd', 'en/assets/social/password-b085-guide-en.png': '0798cc03250e0b70e1a489d0bdc49a6e8c0b090e6359d8f31553bf271b857cfd'}
 ZH_SITE_NAME = "Password b0.85 中文攻略与机制资料库"
 EN_SITE_NAME = "Password b0.85 Guide & Mechanics Reference"
 ZH_HOME_TITLE = "Password b0.85 中文攻略与机制资料库"
@@ -275,10 +273,10 @@ def png_size(path: Path) -> tuple[int, int]:
 
 def verify_images() -> None:
     for path in (
-        ROOT / "assets/social/password-fvn-guide-zh.png",
-        ROOT / "site-en/assets/social/password-fvn-guide-en.png",
-        SITE / "assets/social/password-fvn-guide-zh.png",
-        SITE / "en/assets/social/password-fvn-guide-en.png",
+        ROOT / "assets/social/password-guide-zh-13d38127a467.png",
+        ROOT / "site-en/assets/social/password-guide-en-def4d9f2d793.png",
+        SITE / "assets/social/password-guide-zh-13d38127a467.png",
+        SITE / "en/assets/social/password-guide-en-def4d9f2d793.png",
     ):
         if not path.exists():
             raise AssertionError(f"missing social image: {path}")
@@ -287,15 +285,16 @@ def verify_images() -> None:
         if path.stat().st_size >= 5_000_000:
             raise AssertionError(f"{path}: unnecessarily large file")
 
-    for current in SOCIAL_IMAGE_ALIASES.values():
+    for url in (ZH_IMAGE, EN_IMAGE):
+        current = url.removeprefix(BASE + "/")
         source = ROOT / current.replace("en/", "site-en/", 1) if current.startswith("en/") else ROOT / current
         if source.read_bytes() != (SITE / current).read_bytes():
             raise AssertionError(f"{current}: published social image differs from source")
-    for alias, current in SOCIAL_IMAGE_ALIASES.items():
-        source_alias = ROOT / alias.replace("en/", "site-en/", 1) if alias.startswith("en/") else ROOT / alias
-        for path in (source_alias, SITE / alias):
-            if not path.is_file() or path.read_bytes() != (SITE / current).read_bytes():
-                raise AssertionError(f"{path}: historical social image missing or differs from current card")
+    for historical, expected_hash in HISTORICAL_SOCIAL_IMAGES.items():
+        source = ROOT / historical.replace("en/", "site-en/", 1) if historical.startswith("en/") else ROOT / historical
+        for path in (source, SITE / historical):
+            if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != expected_hash:
+                raise AssertionError(f"{path}: historical social image missing or changed")
 
 
 def verify_search_indexes() -> None:
@@ -328,7 +327,7 @@ def main() -> None:
     print("Normalized sitemap home URLs: 2/2")
     print("Search index page sets: 17/17 + 17/17")
     print("Social images present and 1200x630: 4/4 source/output")
-    print("Historical social image URLs published with current card bytes: 2/2")
+    print("Historical social image URLs preserved byte-for-byte: 4/4")
 
 
 if __name__ == "__main__":
