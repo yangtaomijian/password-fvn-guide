@@ -2,6 +2,7 @@ project:
   type: website
   output-dir: _site
   resources:
+    - assets/portrait-blink/
     - assets/home-scene/
     - assets/dave-portrait/
     # Preserve the social image URL used by older shared links.

@@ -99,3 +99,7 @@ css: assets/home-scene/scene.css
 :::
 
 攻略错误、表述不清、链接或页面问题，可用页脚的**「私下反馈」**；反馈不可用或涉及仓库时，使用 [GitHub Issues](https://github.com/yangtaomijian/password-fvn-guide/issues)。
+
+```{=html}
+<script defer src="assets/portrait-blink/blink.js"></script>
+```

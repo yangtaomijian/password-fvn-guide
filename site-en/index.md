@@ -95,3 +95,7 @@ Maintained by [Carambi](https://carambi.com/). This guide is not affiliated with
 :::
 
 For errors, unclear guidance, broken links or page problems, use **Private feedback** in the footer. If feedback is unavailable or the issue concerns the repository, use [GitHub Issues](https://github.com/yangtaomijian/password-fvn-guide/issues).
+
+```{=html}
+<script defer src="assets/portrait-blink/blink.js"></script>
+```
