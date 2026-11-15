@@ -146,14 +146,39 @@ const cameraBook=document.getElementById('notebook');
 const skipJourney=document.getElementById('skip-journey');
 const normalView=document.getElementById('normal-view');
 const compactJourney=window.matchMedia('(max-width: 900px), (max-height: 600px)');
+// display:contents outside compact motion retains the desktop containing block.
+const compactTrack=document.createElement('div'),compactViewport=document.createElement('div');
+compactTrack.className='compact-track';compactViewport.className='compact-viewport';
+const travelStage=journey.querySelector('.travel-stage'),bookCarrier=journey.querySelector('.book-carrier');
+travelStage.insertBefore(compactTrack,travelStage.firstChild);compactTrack.append(compactViewport);
+for(const element of [...travelStage.children]){if(element===compactTrack)continue;if(element===bookCarrier)break;compactViewport.append(element);}
+
 let manualNormal=false, journeyFrame=null;
 function clamp01(value){return Math.min(1,Math.max(0,value));}
 function easeCamera(t){return t*t*(3-2*t);}
 function isNormalJourney(){return manualNormal||motionPreference.matches||compactJourney.matches;}
 function updateJourney(){
- journeyFrame=null;const normal=isNormalJourney();journey.classList.toggle('normal-reading',normal);
- normalView.setAttribute('aria-pressed',String(normal));normalView.textContent=normal?(english?'Camera view':'镜头模式'):(english?'Read without motion':'正常浏览');normalView.hidden=motionPreference.matches||compactJourney.matches;
- if(normal){cameraBook.inert=false;return;}
+ journeyFrame=null;const normal=isNormalJourney(),compact=compactJourney.matches;
+ const lightMotion=compact&&!manualNormal&&!motionPreference.matches;
+ journey.classList.toggle('normal-reading',normal);
+ journey.classList.toggle('light-motion',lightMotion);
+ normalView.setAttribute('aria-pressed',String(manualNormal||motionPreference.matches));
+ normalView.textContent=compact?(lightMotion?(english?'Reduce motion':'减少动态'):(english?'Enable motion':'启用动态')):(normal?(english?'Camera view':'镜头模式'):(english?'Read without motion':'正常浏览'));
+ normalView.hidden=motionPreference.matches;
+ if(normal){
+  cameraBook.inert=false;
+  if(lightMotion){
+   // Crop only the existing vault image. Reading content stays in ordinary flow.
+   const range=160;
+   // Short sticky hold keeps the vault visible while the notebook approaches.
+   const p=clamp01(window.scrollY/Math.max(1,range));
+   const approach=1-Math.pow(1-p,2);
+   journey.style.setProperty('--compact-scale',1+approach*.38);
+   journey.style.setProperty('--compact-x',(-approach*24)+'px');
+   journey.style.setProperty('--compact-y',(approach*14)+'px');
+  }
+  return;
+ }
  const rect=journey.getBoundingClientRect(),distance=journey.offsetHeight-window.innerHeight;
  const p=clamp01(-rect.top/Math.max(1,distance)),approach=easeCamera(clamp01(p/.55)),lift=easeCamera(clamp01((p-.18)/.82));
  journey.style.setProperty('--journey-progress',p);journey.style.setProperty('--intro-opacity',1-clamp01(p/.26));
@@ -182,7 +207,7 @@ cameraBook.addEventListener('focusin',()=>{
 });
 skipJourney.addEventListener('click',jumpToBook);
 root.querySelector('.home-skip').addEventListener('click',jumpToBook);
-normalView.addEventListener('click',()=>{manualNormal=!manualNormal;updateJourney();if(manualNormal){cameraBook.scrollIntoView({behavior:'instant',block:'start'});cameraBook.focus({preventScroll:true});}else{journey.scrollIntoView({behavior:'instant',block:'start'});updateJourney();}});
+normalView.addEventListener('click',()=>{manualNormal=!manualNormal;updateJourney();if(compactJourney.matches)return;if(manualNormal){cameraBook.scrollIntoView({behavior:'instant',block:'start'});cameraBook.focus({preventScroll:true});}else{journey.scrollIntoView({behavior:'instant',block:'start'});updateJourney();}});
 updateJourney();
 
 

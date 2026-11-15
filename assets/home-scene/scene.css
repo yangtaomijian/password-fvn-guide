@@ -524,3 +524,21 @@ body.pw-home main.content{margin-top:0!important;padding-top:0!important}
 /* Focus the directory title, not Quarto's section containing all 16 links. */
 body.pw-home #home-directory-heading{display:inline-block;scroll-margin-top:calc(var(--pw-header-height,114px) + 16px)}
 body.pw-home #home-directory-heading:focus{outline:2px solid var(--pw-accent);outline-offset:4px;border-radius:2px}
+
+/* Compact view keeps immediate reading access; only the vault image moves. */
+#pw-home-scene .normal-reading #normal-view:not([hidden]){display:inline-block}
+#pw-home-scene .light-motion .space-backdrop{overflow:hidden;background-image:none}
+#pw-home-scene .light-motion .space-backdrop::before{content:"";position:absolute;inset:0;background:url('vault.webp') 64% 50%/cover no-repeat;transform:translate3d(var(--compact-x,0px),var(--compact-y,0px),0) scale(var(--compact-scale,1));transform-origin:64% 50%;will-change:transform}
+@media(prefers-reduced-motion:reduce){#pw-home-scene .light-motion .space-backdrop::before{transform:none!important;will-change:auto}}
+
+/* Short compact camera hold, with the real notebook in ordinary document flow. */
+#pw-home-scene .compact-track,#pw-home-scene .compact-viewport{display:contents}
+#pw-home-scene .light-motion .travel-stage{padding-top:0}
+#pw-home-scene .light-motion .compact-track{display:block;height:calc(clamp(320px,54svh,460px) + 160px);position:relative}
+#pw-home-scene .light-motion .compact-viewport{display:block;position:sticky;top:0;height:clamp(320px,54svh,460px);overflow:hidden;isolation:isolate;background:var(--bg)}
+#pw-home-scene .light-motion .space-backdrop,#pw-home-scene .light-motion .space-light{height:100%;inset:0}
+#pw-home-scene .light-motion .book-carrier{margin-top:-60px}
+#pw-home-scene .light-motion #skip-journey{display:inline-block}
+#pw-home-scene .light-motion .travel-toolbar>div{flex-wrap:wrap;justify-content:flex-end;gap:8px}
+#pw-home-scene .light-motion .travel-toolbar>div button{padding-inline:9px}
+#pw-home-scene .light-motion .journey-intro{top:42%}
