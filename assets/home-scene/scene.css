@@ -279,7 +279,7 @@
 #pw-home-scene .sheet-back{transform:rotateY(180deg);background:repeating-linear-gradient(to bottom,transparent 0,transparent 27px,var(--grid) 28px),linear-gradient(90deg,var(--paper),var(--paper) 85%,var(--fold));box-shadow:-8px 6px 22px #0003}
 @keyframes pwhome-sheet-turn{0%{transform:perspective(1700px) rotateY(0deg);opacity:1}48%{opacity:1}88%{opacity:1}100%{transform:perspective(1700px) rotateY(-176deg);opacity:0}}
 #pw-home-scene .vault-dates{display:flex;gap:7px;flex-wrap:wrap;margin:20px 0 10px}
-#pw-home-scene .vault-dates span{font:14px Georgia,serif;letter-spacing:.04em;padding:10px 11px;border:1px solid var(--rule);background:var(--paper);border-radius:2px;box-shadow:0 2px 0 var(--fold)}
+#pw-home-scene .vault-dates :is(span, a){font:14px Georgia,serif;letter-spacing:.04em;padding:10px 11px;border:1px solid var(--rule);background:var(--paper);border-radius:2px;box-shadow:0 2px 0 var(--fold)}
 #pw-home-scene .guide-directory{margin-top:70px}
 #pw-home-scene .directory-heading{align-items:center;border:0;padding-bottom:0}
 #pw-home-scene .directory-heading p{margin-top:12px}
@@ -311,7 +311,7 @@
 #pw-home-scene .mobile-turn .sheet-back{transform:rotateX(180deg)}
 @keyframes pwhome-sheet-turn-mobile{0%{transform:perspective(1600px) rotateX(0deg);opacity:1}85%{opacity:1}100%{transform:perspective(1600px) rotateX(112deg);opacity:0}}
 #pw-home-scene .vault-dates{gap:6px}
-#pw-home-scene .vault-dates span{font-size:13px;padding:9px}
+#pw-home-scene .vault-dates :is(span, a){font-size:13px;padding:9px}
 #pw-home-scene .directory-heading{display:block}
 #pw-home-scene .directory-heading>div{max-width:none}
 #pw-home-scene .directory-search{margin-top:22px;display:block}
@@ -542,3 +542,22 @@ body.pw-home #home-directory-heading:focus{outline:2px solid var(--pw-accent);ou
 #pw-home-scene .light-motion .travel-toolbar>div{flex-wrap:wrap;justify-content:flex-end;gap:8px}
 #pw-home-scene .light-motion .travel-toolbar>div button{padding-inline:9px}
 #pw-home-scene .light-motion .journey-intro{top:42%}
+
+#pw-home-scene .panel > h2 .anchorjs-link { display: none; }
+#pw-home-scene .vault-dates a {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; min-width: 44px; color: var(--ink);
+  text-decoration: underline; text-underline-offset: .22em;
+}
+#pw-home-scene .vault-dates a:is(:hover, :focus-visible) { border-color: var(--accent); }
+@media (min-width: 761px) {
+  #pw-home-scene #notebook > .right-page { grid-area: 1 / 2; }
+  #pw-home-scene #notebook > .left-page { grid-area: 1 / 1; }
+}
+@media (max-width: 760px) {
+  #pw-home-scene #notebook > .right-page { border-top: 0; border-radius: 10px 10px 0 0; }
+  #pw-home-scene #notebook > .left-page {
+    padding-block: 18px; border-top: 1px dashed var(--rule); border-radius: 0 0 10px 10px;
+  }
+  #pw-home-scene #notebook > .left-page .dave-portrait-row { margin-block: 4px; }
+}
